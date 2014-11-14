@@ -22,4 +22,4 @@ Our team:
 - Andreia Faria Carvalho
 - Nicolò Linder
 
-Supervisor: Vincenzo Fermè
+Supervisor: Vincenzo Ferme
