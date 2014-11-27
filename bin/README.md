@@ -9,4 +9,7 @@ You can call the BPMetrics Java Tool on the command line.
 
 **Requirements**:
 
-The tool requires [Java 8](http://www.oracle.com/technetwork/java/javase/overview/java8-2100321.html).
+* Better if you call the tool giving more than the default memory, e.g.,:
+<code>-Xms1024m -Xmx2048m</code>
+
+* The tool requires [Java 8](http://www.oracle.com/technetwork/java/javase/overview/java8-2100321.html).
