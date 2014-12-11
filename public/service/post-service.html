@@ -18,6 +18,7 @@
     </template>
 
     <script>
+        var empty;
         var temp;
         Polymer('post-service', {
             created: function() {
@@ -34,9 +35,17 @@
 
                 for(var i = 0; i < temp.length; i++){
                     if(temp[i].type != 'DISTRIBUTION_STATISTIC'){
-                        this.posts.push(temp[i]);
+                        if(temp[i].metrics.length > 0) {
+                            this.posts.push(temp[i]);
+                        }
+                        else{
+                            empty.push(temp[i]);
+                        }
                     }
                 }
+
+                this.posts.push(empty);
+
 
 
             }

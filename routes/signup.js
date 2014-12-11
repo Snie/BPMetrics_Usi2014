@@ -30,7 +30,6 @@ router.post("/", function(req,res){
                     });
                     newAccount.save(function (err, saved) {
                         if (err) res.status(400).end();
-                        else console.log("saved");
                     });
                     res.render("./Pages/login");
                 }

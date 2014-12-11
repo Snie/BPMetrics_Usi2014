@@ -53,7 +53,6 @@ router.post('/', function(req, res) {
     fs.mkdir("./models/" + userId + "/" + dirId);
     var queue = seqqueue.createQueue(1000);
     var newIDs = [];
-    console.log(dirId);
     //multiple models
     if (fileArray.length > 1) {
         queue.push(
@@ -311,7 +310,6 @@ function create_Collection(userId, collection, newIDs, statistic){
         collectionModel: newColl._id
 
     });
-    console.log(newStat)
     newStat.save(function(err, s){
         console.log("stats saved");
         if(err) res.status(400);
@@ -376,7 +374,6 @@ function save_Collection(array, userId){
                                         if(err) res.status(400);
                                     });
                                     found.save(function(err, s){
-                                        console.log(s);
                                         if(err) res.status(400);
                                         account.find({}).populate('statistics').exec(function(err, accounts) {
                                             var all_stat_account = [];

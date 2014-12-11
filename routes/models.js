@@ -1,4 +1,5 @@
 /**
+/**
  * Created by Snie on 29.11.14.
  */
 var express = require('express');
@@ -60,8 +61,6 @@ router.get('/my', function(req, res) {
         collMod.find({user: id}).populate("models").exec(function (err, found) {
             if (err) throw (err);
             //found.populate("models");
-            console.log("********************");
-            console.log("My:" + found);
             res.json(found)
         });
     }
@@ -86,7 +85,6 @@ router.get('/:id', function(req, res) {
         var id = req.params.id;
         collMod.findOne(id).populate('models').exec(function (err, found) {
             if (err) throw (err);
-            console.log(found);
             res.send(found);
 
         });
