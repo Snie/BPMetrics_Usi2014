@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="../bower_components/webcomponentsjs/webcomponents.js"></script>
+
+    <link rel="import"
+          href="../bower_components/font-roboto/roboto.html">
+    <link rel="import"
+          href="../bower_components/core-header-panel/core-header-panel.html">
+    <link rel="import"
+          href="../bower_components/core-toolbar/core-toolbar.html">
+    <link rel="import"
+          href="../bower_components/paper-tabs/paper-tabs.html">
+    <link rel="import"
+          href="../bower_components/core-icon-button/core-icon-button.html">
+    <link rel="import"
+          href="../bower_components/core-overlay/core-overlay.html">
+    <link rel="import"
+          href="metric-list.html">
+    <link rel="import"
+          href="statistic-list.html">
+    <link rel="import"
+          href="side-list.html">
+    <link rel="import"
+          href="../bower_components/core-dropdown-menu/core-dropdown-menu.html">
+    <link rel="import"
+          href="../bower_components/core-input/core-input.html">
+    <link rel="import"
+          href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+    <link rel="import"
+          href="../bower_components/paper-dropdown/paper-dropdown.html">
+    <link rel="import"
+          href="../bower_components/paper-item/paper-item.html">
+    <link rel="import"
+          href="../bower_components/core-ajax/core-ajax.html">
+    <link rel="import"
+          href="../bower_components/core-drawer-panel/core-drawer-panel.html">
+    <link rel="import"
+          href="user-card.html">
+
+
+
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script src="../bower_components/jquery-1.11.1.min.js"></script>
+
+    <style>
+        html,body {
+            height: 100%;
+            margin: 0;
+            background: url("../resources/pixelchristmasred.png");
+            /*background: #FFFFFF;*/
+            background-size: 100%;
+            font-family: 'RobotoDraft', sans-serif;
+        }
+
+
+        metric-list{
+            margin: auto;
+        }
+
+        core-header-panel {
+            height: 70px;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        core-toolbar{
+            background: #2E7D32;
+            color: white;
+        }
+        #tabs {
+            width: 100%;
+            margin: 0;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            text-transform: uppercase;
+        }
+        core-icon-button{
+            background: #E5E5E5;
+            border: solid 1px #d0d0d0;
+            margin:19px;
+            border-radius: 50%;
+        }
+        core-icon-button:hover{
+            border: none;
+            margin:20px;
+            border-radius: 50%;
+        }
+        core-dropdown {
+            position: absolute;
+            top: 38px;
+            left: 0;
+        }
+        paper-dropdown-menu{
+            padding: 5px;
+            background: #E5E5E5;
+            width:150px;
+        }
+        #sidebar{
+            background: #F5F5F5;
+        }
+        core-overlay{
+            width: 500px;
+        }
+        core-core-drawer-panel{
+            overflow: scroll;
+        }
+    </style>
+
+
+</head>
+
+<body unresolved>
+
+<core-drawer-panel responsiveWidth="10000000px" drawerWidth="300px">
+
+    <div id="sidebar" drawer>
+
+        <side-list></side-list>
+
+    </div>
+
+    <div main>
+        <core-header-panel>
+
+            <core-toolbar>
+
+                <paper-tabs id="tabs" selected="home" noink="true" self-end>
+                    <paper-tab name="home">Home</paper-tab>
+                    <paper-tab name="start">User</paper-tab>
+                </paper-tabs>
+            </core-toolbar>
+        </core-header-panel>
+
+        <core-overlay autoCloseDisabled="false" id="signUp" backdrop="true">
+            <user-card></user-card>
+        </core-overlay>
+
+        <div id="container" layout vertical center>
+
+            <paper-dropdown-menu label="All">
+                <paper-dropdown class="dropdown">
+                    <core-menu class="menu">
+                        <paper-item class="menu-item" id="ALL">All</paper-item>
+                        <paper-item class="menu-item" id="SINGLE_VALUE">Single Value</paper-item>
+                        <paper-item class="menu-item" id="DISTRIBUTION">Distribution</paper-item>
+                        <paper-item class="menu-item" id="TYPE_DISTRIBUTION">Type Distribution</paper-item>
+                    </core-menu>
+                </paper-dropdown>
+            </paper-dropdown-menu>
+
+            <div layout horizontal center>
+                <core-icon-button icon="menu" core-drawer-toggle></core-icon-button>
+                <core-icon-button id="add" icon="add"></core-icon-button>
+            </div>
+
+            <form id="form" style="display: none;" method="post" enctype="multipart/form-data" action="/files">
+                <input  id="uploaded" type="file" name="uploaded" title="upload" multiple>
+                <input id="submit" type="submit">
+            </form>
+
+            <div id="list">
+                <!--<metric-list tipo='ALL' myID='b18f4aa4199545afb2c48e9f8b714972'></metric-list>-->
+            </div>
+
+
+        </div>
+    </div>
+</core-drawer-panel>
+
+<script>
+
+
+    $('.menu-item').on('click', function(){
+        var list = document.querySelector('metric-list');
+        list.tipo = this.id;
+    });
+
+    tabs.addEventListener('core-select', function() {
+        if(tabs.selected == 'back'){
+            window.location.href = '/starter/index.html';
+        }
+        else if(tabs.selected == 'start'){
+            document.getElementById('signUp').opened = true;
+        }
+    });
+
+    function demoSelect(s){
+        document.getElementById('signUp').opened = false;
+        $('#tabs').selected = 'model';
+    }
+
+    $('#add').click(function() {
+        $('#uploaded').trigger('click');
+    });
+
+//    $('#uploaded').on('change', function(){
+//        $('#submit').trigger('click');
+//    });
+
+    $(':file').change(function(){
+
+        var file = this.files[0];
+        var name = file.name;
+        var size = file.size;
+        var type = file.type;
+
+        var formData = new FormData($('form')[0]);
+
+        $.ajax({
+            url: '/files',  //Server script to process data
+            type: 'POST',
+            xhr: function() {  // Custom XMLHttpRequest
+                var myXhr = $.ajaxSettings.xhr();
+//                if(myXhr.upload){ // Check if upload property exists
+//                    myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // For handling the progress of the upload
+//                }
+                return myXhr;
+            },
+            //Ajax events
+//            beforeSend: beforeSendHandler,
+            success: function(result){
+//                drawList(result.id);
+            },
+//            error: errorHandler,
+            // Form data
+            data: formData,
+            //Options to tell jQuery not to process data or worry about content-type.
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    });
+
+    function drawList(id){
+        console.log(id);
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/models/"+id, true);
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    console.log('xhr.responseText');
+                    return xhr.responseText;
+                }
+
+            }
+        };
+//        $('#list').html("<metric-list tipo='ALL' myID='ebca99e2ca46441d8e1168f25b008491'></metric-list>");
+
+    }
+    document.querySelector('#mainContainer').scroller.scrollTop = 0;
+
+
+</script>
+
+
+</body>

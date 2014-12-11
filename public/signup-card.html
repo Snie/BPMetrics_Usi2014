@@ -1,0 +1,104 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<polymer-element name="signup-card" attributes="post">
+    <template>
+        <style>
+            :host {
+                margin: 100px auto;
+                border-radius: 3px;
+                display: block;
+                position: relative;
+                background-color: white;
+                padding: 20px;
+                width: 300px;
+                height: 500px;
+                font-size: 1.2rem;
+                font-weight: 300;
+            }
+
+            core-icon-button {
+                position: absolute;
+                top: 2px;
+                right: 2px;
+                padding:2px;
+                color: #636363;
+            }
+            paper-button{
+
+                background: white;
+            }
+
+            p{
+                font-size: 15px;
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+
+
+            }
+            p:hover{
+                cursor: pointer;
+            }
+
+
+
+        </style>
+        <core-icon-button id="closeButton" icon="clear" on-click="{{closeDown}}"></core-icon-button>
+
+        <div layout vertical center>
+            <form id="form" method="post" action="/signup">
+                <paper-input-decorator label="First Name">
+                    <input name="firstname" />
+                </paper-input-decorator>
+                <paper-input-decorator label="Last Name">
+                    <input name="lastname"/>
+                </paper-input-decorator>
+                <paper-input-decorator label="UserName">
+                    <input name="username"/>
+                </paper-input-decorator>
+                <paper-input-decorator label="email@email.com">
+                    <input type="email" name="email"/>
+                </paper-input-decorator>
+                <paper-input-decorator label="Password">
+                    <input type="password" name="password"/>
+                </paper-input-decorator>
+                <paper-input-decorator label="Repeat Password">
+                    <input type="password" name="repeatPassword"/>
+                </paper-input-decorator>
+                <input id="signUpSubmit" type="submit" style="display: none">
+            </form>
+            <paper-button raised on-click="{{submitForm}}">Submit</paper-button>
+            <br>
+            <p on-click="{{turnAround}}">Already have an account, login now!</p>
+        </div>
+
+
+
+
+    </template>
+
+
+    <script>
+        Polymer('signup-card', {
+            closeDown: function(){
+                document.getElementById('signUp').opened = false;
+                document.getElementById('tabs').selected = 'model';
+            },
+            submitForm: function(){
+                this.$.form.submit();
+            },
+            turnAround: function(){
+                document.getElementById('frontForm').style.display = 'none';
+                document.getElementById('backForm').style.display = 'block';
+            }
+        });
+    </script>
+
+</polymer-element>

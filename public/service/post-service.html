@@ -1,0 +1,45 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+
+<polymer-element name="post-service" attributes="posts colid">
+    <template>
+        <style>
+            :host {
+                display: none;
+            }
+        </style>
+
+        <core-ajax id="ajax"
+                   auto
+                   url= "{{colid | getModels}}"
+                   on-core-response="{{handleResponse}}"
+                   handleAs="json">
+        </core-ajax>
+    </template>
+
+    <script>
+        var temp;
+        Polymer('post-service', {
+            created: function() {
+                this.posts = [];
+            },
+            getModels : function(id){
+                return "/models/"+this.colid;
+            },
+            handleResponse: function() {
+                // Make a copy of the loaded data
+                var temp = this.$.ajax.response.models;
+
+                temp = JSON.parse(temp[0].metrics);
+
+                for(var i = 0; i < temp.length; i++){
+                    if(temp[i].type != 'DISTRIBUTION_STATISTIC'){
+                        this.posts.push(temp[i]);
+                    }
+                }
+
+
+            }
+        });
+    </script>
+</polymer-element>
