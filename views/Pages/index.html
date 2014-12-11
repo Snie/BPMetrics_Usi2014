@@ -112,9 +112,7 @@
 
     tabs.addEventListener('core-select', function() {
         if(tabs.selected == 'demo'){
-            var xhr = new XMLHttpRequest();
             window.location.replace('/demo');
-            xhr.send();
         }
         else if(tabs.selected == 'start') {
             document.getElementById('signUp').opened = true;

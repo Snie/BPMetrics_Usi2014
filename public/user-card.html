@@ -60,7 +60,10 @@
                 </paper-input-decorator>
                 <input id="signUpSubmit" type="submit" style="display: none">
             </form>
-            <paper-button raised on-click="{{submitForm}}">Submit</paper-button>
+            <div layout horizontal center>
+                <paper-button raised on-click="{{submitForm}}">Submit</paper-button>
+                <paper-button raised on-click="{{logOut}}">LogOut</paper-button>
+            </div>
         </div>
     </template>
 
@@ -76,6 +79,9 @@
             },
             changeImage: function(){
                 console.log('bop');
+            },
+            logOut: function(){
+                window.location.replace('/logout');
             }
         });
     </script>

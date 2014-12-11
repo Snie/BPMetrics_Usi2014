@@ -119,7 +119,6 @@
 <core-drawer-panel responsiveWidth="10000000px" drawerWidth="300px">
 
     <div id="sidebar" drawer>
-
         <side-list></side-list>
 
     </div>
@@ -224,7 +223,13 @@
             //Ajax events
 //            beforeSend: beforeSendHandler,
             success: function(result){
-//                drawList(result.id);
+                 console.log(result);
+                if(localStorage['stack'] == '') {
+                    localStorage['stack'] = result.id;
+                } else {
+                    localStorage['stack'] += "," + result.id;
+                }
+                console.log(localStorage['stack']);
             },
 //            error: errorHandler,
             // Form data
@@ -236,24 +241,66 @@
         });
     });
 
-    function drawList(id){
+
+    function getCollection(id){
+        if(!id){
+            return false;
+        }
         console.log(id);
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "/models/"+id, true);
-        xhr.setRequestHeader("Accept", "application/json");
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4) {
-                if (xhr.status == 200) {
-                    console.log('xhr.responseText');
-                    return xhr.responseText;
+        var url= '/models/demo/'+id;
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            async: false,
+//            accepts: 'application/json',
+            success: function(result){
+                if(result.collectionID){
+                    return false;
                 }
-
+                else{
+                    document.getElementById('sidebar').innerHTML = "<side-list></side-list>";
+                    return true;
+                }
+            },
+            error: function (xhr, status) {
+                return false;
             }
-        };
-//        $('#list').html("<metric-list tipo='ALL' myID='ebca99e2ca46441d8e1168f25b008491'></metric-list>");
-
+        });
     }
-    document.querySelector('#mainContainer').scroller.scrollTop = 0;
+
+    function polling() {
+        var toSplit = localStorage['stack'];
+        if (toSplit != '') {
+            var ids = toSplit.split(',');
+//            console.log(toSplit);
+//            console.log("ids: " + ids);
+            var tmp = '';
+            for (var id in ids) {
+
+                var collIDReturn = getCollection(ids[id]);
+
+//                console.log("collIDReturn: " + collIDReturn);
+
+                if (collIDReturn == false) {
+
+                    if (tmp == '') {
+                        tmp = ids[id];
+                    } else {
+                        tmp += "," + ids[id];
+                    }
+
+                }
+            }
+
+            localStorage['stack'] = tmp;
+
+            console.log("New Stack: " + localStorage['stack']);
+        }
+    }
+
+    var refreshIntervalId = setInterval(function(){polling()}, 5000);
+
 
 
 </script>

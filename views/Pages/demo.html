@@ -192,10 +192,6 @@
         $('#uploaded').trigger('click');
     });
 
-    //    $('#uploaded').on('change', function(){
-    //        $('#submit').trigger('click');
-    //    });
-
     $(':file').change(function(){
 
 //        checkfiles(this);
@@ -226,7 +222,7 @@
                 } else {
                     localStorage['stack'] += "," + result.id;
                 }
-//                console.log(localStorage);
+                console.log(localStorage['stack']);
             },
 //            error: errorHandler,
             // Form data
@@ -240,52 +236,65 @@
     });
 
     function getCollection(id){
+        if(!id){
+            return false;
+        }
         console.log(id);
         var url= '/models/demo/'+id;
 
         $.ajax({
             url: url,
             type: 'GET',
+            async: false,
 //            accepts: 'application/json',
             success: function(result){
-                if(result.collectionID == ""){
-                    console.log('none');
+                if(result.collectionID){
+                    return false;
                 }
                 else{
-                    console.log(result[0].collectionID);
                     document.getElementById('list').innerHTML = "<metric-list tipo='ALL' myID='"+result[0].collectionID+"'></metric-list>";
-                    clearInterval(refreshIntervalId);
+                    return true;
                 }
             },
             error: function (xhr, status) {
-//                drawList(id);
+                return false;
             }
         });
-//
     }
 
-    refreshIntervalId = setInterval(function(){
+    function polling() {
         var toSplit = localStorage['stack'];
-        var ids = toSplit.split(',');
-//        console.log(ids);
-        for (var id in ids) {
-            getCollection(ids[id]);
-//                if(id == 0) {
-//                    if(ids.length > 1) {
-//                        toSplit.replace(ids[id] + ',','');
-//                    } else {
-//                        toSplit.replace(ids[id], '');
-//                    }
-//                } else if(id == ids.length - 1) {
-//                    toSplit.replace(',' + ids[id],'');
-//                } else {
-//                    toSplit.replace(',' + ids[id] + ',','');
-//                }
-//                localStorage['stack'] = toSplit;
-//            }
+        if (toSplit != '') {
+            var ids = toSplit.split(',');
+//            console.log(toSplit);
+//            console.log("ids: " + ids);
+            var tmp = '';
+            for (var id in ids) {
 
-        };
-    }, 3000);
+                var collIDReturn = getCollection(ids[id]);
+
+//                console.log("collIDReturn: " + collIDReturn);
+
+                if (collIDReturn == false) {
+
+                    if (tmp == '') {
+                        tmp = ids[id];
+                    } else {
+                        tmp += "," + ids[id];
+                    }
+
+                }
+            }
+
+            localStorage['stack'] = tmp;
+
+            console.log("New Stack: " + localStorage['stack']);
+        }
+    }
+
+    var refreshIntervalId = setInterval(function(){polling()}, 5000);
+
+
 
 
 

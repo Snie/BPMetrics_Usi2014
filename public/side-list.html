@@ -17,7 +17,7 @@
         <model-service id='posts' posts="{{posts}}">
         </model-service>
 
-        <div horizontal layout wrap>
+        <div horizontal layout center-justified wrap>
             <template repeat="{{post in posts}}">
                 <side-card post="{{post}}" on-mouseover="{{onHovered}}" on-mouseout='{{onUnhovered}}'>
                     <h2>{{post | nameGenerator}}</h2>

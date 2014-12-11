@@ -9,7 +9,7 @@ require("../passportConfig");
 
 router.get('/', function(req, res) {
     req.logout();
-    res.redirect('/login');
+    res.redirect('/');
 });
 
 module.exports = router;
