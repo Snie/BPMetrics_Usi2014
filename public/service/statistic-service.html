@@ -1,7 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html">
 
-<polymer-element name="statistic-service" attributes="posts statId">
+<polymer-element name="statistic-service" attributes="posts">
     <template>
         <style>
             :host {
@@ -11,7 +11,7 @@
 
         <core-ajax id="ajax"
                    auto
-                   url= "{{statId | getModels}}"
+                   url= "/my/statistics"
                    on-core-response="{{handleResponse}}"
                    handleAs="json">
         </core-ajax>
@@ -22,9 +22,6 @@
         Polymer('statistic-service', {
             created: function() {
                 this.posts = [];
-            },
-            getModels : function(id){
-                return "/collection/statistics/"+this.statId;
             },
             handleResponse: function() {
                 // Make a copy of the loaded data

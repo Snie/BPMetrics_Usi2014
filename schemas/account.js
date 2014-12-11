@@ -14,7 +14,8 @@ var AccountSchema = new mongoose.Schema({
     photo: { type: String, default: '' },
     timeCreated: { type: Date, default: Date.now },
     collections: [{ type: ObjectId, ref: "CollectionModel" }],
-    statistics: { type: ObjectId, ref: "Statistics" } // id of statistics related
+    statistics: { type: ObjectId, ref: "Statistics" }, // id of statistics related
+    errs: [{type: ObjectId, ref: "Errors"}]
 });
 
 AccountSchema.pre('save', function(next) {

@@ -18,6 +18,8 @@ var mod = mongoose.model("Model");
 var seqqueue = require("seq-queue");
 require("../schemas/statistics");
 var stats = mongoose.model("Statistics");
+require('../schemas/errors');
+var errs = mongoose.model("Errors");
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -52,6 +54,7 @@ router.post('/', function(req, res) {
     var dirId = createGuid();
     fs.mkdir("./models/" + userId + "/" + dirId);
     var queue = seqqueue.createQueue(1000);
+    console.log(queue);
     var newIDs = [];
     //multiple models
     if (fileArray.length > 1) {
@@ -84,7 +87,7 @@ router.post('/', function(req, res) {
             function (task) {
                 console.log("executing jar for single file");
                 var target_path = "./models/" + userId + "/" + dirId + "/";
-                execSingleJar(userId, dirId, userName, res, target_path, newIDs, res, queue);
+                execSingleJar(userId, dirId, userName, res, target_path, newIDs, queue);
                 task.done();
             }
         );
@@ -113,19 +116,29 @@ function execMultipleJar(userId, dirId, userName, target_path, newIDs, res, queu
             console.log("corrupted or wrong file, deleting...");
             removeDir(target_path);
             console.log("deleted");
-            var newColl = new collMod({
-                user: userId,
+            var errObj = new errs({
                 collectionID: collection.collectionID,
-                path: "",
-                models: newIDs,
-                gotError: true,
                 error: stderr
             });
-            newColl.save(function(err, saved){
-                if (err) throw new Error;
-                console.log("Java error saved");
+            errObj.save(function(err, saved){
+                if (err) console.log(err);
+                console.log("Java error saved")
             });
-            queue.close(true)
+            account.findById(userId).exec(function(err, found){
+                if (err){throw err;}
+                var acc_errs = found.errs;
+                if (acc_errs !== undefined){
+                    acc_errs.push(errObj._id);
+                }
+                else {
+                    acc_errs = [errObj._id];
+                }
+                found.errs = acc_errs;
+                found.save(function(err, saved){
+                    if (err) console.log(err);
+                    console.log("Java error added to account");
+                });
+            });
         }
         else {
             var statistic;
@@ -186,7 +199,7 @@ function createSingleFile(fileArray, userId, dirId){
     });
 }
 
-function execSingleJar(userId, dirId, userName, res, target_path, newIDs, res, queue){
+function execSingleJar(userId, dirId, userName, res, target_path, newIDs, queue){
     exec('java -jar bin/BPMetrics.jar ' + "models/" + userId + "/" + dirId, function(error, stdout, stderr) {
         var collection = JSON.parse(stdout);
         if (error !== null) {
@@ -196,19 +209,29 @@ function execSingleJar(userId, dirId, userName, res, target_path, newIDs, res, q
             console.log("corrupted or wrong file, deleting...");
             removeDir(target_path);
             console.log("deleted");
-            var newColl = new collMod({
-                user: userId,
+            var errObj = new errs({
                 collectionID: collection.collectionID,
-                path: "",
-                models: newIDs,
-                gotError: true,
                 error: stderr
             });
-            newColl.save(function(err, saved){
-                if (err) throw new Error;
-                console.log("Java error saved")
+            errObj.save(function(err, saved){
+                if (err) console.log(err);
+                console.log("Java error saved");
             });
-            queue.close(true)
+            account.findById(userId).exec(function(err, found){
+                if (err){throw err;}
+                var acc_errs = found.errse;
+                if (acc_errs !== undefined){
+                    acc_errs.push(errObj._id);
+                }
+                else {
+                    acc_errs = [errObj._id];
+                }
+                found.errs = acc_errs;
+                found.save(function(err, saved){
+                    if (err) console.log(err);
+                    console.log("Java error added to account");
+                });
+            });
         }
         else{
             var statistic;
@@ -333,8 +356,6 @@ function save_Collection(array, userId){
                     account.findById(userId).populate("collections").exec(function(err, found){
                         collMod.populate(found.collections, {path:"models"}, function (err, data) {
                             var newAccStats;
-                            console.log("asdasd: " + found);
-                            console.log("stats: " + found.statistics);
                             if(found.statistics == null) {
                                 newAccStats = statistics.accountStat([], array[1]);
                                 console.log("created");
@@ -347,12 +368,13 @@ function save_Collection(array, userId){
                                     if(err) res.status(400);
                                 })
                                 found.save(function(err, s){
-                                    console.log(s);
                                     if(err) res.status(400);
                                     account.find({}).populate('statistics').exec(function(err, accounts) {
                                         var all_stat_account = [accStats];
                                         for(var index = 0 ; index < accounts.length ; index++) {
-                                            all_stat_account.push(JSON.parse(accounts[index].statistics.statistics));
+                                            if(accounts[index].statistics != null) {
+                                                all_stat_account.push(JSON.parse(accounts[index].statistics.statistics));
+                                            }
                                         }
                                         var global_stat = statistics.globalStat(all_stat_account);
                                         stats.findOne({ global: true }).exec(function(err, found_global) {
@@ -378,10 +400,13 @@ function save_Collection(array, userId){
                                         account.find({}).populate('statistics').exec(function(err, accounts) {
                                             var all_stat_account = [];
                                             for(var index = 0 ; index < accounts.length ; index++) {
-                                                all_stat_account.push(JSON.parse(accounts[index].statistics.statistics));
+                                                if(accounts[index].statistics != null) {
+                                                    all_stat_account.push(JSON.parse(accounts[index].statistics.statistics));
+                                                }
                                             }
                                             var global_stat = statistics.globalStat(all_stat_account);
                                             stats.findOne({ global: "true" }).exec(function(err, found_global) {
+                                                console.log("global " + found_global);
                                                 found_global.statistics = JSON.stringify(global_stat);
                                                 found_global.save(function(err, found_global_save) {
                                                     if(err) res.status(400);
