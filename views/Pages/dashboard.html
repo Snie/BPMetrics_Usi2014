@@ -54,11 +54,13 @@
             height: 100%;
             margin: 0;
             background: url("../resources/pixelchristmasred.png");
-            /*background: #FFFFFF;*/
-            background-size: 100%;
+            /*background: #efefef;*/
+            background-size: 50%;
             font-family: 'RobotoDraft', sans-serif;
         }
-
+        #main{
+            overflow-y: scroll;
+        }
 
         metric-list{
             margin: auto;
@@ -123,13 +125,13 @@
 
     </div>
 
-    <div main>
+    <div id="main" main>
         <core-header-panel>
 
             <core-toolbar>
 
                 <paper-tabs id="tabs" selected="home" noink="true" self-end>
-                    <paper-tab name="home">Home</paper-tab>
+                    <paper-tab id="home" name="home">Home</paper-tab>
                     <paper-tab name="start">User</paper-tab>
                 </paper-tabs>
             </core-toolbar>
@@ -163,8 +165,10 @@
             </form>
 
             <div id="list">
-                <global-list tipo='ALL'></global-list>
+                <!--<global-list tipo='ALL'></global-list>-->
+                <metric-list tipo='ALL' myID="fca0baf1ccd54493980667f406e16252"></metric-list>
             </div>
+
 
 
         </div>
@@ -172,7 +176,6 @@
 </core-drawer-panel>
 
 <script>
-
 
     $('.menu-item').on('click', function(){
         var list = document.querySelector('metric-list');
@@ -188,10 +191,10 @@
         }
     });
 
-    function demoSelect(s){
-        document.getElementById('signUp').opened = false;
-        $('#tabs').selected = 'model';
-    }
+    home.addEventListener('click', function(){
+        document.getElementById('list').innerHTML ="<global-list tipo='ALL'></global-list>"
+    });
+
 
     $('#add').click(function() {
         $('#uploaded').trigger('click');
@@ -223,13 +226,11 @@
             //Ajax events
 //            beforeSend: beforeSendHandler,
             success: function(result){
-                 console.log(result);
                 if(localStorage['stack'] == '') {
                     localStorage['stack'] = result.id;
                 } else {
                     localStorage['stack'] += "," + result.id;
                 }
-                console.log(localStorage['stack']);
             },
 //            error: errorHandler,
             // Form data
@@ -246,7 +247,6 @@
         if(!id){
             return false;
         }
-        console.log(id);
         var url= '/models/demo/'+id;
 
         $.ajax({
@@ -273,14 +273,11 @@
         var toSplit = localStorage['stack'];
         if (toSplit != '') {
             var ids = toSplit.split(',');
-//            console.log(toSplit);
-//            console.log("ids: " + ids);
             var tmp = '';
             for (var id in ids) {
 
                 var collIDReturn = getCollection(ids[id]);
 
-//                console.log("collIDReturn: " + collIDReturn);
 
                 if (collIDReturn == false) {
 
@@ -295,7 +292,6 @@
 
             localStorage['stack'] = tmp;
 
-            console.log("New Stack: " + localStorage['stack']);
         }
     }
 

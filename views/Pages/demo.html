@@ -153,7 +153,7 @@
                 <core-icon-button id="add" icon="add"></core-icon-button>
             </div>
 
-            <form id="form" style="display: none;" method="post" enctype="multipart/form-data" action="/files">
+            <form id="form" style="display: none;" method="post" enctype="multipart/form-data" action="/demofiles">
                 <input id="uploaded" type="file" name="uploaded" title="upload">
                 <input id="submit" type="submit">
             </form>
@@ -204,7 +204,7 @@
         var formData = new FormData($('form')[0]);
 
         $.ajax({
-            url: '/files',  //Server script to process data
+            url: '/demofiles',  //Server script to process data
             type: 'POST',
             xhr: function() {  // Custom XMLHttpRequest
                 var myXhr = $.ajaxSettings.xhr();

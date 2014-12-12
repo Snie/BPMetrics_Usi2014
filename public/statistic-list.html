@@ -1,7 +1,7 @@
 <link rel="import" href="bower_components/polymer/polymer.html">
 <link rel="import" href="./service/post-service.html">
 
-<link rel="import" href="metric-card.html">
+<link rel="import" href="statistic-card.html">
 <script src="bower_components/chartjs/Chart.js"></script>
 
 
@@ -18,11 +18,11 @@
 
         <div horizontal layout center-justified wrap class="{{tipo}}">
             <template repeat="{{post in posts}}">
-                <metric-card
+                <statistic-card
                         class="metric-ALL metric-{{post.type}}"
                         post="{{post}}">
                     <h2>{{post.name | fixString }}</h2>
-                </metric-card>
+                </statistic-card>
 
 
             </template>

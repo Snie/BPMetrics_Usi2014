@@ -8,14 +8,14 @@
     <template>
         <style>
             :host {
-                box-shadow: 0 0 10px #a0a0a0;
+                /*box-shadow: 0 0 1px #000000;*/
                 border-radius: 3px;
                 display: block;
                 position: relative;
                 background-color: white;
                 padding: 20px;
-                width: 250px;
-                height: 250px;
+                width: 275px;
+                height: 275px;
                 font-size: 1.2rem;
                 font-weight: 300;
                 margin:10px;
@@ -60,13 +60,28 @@
 
         <div id="back">
             <core-icon-button icon="clear" on-tap="{{settingsTapped}}"></core-icon-button>
-            <paper-dropdown-menu label="Your favorite pastry">
+            <paper-dropdown-menu label="Level of Compare">
                 <paper-dropdown class="dropdown">
                     <core-menu class="menu">
-                        <paper-item>Croissant</paper-item>
-                        <paper-item>Donut</paper-item>
-                        <paper-item>Financier</paper-item>
-                        <paper-item>Madeleine</paper-item>
+                        <paper-item>Global</paper-item>
+                        <paper-item>Account</paper-item>
+                        <paper-item on-click{{chose}}>Collection</paper-item>
+                        <paper-item>Model</paper-item>
+                    </core-menu>
+                </paper-dropdown>
+            </paper-dropdown-menu>
+
+            <paper-dropdown-menu label="Choose collection" style="display: none">
+                <paper-dropdown class="dropdown">
+                    <core-menu class="menu">
+                    </core-menu>
+                </paper-dropdown>
+            </paper-dropdown-menu>
+
+            <paper-dropdown-menu label="Choose moodel" style="display: none">
+                <paper-dropdown class="dropdown">
+                    <core-menu class="menu">
+
                     </core-menu>
                 </paper-dropdown>
             </paper-dropdown-menu>
@@ -77,138 +92,139 @@
 
 
     <script>
+
         Polymer('metric-card', {
-//            ready: function() {
+            ready: function() {
 //                if(this.post.value = []){
 //                    this.style.borderBottom = 'solid 4px blue';
 //                }
-//                this.side = true;
-//                var t = this.$.canvas;
-//
-//                var ctx = t.getContext("2d");
-//
-//                var labels = [];
-//                var datas = [];
-//                var chartOpt = {};
-//                var data = {};
-//
-//
-//                if(this.post.type == 'DISTRIBUTION'){
-//
-//                    for(var i = 0; i < this.post.values.length; i++){
-//                        labels.push(this.post.values[i].name);
-//                        datas.push(this.post.values[i].value);
-//                    }
-//
-//
-//
-//                    data = {
-//                        labels: labels,
-//                        datasets: [
-//                            {
-//                                label: "First dataset",
-//                                fillColor: "rgba(220,220,220,0.5)",
-//                                strokeColor: "rgba(220,220,220,0.8)",
-//                                highlightFill: "rgba(220,220,220,0.75)",
-//                                highlightStroke: "rgba(220,220,220,1)",
-//                                data: datas
-//                            }
-//                        ]
-//                    };
-//
-//
-//
-//                    chartOpt = {
-//                        scaleOverride : true,
-//                        scaleSteps : 10,
-//                        scaleStepWidth : 1,
-//                        animation : false  // Edit: correction typo: from 'animated' to 'animation'
-//                    };
-//
-//                    myBarChart = new Chart(ctx).Bar(data, chartOpt);
-//                }
-//                else if(this.post.type == 'SINGLE_VALUE'){
-//
-//                    for(var i = 0; i < this.post.values.length; i++){
-//                        labels.push('value');
-//                        datas.push(this.post.values[i].value);
-//                    }
-//
-//                    data = {
-//                        labels: labels,
-//                        datasets: [
-//                            {
-//                                label: "First dataset",
-//                                fillColor: "rgba(220,220,220,0.5)",
-//                                strokeColor: "rgba(220,220,220,0.8)",
-//                                highlightFill: "rgba(220,220,220,0.75)",
-//                                highlightStroke: "rgba(220,220,220,1)",
-//                                data: datas
-//                            }
-//                        ]
-//                    };
-//
-//
-//
-//                    chartOpt = {
-//                        scaleOverride : true,
-//                        scaleSteps : 10,
-//                        scaleStepWidth : 1,
-//                        animation : false  // Edit: correction typo: from 'animated' to 'animation'
-//                    };
-//
-//                    var myBarChart = new Chart(ctx).Bar(data, chartOpt);
-//                }
-//                else if(this.post.type == 'TYPE_DISTRIBUTION'){
-//
-//                    for(var i = 0; i < this.post.values.length; i++){
-//                        labels.push('value');
-//                        datas.push(this.post.values[i].value);
-//                    }
-//
-//                    data = {
-//                        labels: labels,
-//                        datasets: [
-//                            {
-//                                label: "First dataset",
-//                                fillColor: "rgba(220,220,220,0.5)",
-//                                strokeColor: "rgba(220,220,220,0.8)",
-//                                highlightFill: "rgba(220,220,220,0.75)",
-//                                highlightStroke: "rgba(220,220,220,1)",
-//                                data: datas
-//                            }
-//                        ]
-//                    };
-//
-//
-//
-//                    chartOpt = {
-//                        scaleOverride : true,
-//                        scaleSteps : 10,
-//                        scaleStepWidth : 1,
-//                        animation : false  // Edit: correction typo: from 'animated' to 'animation'
-//                    };
-//
-//                    var myBarChart = new Chart(ctx).Bar(data, chartOpt);
-//                }
-//
-//
-//
-//
-//            },
-//            settingsTapped: function(event, detail, sender){
-//                console.log(this.side);
-//                if(!this.side){
-//                    this.$.front.style.display = 'block';
-//                    this.$.back.style.display = 'none';
-//                    this.side = !this.side;
-//                }
-//                else{
-//                    this.$.front.style.display = 'none';
-//                    this.$.back.style.display = 'block';
-//                    this.side = !this.side;
-//                }
-//            }
+                this.side = true;
+                var t = this.$.canvas;
+
+                var ctx = t.getContext("2d");
+
+                var labels = [];
+                var datas = [];
+                var chartOpt = {};
+                var data = {};
+
+
+                if(this.post.type == 'DISTRIBUTION'){
+
+                    for(var i = 0; i < this.post.values.length; i++){
+                        labels.push(this.post.values[i].name);
+                        datas.push(this.post.values[i].value);
+                    }
+
+
+
+                    data = {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: "First dataset",
+                                fillColor: "rgba(220,220,220,0.5)",
+                                strokeColor: "rgba(220,220,220,0.8)",
+                                highlightFill: "rgba(220,220,220,0.75)",
+                                highlightStroke: "rgba(220,220,220,1)",
+                                data: datas
+                            }
+                        ]
+                    };
+
+
+
+                    chartOpt = {
+                        scaleOverride : true,
+                        scaleSteps : 10,
+                        scaleStepWidth : 1,
+                        animation : false  // Edit: correction typo: from 'animated' to 'animation'
+                    };
+
+                    myBarChart = new Chart(ctx).Bar(data, chartOpt);
+                }
+                else if(this.post.type == 'SINGLE_VALUE'){
+
+                    for(var i = 0; i < this.post.values.length; i++){
+                        labels.push('value');
+                        datas.push(this.post.values[i].value);
+                    }
+
+                    data = {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: "First dataset",
+                                fillColor: "rgba(220,220,220,0.5)",
+                                strokeColor: "rgba(220,220,220,0.8)",
+                                highlightFill: "rgba(220,220,220,0.75)",
+                                highlightStroke: "rgba(220,220,220,1)",
+                                data: datas
+                            }
+                        ]
+                    };
+
+
+
+                    chartOpt = {
+                        scaleOverride : true,
+                        scaleSteps : 10,
+                        scaleStepWidth : 1,
+                        animation : false  // Edit: correction typo: from 'animated' to 'animation'
+                    };
+
+                    var myBarChart = new Chart(ctx).Bar(data, chartOpt);
+                }
+                else if(this.post.type == 'TYPE_DISTRIBUTION'){
+
+                    for(var i = 0; i < this.post.values.length; i++){
+                        labels.push('value');
+                        datas.push(this.post.values[i].value);
+                    }
+
+                    data = {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: "First dataset",
+                                fillColor: "rgba(220,220,220,0.5)",
+                                strokeColor: "rgba(220,220,220,0.8)",
+                                highlightFill: "rgba(220,220,220,0.75)",
+                                highlightStroke: "rgba(220,220,220,1)",
+                                data: datas
+                            }
+                        ]
+                    };
+
+
+
+                    chartOpt = {
+                        scaleOverride : true,
+                        scaleSteps : 10,
+                        scaleStepWidth : 1,
+                        animation : false  // Edit: correction typo: from 'animated' to 'animation'
+                    };
+
+                    var myBarChart = new Chart(ctx).Bar(data, chartOpt);
+                }
+
+
+
+
+            },
+            settingsTapped: function(event, detail, sender){
+                console.log(this.side);
+                if(!this.side){
+                    this.$.front.style.display = 'block';
+                    this.$.back.style.display = 'none';
+                    this.side = !this.side;
+                }
+                else{
+                    this.$.front.style.display = 'none';
+                    this.$.back.style.display = 'block';
+                    this.side = !this.side;
+                }
+            }
         });
     </script>
 

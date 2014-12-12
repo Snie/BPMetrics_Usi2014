@@ -89,6 +89,9 @@ app.use("/files", files);
 var logout = require("./routes/logout");
 app.use("/logout", logout);
 
+var demofiles = require("./routes/demofiles");
+app.use("/demofiles", demofiles);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
