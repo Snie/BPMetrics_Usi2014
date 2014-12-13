@@ -34,7 +34,9 @@ router.get('/', function(req, res) {
         }
         res.render('./pages/dashboard', { username: userName });
     }
-    else res.redirect('/login');
+    else{
+        res.render('./pages/index');
+    }
 });
 
 

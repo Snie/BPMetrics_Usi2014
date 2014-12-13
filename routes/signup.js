@@ -31,7 +31,7 @@ router.post("/", function(req,res){
                     newAccount.save(function (err, saved) {
                         if (err) res.status(400).end();
                     });
-                    res.render("./pages/login");
+                    res.render("./pages/index");
                 }
             });
 
