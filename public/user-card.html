@@ -34,7 +34,20 @@
                 border-radius: 50%;
                 border: solid 1px #3f3f3f;
             }
+            p{
+                font-size: 15px;
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
 
+
+            }
+            p:hover{
+                cursor: pointer;
+            }
 
         </style>
         <core-icon-button id="closeButton" icon="clear" on-click="{{closeDown}}"></core-icon-button>
@@ -52,17 +65,18 @@
                 <paper-input-decorator id="email" label="{{email}}">
                     <input type="email" name="email"/>
                 </paper-input-decorator>
-                <paper-input-decorator id="oldpassword" label="Old Password">
-                    <input type="password" name="oldpassword"/>
-                </paper-input-decorator>
-                <paper-input-decorator id="password" label="New Password">
-                    <input type="password" name="password"/>
-                </paper-input-decorator>
-                <paper-input-decorator id="repeatPassword" label="Repeat Password">
-                    <input type="password" name="repeatPassword"/>
-                </paper-input-decorator>
-                <input id="signUpSubmit" type="submit" style="display: none">
+                <!--<paper-input-decorator id="oldpassword" label="Old Password">-->
+                    <!--<input type="password" name="oldpassword"/>-->
+                <!--</paper-input-decorator>-->
+                <!--<paper-input-decorator id="password" label="New Password">-->
+                    <!--<input type="password" name="password"/>-->
+                <!--</paper-input-decorator>-->
+                <!--<paper-input-decorator id="repeatPassword" label="Repeat Password">-->
+                    <!--<input type="password" name="repeatPassword"/>-->
+                <!--</paper-input-decorator>-->
+                <!--<input id="signUpSubmit" type="submit" style="display: none">-->
             </form>
+            <p on-click="{{turnAround}}">If you want change the password click here!</p>
             <div layout horizontal center>
                 <paper-button raised on-click="{{submitForm}}">Submit</paper-button>
                 <paper-button raised on-click="{{logOut}}">LogOut</paper-button>

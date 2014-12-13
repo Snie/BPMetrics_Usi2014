@@ -132,7 +132,7 @@
 
                 <paper-tabs id="tabs" selected="home" noink="true" self-end>
                     <paper-tab id="home" name="home">Home</paper-tab>
-                    <paper-tab name="start">User</paper-tab>
+                    <paper-tab name="start" id="user_name">User</paper-tab>
                 </paper-tabs>
             </core-toolbar>
         </core-header-panel>
@@ -309,6 +309,7 @@
                     console.log(this.user._id);
                     document.getElementById("signUp").innerHTML = '<user-card firstname="' + this.user.firstname + '" lastname="' + this.user.lastname + '" email="' + this.user.email + '"></user-card>';
                     console.log(document.getElementById("signUp").innerHTML);
+                    document.getElementById("user_name").innerText = this.user.username;
                 }
             }
         };
