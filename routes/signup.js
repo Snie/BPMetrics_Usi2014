@@ -10,7 +10,7 @@ require("../schemas/account");
 var account = mongoose.model("Account");
 
 router.get('/', function(req, res){
-    res.render('./Pages/signUp')
+    res.render('./pages/signUp')
 });
 router.post("/", function(req,res){
     account.findOne({username: req.body.username}, function(err, found){
@@ -31,7 +31,7 @@ router.post("/", function(req,res){
                     newAccount.save(function (err, saved) {
                         if (err) res.status(400).end();
                     });
-                    res.render("./Pages/login");
+                    res.render("./pages/login");
                 }
             });
 

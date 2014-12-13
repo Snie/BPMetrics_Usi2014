@@ -14,7 +14,7 @@ require("../schemas/account");
 var account = mongoose.model("Account");
 
 router.get('/', function(req, res){
-    res.render('./Pages/login');
+    res.render('./pages/login');
 });
 router.post("/",passport.authenticate('local', {successRedirect:'/files', failureRedirect: '/login'}));
 

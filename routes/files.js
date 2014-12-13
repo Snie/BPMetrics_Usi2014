@@ -32,7 +32,7 @@ router.get('/', function(req, res) {
         else {
             fs.mkdir(user_path);
         }
-        res.render('./Pages/dashboard', { username: userName });
+        res.render('./pages/dashboard', { username: userName });
     }
     else res.redirect('/login');
 });
@@ -170,7 +170,7 @@ function execMultipleJar(userId, dirId, userName, target_path, newIDs, res, queu
                     console.log("creating charts");
                     //account.findById(userId, function(err, found){
                     //    //var accstats = JSON.parse(found.statistics);
-                    //    //res.render("./Pages/dashboard", { username: userName });
+                    //    //res.render("./pages/dashboard", { username: userName });
                     //});
                     task.done();
                 }
@@ -284,14 +284,14 @@ function execSingleJar(userId, dirId, userName, res, target_path, newIDs, queue)
 
 function single(userName, singleValues, res){
     // See SINGLE_VALUE's of the uploaded model
-    //res.render("./Pages/dashboard", { username: userName });
+    //res.render("./pages/dashboard", { username: userName });
 }
 
 function single_acc_stats(userId, userName, singleValues, res){
     // Compare SINGLE_VALUES of the uploaded file with the account statistics
     account.findById(userId, function(err, found){
         var accstats = JSON.parse(found.statistics);
-        //res.render("./Pages/dashboard", { username: userName });
+        //res.render("./pages/dashboard", { username: userName });
     });
 }
 
@@ -299,7 +299,7 @@ function stats_acc_stats(userId, userName, stats, res){
     // Compare collection statistics of uploaded model with account statistics
     account.findById(userId, function(err, found){
         var accstats = JSON.parse(found.statistics);
-        //res.render("./Pages/dashboard", { username: userName });
+        //res.render("./pages/dashboard", { username: userName });
     });
 }
 

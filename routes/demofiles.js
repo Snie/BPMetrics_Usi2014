@@ -32,7 +32,7 @@ router.get('/', function(req, res) {
     else {
         fs.mkdir(user_path);
     }
-    res.render('./Pages/demo');
+    res.render('./pages/demo');
 });
 
 

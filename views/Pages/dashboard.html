@@ -297,6 +297,26 @@
 
     var refreshIntervalId = setInterval(function(){polling()}, 5000);
 
+    function onCreate() {
+        console.log("HERE");
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/user', true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    this.user = JSON.parse(xhr.responseText);
+                    console.log("asdadadasda");
+                    console.log(this.user._id);
+                    document.getElementById("signUp").innerHTML = '<user-card firstname="' + this.user.firstname + '" lastname="' + this.user.lastname + '" email="' + this.user.email + '"></user-card>';
+                    console.log(document.getElementById("signUp").innerHTML);
+                }
+            }
+        };
+        xhr.send();
+    }
+
+    onCreate();
+
 
 
 </script>

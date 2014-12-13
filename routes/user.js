@@ -10,30 +10,35 @@ var SALT_WORK_FACTOR = 10;
 require("../schemas/account");
 var account = mongoose.model("Account");
 
-router.put('/', function(req, res){
-   if(req.user){
-       account.findById(req.user._id, function(err, found){
-           if(err) throw err;
-           else{
-               found.username= req.body.username || found.username;
-               found.firstname= req.body.firstname || found.firstname;
-               found.lastname=req.body.lastname || found.lastname;
-               found.email= req.body.email || found.email;
-               found.photo=req.body.photo || found.photo;
-               console.log(found)
-               found.save(function(err, saved){
-                   if (err) res.status(400).end();
-                   else {
-                       res.status(204);
-                       res.send(saved)
-                   }
-               });
-           }
-       })
-   }
+router.get('/', function(req,res){
+    if(req.user){
+        res.send(req.user);
+    }
+    else res.render('./Pages/login');
+});
+
+router.post('/', function(req, res){
+    if(req.user){
+        account.findById(req.user._id, function(err, found){
+            if(err) throw err;
+            else{
+                found.username= req.body.username || found.username;
+                found.firstname= req.body.firstname || found.firstname;
+                found.lastname=req.body.lastname || found.lastname;
+                found.email= req.body.email || found.email;
+                found.photo=req.body.photo || found.photo;
+                found.save(function(err, saved){
+                    if (err) res.status(400).end();
+                    else {
+                        res.render('./Pages/dashboard')
+                    }
+                });
+            }
+        })
+    }
     else {
-       res.render('./Pages/login')
-   }
+        res.render('./Pages/login')
+    }
 });
 
 router.put('/password', function(req, res){
@@ -49,19 +54,19 @@ router.put('/password', function(req, res){
                         else {
                             found.password = req.body.newpassword;
                             found.save(function(err, saved){
-                                        if (err) res.status(400).end();
-                                        else {
-                                            res.status(204);
-                                            res.send(saved)
-                                        }
-                                    });
+                                if (err) res.status(400).end();
+                                else {
+                                    res.status(204);
+                                    res.send(saved)
+                                }
+                            });
                         }
                     })
                 }
             }
         });
     }
-    else res.render('./Pages/login');
+    else res.render('./pages/login');
 });
 
 module.exports = router;

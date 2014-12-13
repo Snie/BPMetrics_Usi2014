@@ -11,7 +11,7 @@ var passport = require("passport");
 var LocalStrategy = require('passport-local').Strategy;
 var session = require('express-session');
 var compression = require('compression')
-require("./schemas/account");
+require("./schemas/");
 var account = mongoose.model("Account");
 require("./passportConfig");
 var app = express();
@@ -27,8 +27,8 @@ function createGuid()
 //connect to mongoose
 mongoose.connect(config.mongoUrl+config.mongoDbName);
 
-// Register model definition here
-require('./schemas/');
+//// Register model definition here
+//require('./schemas/');
 
 app.use(compression({
     threshold: 512

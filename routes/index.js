@@ -6,7 +6,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 
 router.get('/', function(req, res){
-    res.render('./Pages/index', {});
+    res.render('./pages/index', {});
 });
 
 router.get('/demoo', function(req, res){
