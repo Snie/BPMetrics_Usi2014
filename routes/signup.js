@@ -19,6 +19,7 @@ router.post("/", function(req,res){
             account.findOne({email: req.body.email}, function(err, found2) {
                 if (err){throw err;}
                 if(found2) res.send("Email already in use");
+                else if(req.body.password !== req.body.repeatpassword) res.send('password mismatch');
                 else {
                     var newAccount = new account({
                         username: req.body.username,

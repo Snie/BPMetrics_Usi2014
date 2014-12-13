@@ -1,12 +1,9 @@
-/**
- * Created by Snie on 27.11.14.
- */
+
 var express = require('express');
 var router = express.Router();
 var fs = require('fs');
 var mongoose = require('mongoose');
 var exec = require('child_process').exec;
-// var userId = mongoose.Types.ObjectId('547c3957314389ce9f9edb59');
 var path = require("path");
 require("../schemas/collection-model");
 var collMod = mongoose.model("CollectionModel");
@@ -20,11 +17,13 @@ require("../schemas/statistics");
 var stats = mongoose.model("Statistics");
 require('../schemas/errors');
 var errs = mongoose.model("Errors");
+// get the id of the anon user
 var userId = "";
 account.find({username: "anon"}).exec(function(err, found){userId = found[0]._id});
 var userName = "Demo"
 
-/* GET home page. */
+
+// Renders the demo page
 router.get('/', function(req, res) {
     user_path = "./models/" + userId;
     if (fs.existsSync(user_path)) {
@@ -35,7 +34,7 @@ router.get('/', function(req, res) {
     res.render('./pages/demo');
 });
 
-
+// function to create a random id
 function createGuid(){
     return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
         var r = Math.random()*16|0, v = c === 'x' ? r : (r&0x3|0x8);
@@ -161,8 +160,8 @@ function execSingleJar(userId, dirId, userName, res, target_path, newIDs, queue)
     });
 }
 
-//createCollection functions
 
+// creates the models and saves them 
 function create_save_Models(newIDs, collection){
     for(var i = 0, j = collection.models.length; i < j; i++ ){
         var newModel = new mod({
@@ -179,6 +178,7 @@ function create_save_Models(newIDs, collection){
     }
 }
 
+// creates collection and statistics, then the statistics will be saved
 function create_Collection(userId, collection, newIDs, statistic){
     var newColl = new collMod({
         user: userId,
@@ -199,6 +199,10 @@ function create_Collection(userId, collection, newIDs, statistic){
     return [newColl, statistic];
 }
 
+
+
+// the collection is saved, with statistics, then the collection is linked to the user,
+// then the account and general statistics will be uploaded and saved
 function save_Collection(array, userId){
     array[0].save(function(err, saved){
         if (err) res.status(400).end();
@@ -289,6 +293,7 @@ function save_Collection(array, userId){
     });
 }
 
+// it's a function to recursively remove a directory
 function removeDir(dir) {
     var list = fs.readdirSync(dir);
     for(var i = 0; i < list.length; i++) {

@@ -93,51 +93,7 @@ function collectionStat(collection) {
             }
         }
     }
-    var res = [];
-    for(var metric_name in result) {
-        var res_metric = {};
-        res_metric["metric_name"] = metric_name;
-        res_metric["type"] = result[metric_name]["type"];
-        res_metric["category"] = result[metric_name]["category"];
-        if(result[metric_name]["type"] == "SINGLE_VALUE") { // Metrics with type SINGLE_VALUE
-            var values = result[metric_name]["values"];
-            res_metric["values"] = values;
-            res_metric["mean"] = [sc.mean(values), values.length]; // [V, #]
-            res_metric["median"] = sc.median(values); // V
-            res_metric["mode"] = sc.mode(values); // {V: #, V: #, ...}
-            res_metric["standard_deviation"] = sc.standard_deviation(values); // V
-            res_metric["variance"] = sc.variance(values); // V
-            res_metric["range"] = sc.range(values); // [V, V]
-        } else if(result[metric_name]["type"] == "TYPE_DISTRIBUTION") { // Metrics with type TYPE_DISTRIBUTION
-            res_metric["names"] = [];
-            for(var index = 0 ; index < result[metric_name]["names"].length ; index++) {
-                var values = result[metric_name]["names"][index].values;
-                var res_metric_name = {};
-                res_metric_name["name"] = result[metric_name]["names"][index].name;
-                res_metric_name["values"] = values;
-                res_metric_name["mean"] = [sc.mean(values), values.length]; // [V, #]
-                res_metric_name["median"] = sc.median(values); // V
-                res_metric_name["mode"] = sc.mode(values); // {V: #, V: #, ...}
-                res_metric_name["standard_deviation"] = sc.standard_deviation(values); // V
-                res_metric_name["variance"] = sc.variance(values); // V
-                res_metric_name["range"] = sc.range(values); // [V, V]
-                res_metric["names"].push(res_metric_name);
-            }
-        } else if(result[metric_name]["type"] == "DISTRIBUTION") { // Metrics with type DISTRIBUTION
-            res_metric["values"] = add_values_distribution(result[metric_name]["values"]);
-            if(result[metric_name]["MINs"]) {
-                res_metric["minimum"] = sc.min(result[metric_name]["MINs"]);
-            }
-            if(result[metric_name]["MAXs"]) {
-                res_metric["maximum"] = sc.max(result[metric_name]["MAXs"]);
-            }
-            if(result[metric_name]["SUMs"]) {
-                res_metric["sum"] = sc.sum(result[metric_name]["SUMs"]);
-            }
-        }
-        res.push(res_metric);
-    }
-    return res;
+    return computation_of_statistics(result, true);
 }
 
 /* The "accountStat" function updates the statistics of an account after the upload of a new collection.
@@ -322,21 +278,35 @@ function new_statistics(stat) {
             }
         }
     }
+    return computation_of_statistics(result, false);
+}
+
+/* The "computation_of_statistics" function does the computation of statistics taking an object with all values of each metric.
+ * @param {Object} result - ... .
+ * @param {boolean} collection - It is true if the statistics computing are for a new collection, then it is false otherwise, when the global statistics or the statistics of one account are updated.
+ * @return {Object} - It is a list of objects, which have the global statistics of what is given, with the values.
+ */
+function computation_of_statistics(result, collection) {
     var res = [];
     for(var metric_name in result) {
         var res_metric = {};
         res_metric["metric_name"] = metric_name;
         res_metric["type"] = result[metric_name]["type"];
-        res_metric["category"] = result[metric_name].category;
+        res_metric["category"] = result[metric_name]["category"];
         if(result[metric_name]["type"] == "SINGLE_VALUE") { // Metrics with type SINGLE_VALUE
             var values = result[metric_name]["values"];
             res_metric["values"] = values;
-            res_metric["mean"] = [sc.mean2(result[metric_name]["mean"]), values.length]; // [V, #]
             res_metric["median"] = sc.median(values); // V
             res_metric["mode"] = sc.mode(values); // {V: #, V: #, ...}
             res_metric["standard_deviation"] = sc.standard_deviation(values); // V
             res_metric["variance"] = sc.variance(values); // V
-            res_metric["range"] = sc.range2(result[metric_name]["range"]); // [V, V]
+            if(collection) { // If the statistics are for a new collection
+                res_metric["mean"] = [sc.mean(values), values.length]; // [V, #]
+                res_metric["range"] = sc.range(values); // [V, V]
+            } else { // If the statistics are for update statistics already present
+                res_metric["mean"] = [sc.mean2(result[metric_name]["mean"]), values.length]; // [V, #]
+                res_metric["range"] = sc.range2(result[metric_name]["range"]); // [V, V]
+            }
         } else if(result[metric_name]["type"] == "TYPE_DISTRIBUTION") { // Metrics with type TYPE_DISTRIBUTION
             res_metric["names"] = [];
             for(var index = 0 ; index < result[metric_name]["names"].length ; index++) {
@@ -344,16 +314,25 @@ function new_statistics(stat) {
                 var res_metric_name = {};
                 res_metric_name["name"] = result[metric_name]["names"][index].name;
                 res_metric_name["values"] = values;
-                res_metric_name["mean"] = [sc.mean2(result[metric_name]["names"][index].mean), values.length]; // [V, #]
                 res_metric_name["median"] = sc.median(values); // V
                 res_metric_name["mode"] = sc.mode(values); // {V: #, V: #, ...}
                 res_metric_name["standard_deviation"] = sc.standard_deviation(values); // V
                 res_metric_name["variance"] = sc.variance(values); // V
-                res_metric_name["range"] = sc.range2(result[metric_name]["names"][index].range); // [V, V]
+                if(collection) { // If the statistics are for a new collection
+                    res_metric_name["mean"] = [sc.mean(values), values.length]; // [V, #]
+                    res_metric_name["range"] = sc.range(values); // [V, V]
+                } else { // If the statistics are for update statistics already present
+                    res_metric_name["mean"] = [sc.mean2(result[metric_name]["names"][index].mean), values.length]; // [V, #]
+                    res_metric_name["range"] = sc.range2(result[metric_name]["names"][index].range); // [V, V]
+                }
                 res_metric["names"].push(res_metric_name);
             }
         } else if(result[metric_name]["type"] == "DISTRIBUTION") { // Metrics with type DISTRIBUTION
-            res_metric["values"] = result[metric_name]["values"];
+            if(collection) { // If the statistics are for a new collection
+                res_metric["values"] = add_values_distribution(result[metric_name]["values"]);
+            } else { // If the statistics are for update statistics already present
+                res_metric["values"] = result[metric_name]["values"];
+            }
             if(result[metric_name]["MINs"]) {
                 res_metric["minimum"] = sc.min(result[metric_name]["MINs"]);
             }

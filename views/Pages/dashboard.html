@@ -42,7 +42,10 @@
     <link rel="import"
           href="../bower_components/core-drawer-panel/core-drawer-panel.html">
     <link rel="import"
+          href="password-card.html">
+    <link rel="import"
           href="user-card.html">
+
 
 
 
@@ -137,9 +140,18 @@
             </core-toolbar>
         </core-header-panel>
 
-        <core-overlay autoCloseDisabled="false" id="signUp" backdrop="true">
-            <user-card></user-card>
+        <core-overlay id="signUp" backdrop="true" autoCloseDisabled="true">
+            <div id="frontForm">
+                <user-card></user-card>
+            </div>
+            <div id="backForm"  style="display: none">
+                <password-card></password-card>
+            </div>
         </core-overlay>
+
+        <!--<core-overlay autoCloseDisabled="false" id="signUp" backdrop="true">-->
+            <!--<password-card></password-card>-->
+        <!--</core-overlay>-->
 
         <div id="container" layout vertical center>
 
@@ -298,17 +310,13 @@
     var refreshIntervalId = setInterval(function(){polling()}, 5000);
 
     function onCreate() {
-        console.log("HERE");
         var xhr = new XMLHttpRequest();
         xhr.open('GET', '/user', true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4) {
                 if (xhr.status == 200) {
                     this.user = JSON.parse(xhr.responseText);
-                    console.log("asdadadasda");
-                    console.log(this.user._id);
-                    document.getElementById("signUp").innerHTML = '<user-card firstname="' + this.user.firstname + '" lastname="' + this.user.lastname + '" email="' + this.user.email + '"></user-card>';
-                    console.log(document.getElementById("signUp").innerHTML);
+                    document.getElementById("frontForm").innerHTML = '<user-card firstname="' + this.user.firstname + '" lastname="' + this.user.lastname + '" email="' + this.user.email + '"></user-card>';
                     document.getElementById("user_name").innerText = this.user.username;
                 }
             }
@@ -317,8 +325,6 @@
     }
 
     onCreate();
-
-
 
 </script>
 
