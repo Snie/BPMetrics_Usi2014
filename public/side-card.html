@@ -76,6 +76,10 @@
             return JSON.stringify(string);
         },
         exterminate: function(){
+            console.log(this.post.collectionID);
+            var xhr = new XMLHttpRequest();
+            xhr.open("DELETE", "/models/"+this.post._id, true);
+            xhr.send();
             this.deleted = true;
         },
         onClick: function(event, detail,sender){

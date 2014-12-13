@@ -1,0 +1,62 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
+<script src="../bower_components/chartjs/Chart.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<link rel="import" href="./service/model-service.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+
+<polymer-element name="collection-drop" attributes="post col">
+    <template>
+        <style>
+            polyfill-next-selector { content: '.card-header h2'; }
+            .card-header ::content h2 {
+                margin: 0;
+                font-size: 100%;
+                font-weight: 300;
+            }
+            core-icon-button {
+                position: absolute;
+                top: 2px;
+                right: 2px;
+                padding:2px;
+                color: #636363;
+            }
+            paper-dropdown-menu{
+                width: 100%;
+            }
+
+        </style>
+
+        <model-service posts="{{col}}">
+        </model-service>
+
+        <paper-dropdown-menu label="Choose">
+            <paper-dropdown class="dropdown">
+                <core-menu id="dropMenu"class="menu">
+
+                </core-menu>
+            </paper-dropdown>
+        </paper-dropdown-menu>
+
+    </template>
+
+
+    <script>
+        Polymer('collection-drop', {
+            ready: function() {
+            },
+            colChanged: function(oldVal, newVal){
+                var temp = '';
+                console.log(this.col);
+                for(var i = 0; i < newVal.length; i++){
+                    temp += '<paper-item on-click="{{handleClick}}">'+newVal[i].statistics+'</paper-item>';
+                }
+                this.$.dropMenu.innerHTML = temp;
+            },
+            handleClick: function(event, detail,sender){
+                console.log('hello');
+            }
+        });
+    </script>
+
+</polymer-element>

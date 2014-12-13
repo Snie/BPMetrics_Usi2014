@@ -20,6 +20,7 @@ function collectionStat(collection) {
                 if(result[metric_name] == undefined) {
                     result[metric_name] = {};
                     result[metric_name]["type"] = "SINGLE_VALUE";
+                    result[metric_name]["category"] = metrics[metric].category;
                     result[metric_name]["values"] = new Array();
                 }
                 result[metric_name]["values"].push(metric_value);
@@ -32,6 +33,7 @@ function collectionStat(collection) {
                         result[metric_name]["names"].push(element);
                     }
                     result[metric_name]["type"] = "TYPE_DISTRIBUTION";
+                    result[metric_name]["category"] = metrics[metric].category;
                 } else { // Assuming that the metrics with the same name and type "TYPE_DISTRIBUTION" have the same structure
                     for(var index = 0 ; index < metrics[metric].values.length ; index++) {
                         var alreadyexists = false;
@@ -51,37 +53,38 @@ function collectionStat(collection) {
                 var name_statistics1 = metric_name + "Statistics";
                 var name_statistics2 = metric_name + "DistributionStatistics";
                 var metric_statistic = {};
-                for(var i = 0; i < metrics.length; i++) {
-                    if(metrics[i].name === name_statistics1 || metrics[i].name === name_statistics2) {
+                for (var i = 0; i < metrics.length; i++) {
+                    if (metrics[i].name === name_statistics1 || metrics[i].name === name_statistics2) {
                         metric_statistic = metrics[i];
                     }
                 }
-                if(result[metric_name] == undefined) {
+                if (result[metric_name] == undefined) {
                     result[metric_name] = {};
                     result[metric_name]["type"] = "DISTRIBUTION";
+                    result[metric_name]["category"] = metrics[metric].category;
                     result[metric_name]["values"] = metrics[metric].values;
-                    if(!isEmpty(metric_statistic)) {
-                        for(var index = 0 ; index < metric_statistic.values.length ; index++) {
-                            if(metric_statistic.values[index].name == "Minimum") {
+                    if (!isEmpty(metric_statistic)) {
+                        for (var index = 0; index < metric_statistic.values.length; index++) {
+                            if (metric_statistic.values[index].name == "Minimum") {
                                 result[metric_name]["MINs"] = [metric_statistic.values[index].value];
-                            } else if(metric_statistic.values[index].name == "Maximum") {
+                            } else if (metric_statistic.values[index].name == "Maximum") {
                                 result[metric_name]["MAXs"] = [metric_statistic.values[index].value];
-                            } else if(metric_statistic.values[index].name == "Sum") {
+                            } else if (metric_statistic.values[index].name == "Sum") {
                                 result[metric_name]["SUMs"] = [metric_statistic.values[index].value];
                             }
                         }
                     }
                 } else {
-                    for(var index = 0 ; index < metrics[metric].values.length ; index++) {
+                    for (var index = 0; index < metrics[metric].values.length; index++) {
                         result[metric_name]["values"].push(metrics[metric].values[index]);
                     }
-                    if(!isEmpty(metric_statistic)) {
-                        for(var index = 0 ; index < metric_statistic.values.length ; index++) {
-                            if(metric_statistic.values[index].name == "Minimum") {
+                    if (!isEmpty(metric_statistic)) {
+                        for (var index = 0; index < metric_statistic.values.length; index++) {
+                            if (metric_statistic.values[index].name == "Minimum") {
                                 result[metric_name]["MINs"].push(metric_statistic.values[index].value);
-                            } else if(metric_statistic.values[index].name == "Maximum") {
+                            } else if (metric_statistic.values[index].name == "Maximum") {
                                 result[metric_name]["MAXs"].push(metric_statistic.values[index].value);
-                            } else if(metric_statistic.values[index].name == "Sum") {
+                            } else if (metric_statistic.values[index].name == "Sum") {
                                 result[metric_name]["SUMs"].push(metric_statistic.values[index].value);
                             }
                         }
@@ -95,6 +98,7 @@ function collectionStat(collection) {
         var res_metric = {};
         res_metric["metric_name"] = metric_name;
         res_metric["type"] = result[metric_name]["type"];
+        res_metric["category"] = result[metric_name]["category"];
         if(result[metric_name]["type"] == "SINGLE_VALUE") { // Metrics with type SINGLE_VALUE
             var values = result[metric_name]["values"];
             res_metric["values"] = values;
@@ -148,8 +152,6 @@ function accountStat(account_statistics, newCollection_statistics) {
         var stat = [];
         stat.push(account_statistics);
         stat.push(newCollection_statistics);
-        //console.log("Account stat");
-        //console.log(stat)
         return new_statistics(stat);
     }
 }
@@ -240,12 +242,11 @@ function new_statistics(stat) {
                 if(result[metric_name] == undefined) {
                     result[metric_name] = {};
                     result[metric_name]["type"] = "SINGLE_VALUE";
+                    result[metric_name]["category"] = statistic[index].category;
                     result[metric_name]["values"] = statistic[index].values;
                     result[metric_name]["mean"] = [statistic[index].mean];
                     result[metric_name]["range"] = [statistic[index].range];
                 } else {
-                    //console.log('Statistics values:');
-                    //console.log(statistic[index]);
                     for(var i = 0 ; i < statistic[index].values.length ; i++) {
                         result[metric_name]["values"].push(statistic[index].values[i]);
                     }
@@ -257,6 +258,7 @@ function new_statistics(stat) {
                 if(result[metric_name] == undefined) {
                     result[metric_name] = {};
                     result[metric_name]["type"] = "TYPE_DISTRIBUTION";
+                    result[metric_name]["category"] = statistic[index].category;
                     result[metric_name]["names"] = [];
                     for(var i = 0 ; i < statistic[index].names.length ; i++) {
                         var element = { 
@@ -294,6 +296,7 @@ function new_statistics(stat) {
                 if(result[metric_name] == undefined) {
                     result[metric_name] = {};
                     result[metric_name]["type"] = "DISTRIBUTION";
+                    result[metric_name]["category"] = statistic[index].category;
                     result[metric_name]["values"] = statistic[index].values;
                     if(statistic[index].minimum != undefined) {
                         result[metric_name]["MINs"] = [statistic[index].minimum];
@@ -324,6 +327,7 @@ function new_statistics(stat) {
         var res_metric = {};
         res_metric["metric_name"] = metric_name;
         res_metric["type"] = result[metric_name]["type"];
+        res_metric["category"] = result[metric_name].category;
         if(result[metric_name]["type"] == "SINGLE_VALUE") { // Metrics with type SINGLE_VALUE
             var values = result[metric_name]["values"];
             res_metric["values"] = values;

@@ -124,8 +124,10 @@ router.delete('/:id', function(req, res) {
             if(err )throw(err);
             if(!found) res.status(404).end();
             else {
-                found.user = null;
+                found.user = 'no';
+                console.log(found);
                 found.save(function (err, saved) {
+                    console.log(err);
                     if (err) res.status(400).end();
                     else {
                         res.status(204);

@@ -1,8 +1,12 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
+<link rel="import" href="collection-drop.html">
 <script src="../bower_components/chartjs/Chart.js"></script>
+
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<script src="../bower_components/jquery-1.11.1.min.js"></script>
+
 
 <polymer-element name="metric-card" attributes="post side oGraph">
     <template>
@@ -42,6 +46,12 @@
             #back{
                 display: none;
             }
+            paper-dropdown-menu{
+                width: 100%;
+            }
+            paper-item{
+                width: 100%;
+            }
 
         </style>
 
@@ -54,7 +64,7 @@
             <core-icon-button icon="settings" on-tap="{{settingsTapped}}"></core-icon-button>
 
 
-            <canvas class="cc" id="canvas" width="300" height="200"></canvas>
+            <canvas class="cc" id="canvas" width="250" height="200"></canvas>
 
         </div>
 
@@ -64,35 +74,21 @@
                 <paper-dropdown class="dropdown">
                     <core-menu class="menu">
                         <paper-item>Global</paper-item>
-                        <paper-item>Account</paper-item>
-                        <paper-item on-click{{chose}}>Collection</paper-item>
-                        <paper-item>Model</paper-item>
+                        <paper-item on-click="{{getGlobal}}">Account</paper-item>
+                        <!--<paper-item on-click="{{colChoose}}">Collection</paper-item>-->
                     </core-menu>
                 </paper-dropdown>
             </paper-dropdown-menu>
 
-            <paper-dropdown-menu label="Choose collection" style="display: none">
-                <paper-dropdown class="dropdown">
-                    <core-menu class="menu">
-                    </core-menu>
-                </paper-dropdown>
-            </paper-dropdown-menu>
+            <div id="selection">
 
-            <paper-dropdown-menu label="Choose moodel" style="display: none">
-                <paper-dropdown class="dropdown">
-                    <core-menu class="menu">
-
-                    </core-menu>
-                </paper-dropdown>
-            </paper-dropdown-menu>
-            <p>hello</p>
+            </div>
         </div>
 
     </template>
 
 
     <script>
-
         Polymer('metric-card', {
             ready: function() {
 //                if(this.post.value = []){
@@ -213,7 +209,6 @@
 
             },
             settingsTapped: function(event, detail, sender){
-                console.log(this.side);
                 if(!this.side){
                     this.$.front.style.display = 'block';
                     this.$.back.style.display = 'none';
@@ -224,6 +219,16 @@
                     this.$.back.style.display = 'block';
                     this.side = !this.side;
                 }
+            },
+            getGlobal: function(){
+
+            },
+
+            colChoose: function(){
+//                this.$.selection.innerHTML = '<collection-drop></collection-drop>';
+            },
+            modChoose: function(){
+
             }
         });
     </script>
