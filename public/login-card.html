@@ -84,7 +84,9 @@
                             document.querySelector('#login-card_message_401').show();
                         }
                     }
-                });
+                }).done(function(){
+                    window.location.replace('/files')
+                })
             },
             closeDown: function(){
                 document.getElementById('signUp').opened = false;
