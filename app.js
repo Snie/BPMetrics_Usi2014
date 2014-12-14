@@ -58,7 +58,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(session({ secret: 'keyboard cat' }));
+app.use(session({ secret: 'keyboard cat' , cookie: { maxAge: 60000 }}));
 app.use(passport.initialize());
 app.use(passport.session());
 
