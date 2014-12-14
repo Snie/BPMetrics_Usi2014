@@ -53,6 +53,9 @@
             paper-item{
                 width: 100%;
             }
+            table{
+                width: 100%;
+            }
 
         </style>
 
@@ -146,8 +149,10 @@
 
                     for(var i = 0; i < this.post.values.length; i++){
                         labels.push('value');
+                        labels.push('mean');
+                        labels.push('median');
                         datas.push(this.post.values[i].value);
-                        datas.push(this.statistic.values[i].value);
+                        datas.push(this.statistic.mean[0]);
                     }
 
                     data = {
@@ -155,16 +160,14 @@
                         datasets: [
                             {
                                 label: "First dataset",
-                                fillColor: "rgba(220,220,220,0.5)",
-                                strokeColor: "rgba(220,220,220,0.8)",
-                                highlightFill: "rgba(220,220,220,0.75)",
-                                highlightStroke: "rgba(220,220,220,1)",
+                                fillColor: "rgba(0,200,200,0.5)",
+                                strokeColor: "rgba(0,200,200,0.8)",
+                                highlightFill: "rgba(0,200,200,0.75)",
+                                highlightStroke: "rgba(0,200,200,1)",
                                 data: datas
                             }
                         ]
                     };
-
-
 
                     chartOpt = {
                         scaleOverride : true,

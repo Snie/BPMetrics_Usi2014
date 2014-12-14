@@ -1,7 +1,10 @@
-<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="./bower_components/polymer/polymer.html">
 <link rel="import" href="./service/post-service.html">
 <link rel="import" href="metric-card.html">
 <script src="bower_components/chartjs/Chart.js"></script>
+<link rel="import" href="./bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="./bower_components/paper-dropdown/paper-dropdown.html">
+<link rel="import" href="./bower_components/paper-item/paper-item.html">
 
 
 <polymer-element name="metric-list" attributes="tipo myID">
@@ -10,12 +13,26 @@
             :host {
                 display: block;
             }
+            paper-dropdown-menu{
+                margin: 0 52% 0 48%;
+            }
         </style>
 
         <post-service id='posts' posts="{{posts}}" colId="{{myID}}">
         </post-service>
 
-        <div horizontal layout center-justified wrap class="{{tipo}}">
+        <paper-dropdown-menu label="All">
+            <paper-dropdown class="dropdown">
+                <core-menu class="menu">
+                    <paper-item class="menu-item" id="ALL">All</paper-item>
+                    <paper-item class="menu-item" id="SINGLE_VALUE">Single Value</paper-item>
+                    <paper-item class="menu-item" id="DISTRIBUTION">Distribution</paper-item>
+                    <paper-item class="menu-item" id="TYPE_DISTRIBUTION">Type Distribution</paper-item>
+                </core-menu>
+            </paper-dropdown>
+        </paper-dropdown-menu>
+
+        <div id="list" horizontal layout center-justified wrap class="{{tipo}}">
             <template repeat="{{post in posts}}">
                     <metric-card
                             class="metric-ALL metric-{{post.type}}"
@@ -23,8 +40,6 @@
                             statistic="{{post | getStat}}">
                         <h2>{{post.name | fixString }}</h2>
                     </metric-card>
-
-
             </template>
         </div>
 
@@ -32,6 +47,13 @@
 
     <script>
         Polymer('metric-list', {
+//                $('.menu-item').on('click', function(){
+//                    var list = document.querySelector('metric-list');
+//                    list.tipo = this.id;
+//                });
+            menuChange: function(){
+
+            },
             tipoChanged: function(oldVal, newVal) {
 
                 var a = this.shadowRoot.querySelectorAll('metric-card.metric-ALL');
@@ -67,6 +89,10 @@
                 }
                 return string;
             }
+        });
+        this.$.menu-item.on('click', function(){
+            var list = document.querySelector('metric-list');
+            list.tipo = this.id;
         });
     </script>
 </polymer-element>

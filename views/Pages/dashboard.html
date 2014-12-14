@@ -58,8 +58,8 @@
         html,body {
             height: 100%;
             margin: 0;
-            background: url("../resources/pixelchristmasred.png");
-            /*background: #efefef;*/
+            /*background: url("../resources/pixelchristmasred.png");*/
+            background: #efefef;
             background-size: 50%;
             font-family: 'RobotoDraft', sans-serif;
         }
@@ -77,7 +77,7 @@
             -webkit-overflow-scrolling: touch;
         }
         core-toolbar{
-            background: #2E7D32;
+            background: #da4336;
             color: white;
         }
         #tabs {
@@ -134,9 +134,7 @@
 
     <div id="main" main>
         <core-header-panel>
-
             <core-toolbar>
-
                 <paper-tabs id="tabs" selected="home" noink="true" self-end>
                     <paper-tab id="home" name="home">Home</paper-tab>
                     <paper-tab name="start" id="user_name">User</paper-tab>
@@ -158,17 +156,6 @@
         <!--</core-overlay>-->
 
         <div id="container" layout vertical center>
-
-            <paper-dropdown-menu label="All">
-                <paper-dropdown class="dropdown">
-                    <core-menu class="menu">
-                        <paper-item class="menu-item" id="ALL">All</paper-item>
-                        <paper-item class="menu-item" id="SINGLE_VALUE">Single Value</paper-item>
-                        <paper-item class="menu-item" id="DISTRIBUTION">Distribution</paper-item>
-                        <paper-item class="menu-item" id="TYPE_DISTRIBUTION">Type Distribution</paper-item>
-                    </core-menu>
-                </paper-dropdown>
-            </paper-dropdown-menu>
 
             <div layout horizontal center>
                 <core-icon-button icon="menu" core-drawer-toggle></core-icon-button>
