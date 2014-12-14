@@ -82,7 +82,23 @@
                 document.getElementById('tabs').selected = 'home';
             },
             submitForm: function(){
-                this.$.form.submit();
+                var firstname = this.$.firstname.firstElementChild.value;
+                var lastname = this.$.lastname.firstElementChild.value;
+                var email = this.$.email.firstElementChild.value;
+                $.ajax({
+                    url: '/user',
+                    type: 'POST',
+                    data: { firstname: firstname, lastname: lastname, email: email },
+                    statusCode: {
+                        204: function() {
+                            alert("Your profile is changed!");
+                        },
+                        400: function() {
+                            alert("Bad request!");
+                        }
+                    }
+                });
+
             },
             changeImage: function(){
 //                console.log('bop');
