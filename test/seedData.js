@@ -11,7 +11,7 @@ var accounts = {
             "username": "anon",
             "firstname": "Anonymous",
             "lastname": "Anonymous",
-            "password": "anon",
+            "password": "anon12",
             "email": "email@usi.ch",
             "collection": [],
             "statistics": null

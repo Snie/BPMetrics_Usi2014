@@ -38,6 +38,8 @@
     <link rel="import"
           href="./bower_components/core-drawer-panel/core-drawer-panel.html">
     <link rel="import"
+          href="../bower_components/paper-toast/paper-toast.html">
+    <link rel="import"
           href="signup-card.html">
     <link rel="import"
           href="login-card.html">
@@ -78,6 +80,10 @@
             margin-top:50px;
             border-radius: 50%;
         }
+        paper-toast {
+            bottom: 40px;
+            left: 10px;
+        }
     </style>
 
 
@@ -105,6 +111,45 @@
     </div>
 
 </core-overlay>
+
+<!--Messages to the user-->
+<paper-toast id="signup-card_message_204" role="alert" text="New account created!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
+    <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
+</paper-toast>
+<paper-toast id="signup-card_message_400" role="alert" text="User name or email already used!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
+    <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
+</paper-toast>
+<paper-toast id="signup-card_1" role="alert" text="Please, insert your first name!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
+    <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
+</paper-toast>
+<paper-toast id="signup-card_2" role="alert" text="Please, insert your last name!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
+    <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
+</paper-toast>
+<paper-toast id="signup-card_3" role="alert" text="Please, insert your user name!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
+    <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
+</paper-toast>
+<paper-toast id="signup-card_4" role="alert" text="Please, insert your email!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
+    <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
+</paper-toast>
+<paper-toast id="signup-card_5" role="alert" text="The email is not valid!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
+    <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
+</paper-toast>
+<paper-toast id="signup-card_6" role="alert" text="Please, insert your password!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
+    <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
+</paper-toast>
+<paper-toast id="signup-card_7" role="alert" text="Please, repeat your password!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
+    <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
+</paper-toast>
+<paper-toast id="signup-card_8" role="alert" text="The repeat password is not the same as password!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
+    <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
+</paper-toast>
+<paper-toast id="signup-card_length" role="alert" text="The password should have at least 6 characters!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
+    <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
+</paper-toast>
+<paper-toast id="login-card_message_401" role="alert" text="User name or password wrong!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
+    <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
+</paper-toast>
+<!--Messages to the user-->
 
 
 <script>

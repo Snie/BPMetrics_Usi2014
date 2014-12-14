@@ -54,33 +54,29 @@
 
         <div layout vertical center>
             <form id="form" method="post" action="/signup">
-                <paper-input-decorator label="First Name">
+                <paper-input-decorator id="firstname" label="First Name">
                     <input name="firstname" />
                 </paper-input-decorator>
-                <paper-input-decorator label="Last Name">
+                <paper-input-decorator id="lastname" label="Last Name">
                     <input name="lastname"/>
                 </paper-input-decorator>
-                <paper-input-decorator label="UserName">
+                <paper-input-decorator id="username" label="UserName">
                     <input name="username"/>
                 </paper-input-decorator>
-                <paper-input-decorator label="email@email.com">
+                <paper-input-decorator id="email" label="email@email.com">
                     <input type="email" name="email"/>
                 </paper-input-decorator>
-                <paper-input-decorator label="Password">
+                <paper-input-decorator id="password" label="Password">
                     <input type="password" name="password"/>
                 </paper-input-decorator>
-                <paper-input-decorator label="Repeat Password">
+                <paper-input-decorator id="repeatPassword" label="Repeat Password">
                     <input type="password" name="repeatPassword"/>
                 </paper-input-decorator>
-                <input id="signUpSubmit" type="submit" style="display: none">
             </form>
             <paper-button raised on-click="{{submitForm}}">Submit</paper-button>
             <br>
             <p on-click="{{turnAround}}">Already have an account, login now!</p>
         </div>
-
-
-
 
     </template>
 
@@ -92,7 +88,48 @@
                 document.getElementById('tabs').selected = 'model';
             },
             submitForm: function(){
-                this.$.form.submit();
+                var firstname = this.$.firstname.firstElementChild.value;
+                var lastname = this.$.lastname.firstElementChild.value;
+                var username = this.$.username.firstElementChild.value;
+                var email = this.$.email.firstElementChild.value;
+                var password = this.$.password.firstElementChild.value;
+                var repeatPassword = this.$.repeatPassword.firstElementChild.value;
+                var pattern = new RegExp(/^(("[\w-+\s]+")|([\w-+]+(?:\.[\w-+]+)*)|("[\w-+\s]+")([\w-+]+(?:\.[\w-+]+)*))(@((?:[\w-+]+\.)*\w[\w-+]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][\d]\.|1[\d]{2}\.|[\d]{1,2}\.))((25[0-5]|2[0-4][\d]|1[\d]{2}|[\d]{1,2})\.){2}(25[0-5]|2[0-4][\d]|1[\d]{2}|[\d]{1,2})\]?$)/i);
+                if(firstname === "") {
+                    document.querySelector('#signup-card_1').show();
+                } else if(lastname === "") {
+                    document.querySelector('#signup-card_2').show();
+                } else if(username === "") {
+                    document.querySelector('#signup-card_3').show();
+                } else if(email === "") {
+                    document.querySelector('#signup-card_4').show();
+                } else if(!pattern.test(email)) {
+                    document.querySelector('#signup-card_5').show();
+                } else if(password === "") {
+                    document.querySelector('#signup-card_6').show();
+                } else if(password.length < 6) {
+                    document.querySelector('#signup-card_length').show();
+                } else if(repeatPassword === "") {
+                    document.querySelector('#signup-card_7').show();
+                } else if(password !== repeatPassword) {
+                    document.querySelector('#signup-card_8').show();
+                } else {
+                    $.ajax({
+                        url: '/signup',
+                        type: 'POST',
+                        data: { firstname: firstname, lastname: lastname, username: username, email: email, password: password },
+                        statusCode: {
+                            204: function() {
+                                document.querySelector('#signup-card_message_204').show();
+                                document.getElementById('frontForm').style.display = 'none';
+                                document.getElementById('backForm').style.display = 'block';
+                            },
+                            400: function() {
+                                document.querySelector('#signup-card_message_400').show();
+                            }
+                        }
+                    });
+                }
             },
             turnAround: function(){
                 document.getElementById('frontForm').style.display = 'none';

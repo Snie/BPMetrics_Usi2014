@@ -8,15 +8,16 @@ var fs = require("fs");
 var passport = require("passport");
 require("../passportConfig");
 
-
-
 require("../schemas/account");
 var account = mongoose.model("Account");
 
 router.get('/', function(req, res){
     res.render('./pages/login');
 });
-router.post("/",passport.authenticate('local', {successRedirect:'/files', failureRedirect: '/'}));
+router.post("/", passport.authenticate('local'),
+    function(req, res) {
+        res.redirect('/files');
+    });
 
 module.exports = router;
 

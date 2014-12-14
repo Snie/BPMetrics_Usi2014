@@ -47,6 +47,11 @@
             p:hover{
                 cursor: pointer;
             }
+            paper-toast {
+                bottom: 0;
+                left: 0;
+                width: 100%;
+            }
 
         </style>
         <core-icon-button id="closeButton" icon="clear" on-click="{{closeDown}}"></core-icon-button>
@@ -73,7 +78,6 @@
         </div>
     </template>
 
-
     <script>
 
         Polymer('user-card', {
@@ -85,20 +89,24 @@
                 var firstname = this.$.firstname.firstElementChild.value;
                 var lastname = this.$.lastname.firstElementChild.value;
                 var email = this.$.email.firstElementChild.value;
-                $.ajax({
-                    url: '/user',
-                    type: 'POST',
-                    data: { firstname: firstname, lastname: lastname, email: email },
-                    statusCode: {
-                        204: function() {
-                            alert("Your profile is changed!");
-                        },
-                        400: function() {
-                            alert("Bad request!");
+                var pattern = new RegExp(/^(("[\w-+\s]+")|([\w-+]+(?:\.[\w-+]+)*)|("[\w-+\s]+")([\w-+]+(?:\.[\w-+]+)*))(@((?:[\w-+]+\.)*\w[\w-+]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][\d]\.|1[\d]{2}\.|[\d]{1,2}\.))((25[0-5]|2[0-4][\d]|1[\d]{2}|[\d]{1,2})\.){2}(25[0-5]|2[0-4][\d]|1[\d]{2}|[\d]{1,2})\]?$)/i);
+                if(!pattern.test(email) && email !== "") {
+                    document.querySelector('user-card_1').show();
+                } else if(firstname || lastname || email) {
+                    $.ajax({
+                        url: '/user',
+                        type: 'POST',
+                        data: { firstname: firstname, lastname: lastname, email: email },
+                        statusCode: {
+                            204: function() {
+                                document.querySelector('#user-card_message_204').show();
+                            },
+                            400: function() {
+                                document.querySelector('#user-card_message_400').show();
+                            }
                         }
-                    }
-                });
-
+                    });
+                }
             },
             changeImage: function(){
 //                console.log('bop');

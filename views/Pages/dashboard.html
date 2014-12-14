@@ -42,6 +42,8 @@
     <link rel="import"
           href="../bower_components/core-drawer-panel/core-drawer-panel.html">
     <link rel="import"
+          href="../bower_components/paper-toast/paper-toast.html">
+    <link rel="import"
           href="password-card.html">
     <link rel="import"
           href="user-card.html">
@@ -117,6 +119,10 @@
         core-overlay{
             width: 500px;
         }
+        paper-toast {
+            bottom: 40px;
+            left: 10px;
+        }
     </style>
 
 
@@ -152,9 +158,38 @@
             </div>
         </core-overlay>
 
-        <!--<core-overlay autoCloseDisabled="false" id="signUp" backdrop="true">-->
-            <!--<password-card></password-card>-->
-        <!--</core-overlay>-->
+        <!--Messages to the user-->
+        <paper-toast id="user-card_message_204" role="alert" text="Your profile is changed!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
+            <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
+        </paper-toast>
+        <paper-toast id="user-card_message_400" role="alert" text="Bad request!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
+            <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
+        </paper-toast>
+        <paper-toast id="user-card_1" role="alert" text="The new email is not valid!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
+            <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
+        </paper-toast>
+        <paper-toast id="password-card_message_204" role="alert" text="Password changed!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
+            <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
+        </paper-toast>
+        <paper-toast id="password-card_message_400" role="alert" text="The current password is wrong!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
+            <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
+        </paper-toast>
+        <paper-toast id="password-card_1" role="alert" text="Please, insert the current password!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
+            <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
+        </paper-toast>
+        <paper-toast id="password-card_2" role="alert" text="The new password is empty!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
+            <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
+        </paper-toast>
+        <paper-toast id="password-card_3" role="alert" text="Please, repeat the new password!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
+            <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
+        </paper-toast>
+        <paper-toast id="password-card_4" role="alert" text="The repeat password is not the same as new password!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
+            <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
+        </paper-toast>
+        <paper-toast id="password-card_length" role="alert" text="The new password should have at least 6 characters!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
+            <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
+        </paper-toast>
+        <!--Messages to the user-->
 
         <div id="container" layout vertical center>
 

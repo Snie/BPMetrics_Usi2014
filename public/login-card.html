@@ -54,10 +54,10 @@
 
     <div layout vertical center>
         <form id="form" method="post" action="/login" >
-            <paper-input-decorator label="User Name">
+            <paper-input-decorator id="username" label="User Name">
                 <input name="username"/>
             </paper-input-decorator>
-            <paper-input-decorator label="Password">
+            <paper-input-decorator id="password" label="Password">
                 <input type="password" name="password" />
             </paper-input-decorator>
                 <br>
@@ -74,7 +74,21 @@
     <script>
         Polymer('login-card', {
             submitForm: function(){
-                this.$.form.submit();
+                var username = this.$.username.firstElementChild.value;
+                var password = this.$.password.firstElementChild.value;
+                $.ajax({
+                    url: '/login',
+                    type: 'POST',
+                    data: { username: username, password: password },
+                    statusCode: {
+                        400: function() {
+                            document.querySelector('#login-card_message_401').show();
+                        },
+                        401: function() {
+                            document.querySelector('#login-card_message_401').show();
+                        }
+                    }
+                });
             },
             closeDown: function(){
                 document.getElementById('signUp').opened = false;
