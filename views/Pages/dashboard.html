@@ -43,6 +43,8 @@
           href="../bower_components/core-drawer-panel/core-drawer-panel.html">
     <link rel="import"
           href="user-card.html">
+    <link rel="import"
+          href="./service/global-service.html">
 
 
 
@@ -118,6 +120,8 @@
 
 <body unresolved>
 
+<global-service id="AccountStatistics" posts="{{posts}}"></global-service>
+
 <core-drawer-panel responsiveWidth="10000000px" drawerWidth="300px">
 
     <div id="sidebar" drawer>
@@ -166,7 +170,7 @@
 
             <div id="list">
                 <!--<global-list tipo='ALL'></global-list>-->
-                <metric-list tipo='ALL' myID="fca0baf1ccd54493980667f406e16252"></metric-list>
+                <!--<metric-list tipo='ALL' myID="fca0baf1ccd54493980667f406e16252"></metric-list>-->
             </div>
 
 
