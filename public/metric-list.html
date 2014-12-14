@@ -24,10 +24,10 @@
         <paper-dropdown-menu label="All">
             <paper-dropdown class="dropdown">
                 <core-menu class="menu">
-                    <paper-item class="menu-item" id="ALL">All</paper-item>
-                    <paper-item class="menu-item" id="SINGLE_VALUE">Single Value</paper-item>
-                    <paper-item class="menu-item" id="DISTRIBUTION">Distribution</paper-item>
-                    <paper-item class="menu-item" id="TYPE_DISTRIBUTION">Type Distribution</paper-item>
+                    <paper-item on-click="{{menuChange}}" class="menu-item" id="ALL">All</paper-item>
+                    <paper-item on-click="{{menuChange}}" id="SINGLE_VALUE">Single Value</paper-item>
+                    <paper-item on-click="{{menuChange}}" id="DISTRIBUTION">Distribution</paper-item>
+                    <paper-item on-click="{{menuChange}}" id="TYPE_DISTRIBUTION">Type Distribution</paper-item>
                 </core-menu>
             </paper-dropdown>
         </paper-dropdown-menu>
@@ -47,12 +47,12 @@
 
     <script>
         Polymer('metric-list', {
-//                $('.menu-item').on('click', function(){
-//                    var list = document.querySelector('metric-list');
-//                    list.tipo = this.id;
-//                });
-            menuChange: function(){
-
+            ready: function(){
+                this.tipo = 'ALL'
+            },
+            menuChange: function(event, detail, sender){
+                this.tipo = sender.id;
+                console.log(this.tipo)
             },
             tipoChanged: function(oldVal, newVal) {
 
@@ -89,10 +89,6 @@
                 }
                 return string;
             }
-        });
-        this.$.menu-item.on('click', function(){
-            var list = document.querySelector('metric-list');
-            list.tipo = this.id;
         });
     </script>
 </polymer-element>
