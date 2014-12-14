@@ -13,7 +13,6 @@
         <style>
             :host {
                 /*box-shadow: 0 0 1px #000000;*/
-                border-bottom: 2px solid #da4336;
                 border-radius: 3px;
                 display: block;
                 position: relative;
@@ -105,11 +104,6 @@
                 this.side = true;
                 var t = this.$.canvas;
 
-                this.$.back.style.borderBottom = "solid 2px #000000"
-
-                console.log(this.$.back.style);
-
-
                 var ctx = t.getContext("2d");
 
                 var labels = [];
@@ -152,6 +146,10 @@
                     myBarChart = new Chart(ctx).Bar(data, chartOpt);
                 }
                 else if(this.post.type == 'SINGLE_VALUE'){
+
+                    if(this.post.values[0].value == 0) {
+                        this.style.borderBottom = "solid 4px #da4336";
+                    }
 
                     for(var i = 0; i < this.post.values.length; i++){
                         labels.push('value');
