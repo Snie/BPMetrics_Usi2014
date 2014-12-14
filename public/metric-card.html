@@ -8,7 +8,7 @@
 <script src="../bower_components/jquery-1.11.1.min.js"></script>
 
 
-<polymer-element name="metric-card" attributes="post side oGraph">
+<polymer-element name="metric-card" attributes="post side oGraph statistic">
     <template>
         <style>
             :host {
@@ -18,16 +18,17 @@
                 position: relative;
                 background-color: white;
                 padding: 20px;
-                width: 275px;
-                height: 275px;
-                font-size: 1.2rem;
+                font-size: 0.7rem;
                 font-weight: 300;
+                width: 300px;
+                height: 300px;
+
                 margin:10px;
             }
             polyfill-next-selector { content: '.card-header h2'; }
             .card-header ::content h2 {
                 margin: 0;
-                font-size: 100%;
+                font-size: 1.2rem;
                 font-weight: 300;
             }
             core-icon-button {
@@ -64,7 +65,10 @@
             <core-icon-button icon="settings" on-tap="{{settingsTapped}}"></core-icon-button>
 
 
-            <canvas class="cc" id="canvas" width="250" height="200"></canvas>
+            <canvas class="cc" id="canvas" width="300" height="200"></canvas>
+
+            <div id="table">
+            </div>
 
         </div>
 
@@ -103,7 +107,6 @@
                 var datas = [];
                 var chartOpt = {};
                 var data = {};
-
 
                 if(this.post.type == 'DISTRIBUTION'){
 
@@ -144,6 +147,7 @@
                     for(var i = 0; i < this.post.values.length; i++){
                         labels.push('value');
                         datas.push(this.post.values[i].value);
+                        datas.push(this.statistic.values[i].value);
                     }
 
                     data = {
@@ -170,6 +174,8 @@
                     };
 
                     var myBarChart = new Chart(ctx).Bar(data, chartOpt);
+
+                    this.$.table.innerHTML = "<table><tr><td>Variance</td><td>"+this.statistic.variance+"</td></tr><tr><td>Standard Deviation</td><td>"+this.statistic.standard_deviation+"</td></tr><tr><td>Range</td><td>"+this.statistic.range+"</td></tr></table>"
                 }
                 else if(this.post.type == 'TYPE_DISTRIBUTION'){
 
@@ -179,7 +185,7 @@
                     }
 
                     data = {
-                        labels: labels,
+                        labels: [labels],
                         datasets: [
                             {
                                 label: "First dataset",

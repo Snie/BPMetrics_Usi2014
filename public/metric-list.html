@@ -19,7 +19,8 @@
             <template repeat="{{post in posts}}">
                     <metric-card
                             class="metric-ALL metric-{{post.type}}"
-                            post="{{post}}">
+                            post="{{post}}"
+                            statistic="{{post | getStat}}">
                         <h2>{{post.name | fixString }}</h2>
                     </metric-card>
 
@@ -48,6 +49,15 @@
 
                     e.style.display = 'inline';
                 }
+            },
+            getStat: function(post) {
+                statistic = document.getElementById('AccountStatistics').posts
+                for(var i=0; i < statistic.length; i++){;
+                    if(statistic[i].metric_name == post.name){
+                        return statistic[i];
+                    }
+                }
+
             },
             fixString : function(string){
                 var temp = string.match(/[A-Z][a-z]+/g);
