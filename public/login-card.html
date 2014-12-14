@@ -23,7 +23,6 @@
                 font-weight: 300;
             }
             paper-button{
-
                 background: white;
             }
             core-icon-button {
@@ -41,32 +40,29 @@
                 -moz-user-select: none;
                 -ms-user-select: none;
                 user-select: none;
-
-
             }
             p:hover{
                 cursor: pointer;
             }
-
         </style>
 
-    <core-icon-button id="closeButton" icon="clear" on-click="{{closeDown}}"></core-icon-button>
+        <core-icon-button id="closeButton" icon="clear" on-click="{{closeDown}}"></core-icon-button>
 
-    <div layout vertical center>
-        <form id="form" method="post" action="/login" >
-            <paper-input-decorator id="username" label="User Name">
-                <input name="username"/>
-            </paper-input-decorator>
-            <paper-input-decorator id="password" label="Password">
-                <input type="password" name="password" />
-            </paper-input-decorator>
+        <div layout vertical center>
+            <form id="form" method="post" action="/login" >
+                <paper-input-decorator id="username" label="User Name">
+                    <input name="username"/>
+                </paper-input-decorator>
+                <paper-input-decorator id="password" label="Password">
+                    <input type="password" name="password" />
+                </paper-input-decorator>
                 <br>
-            <input id="loginSubmit" type="submit" style="display: none">
-        </form>
-        <paper-button raised on-click="{{submitForm}}">Submit</paper-button>
-        <br>
-        <p on-click="{{turnAround}}">Don't have an account, sign up now!</p>
-    </div>
+                <input id="loginSubmit" type="submit" style="display: none">
+            </form>
+            <paper-button raised on-click="{{submitForm}}">Submit</paper-button>
+            <br>
+            <p on-click="{{turnAround}}">Don't have an account, sign up now!</p>
+        </div>
 
     </template>
 
@@ -99,7 +95,6 @@
                 document.getElementById('backForm').style.display = 'none';
             }
         });
-
     </script>
 
 </polymer-element>

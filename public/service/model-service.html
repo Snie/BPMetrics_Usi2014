@@ -17,13 +17,13 @@
         </core-ajax>
     </template>
     <script>
-            Polymer('model-service', {
-                created: function() {
-                    this.posts = [];
-                },
-                handleResponse: function() {
-                    this.posts = this.$.ajax.response;
-                }
-            });
-        </script>
+        Polymer('model-service', {
+            created: function() {
+                this.posts = [];
+            },
+            handleResponse: function() {
+                this.posts = this.$.ajax.response;
+            }
+        });
+    </script>
 </polymer-element>

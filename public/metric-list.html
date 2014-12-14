@@ -1,5 +1,7 @@
 <link rel="import" href="./bower_components/polymer/polymer.html">
+<link rel="import" href="./service/post-model-service.html">
 <link rel="import" href="./service/post-service.html">
+
 <link rel="import" href="metric-card.html">
 <script src="bower_components/chartjs/Chart.js"></script>
 <link rel="import" href="./bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
@@ -18,8 +20,11 @@
             }
         </style>
 
-        <post-service id='posts' posts="{{posts}}" colId="{{myID}}">
-        </post-service>
+        <post-model-service id='posts' posts="{{posts}}" modelId="{{myID}}">
+        </post-model-service>
+        <!--<post-model-service id='posts' posts="{{posts}}" colId="{{myID}}">-->
+        <!--</post-model-service>-->
+
 
         <paper-dropdown-menu label="All">
             <paper-dropdown class="dropdown">
@@ -52,7 +57,6 @@
             },
             menuChange: function(event, detail, sender){
                 this.tipo = sender.id;
-                console.log(this.tipo)
             },
             tipoChanged: function(oldVal, newVal) {
 
@@ -73,7 +77,7 @@
                 }
             },
             getStat: function(post) {
-                statistic = document.getElementById('AccountStatistics').posts
+                statistic = document.getElementById('Statistics').posts
                 for(var i=0; i < statistic.length; i++){;
                     if(statistic[i].metric_name == post.name){
                         return statistic[i];
