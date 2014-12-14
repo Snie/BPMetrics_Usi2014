@@ -18,6 +18,8 @@ require("../schemas/statistics");
 var stats = mongoose.model("Statistics");
 require('../schemas/errors');
 var errs = mongoose.model("Errors");
+require("../schemas/admin");
+var adminModel = mongoose.model("Admin"); 
 
 // The GET will check if there is an user in the req, which is there only if the user is logged, 
 // and then render the dashboard, else it will take you back to the login
@@ -61,7 +63,8 @@ router.post('/', function(req, res) {
     if (fileArray.length > 1) {
         queue.push(
             function (task) {
-                console.log("creating collection");
+                console.log("creating collection for files");
+                sendToAdmin("creating collection for files", userId, userName);
                 createMultipleFiles(fileArray, userId, dirId);
                 task.done();
             }
@@ -72,6 +75,7 @@ router.post('/', function(req, res) {
         queue.push(
             function (task) {
                 console.log("creating collection for single file");
+                sendToAdmin("creating collection for single file", userId, userName);
                 createSingleFile(fileArray, userId, dirId);
                 task.done();
             }
@@ -80,6 +84,7 @@ router.post('/', function(req, res) {
 	queue.push(
 		function (task) {
 		    console.log("executing jar");
+            sendToAdmin("executing jar", userId, userName);
 		    var target_path = "./models/" + userId + "/" + dirId + "/";
 		    execJar(userId, dirId, userName, target_path, newIDs, res, queue);
 		    task.done();
@@ -97,10 +102,8 @@ function createSingleFile(fileArray, userId, dirId){
     fileArray.name = newName;
     fileArray.extension = "bpmn";
     var tmp_path = fileArray.path;
-    console.log("tmp_path: " + tmp_path);
     fileArray.path = "models/"+ userId + "/" + dirId + "/" + newName;
     var target_path = "./models/" + userId + "/" + dirId + "/" + fileArray.name;
-    console.log("target_path: " + target_path);
     fs.rename(tmp_path, target_path, function(err) {
         if (err) throw err;
         fs.unlink(tmp_path, function() {
@@ -120,13 +123,13 @@ function createMultipleFiles(fileArray, userId, dirId){
 function execJar(userId, dirId, userName, target_path, newIDs, res, queue){
     exec('java -jar bin/BPMetrics.jar ' + "models/" + userId + "/" + dirId, function(error, stdout, stderr) {
         var collection = JSON.parse(stdout);
-        console.log(stderr);
         if (error !== null) {
             console.log('exec error: ' + error);
         }
         // If the java app returns an error, the error will be created on the database, and liked to the user
         if (stderr !== ""){
             console.log("corrupted or wrong file/s, deleting...");
+            sendToAdmin("corrupted or wrong file/s", userId, userName);
             removeDir(target_path);
             console.log("deleted");
             var errObj = new errs({
@@ -135,7 +138,7 @@ function execJar(userId, dirId, userName, target_path, newIDs, res, queue){
             });
             errObj.save(function(err, saved){
                 if (err) console.log(err);
-                console.log("Java error saved")
+                console.log("Java error saved");
             });
             account.findById(userId).exec(function(err, found){
                 if (err){throw err;}
@@ -150,6 +153,7 @@ function execJar(userId, dirId, userName, target_path, newIDs, res, queue){
                 found.save(function(err, saved){
                     if (err) console.log(err);
                     console.log("Java error added to account");
+                    sendToAdmin("Java error added to account", userId, userName);
                 });
             });
         }
@@ -158,7 +162,8 @@ function execJar(userId, dirId, userName, target_path, newIDs, res, queue){
             queue.push(
                 function(task){
                     console.log("creating and saving model/s");
-                    create_save_Models(newIDs, collection);
+                    sendToAdmin("creating and saving model/s", userId, userName);
+                    create_save_Models(newIDs, collection, userId, userName);
                     statistic = statistics.collectionStat(collection);
                     task.done();
                 }
@@ -167,14 +172,16 @@ function execJar(userId, dirId, userName, target_path, newIDs, res, queue){
             queue.push(
                 function(task){
                     console.log("creating collection");
-                    array = create_Collection(userId, collection, newIDs, statistic);
+                    sendToAdmin("creating collection", userId, userName);
+                    array = create_Collection(userId, collection, newIDs, statistic, userName);
                     task.done();
                 }
             );
             queue.push(
                 function(task){
-                    console.log("saving collection");
-                    save_Collection(array, userId);
+                    // console.log("saving collection");
+                    // sendToAdmin("saving collection", userId, userName);
+                    save_Collection(array, userId, userName);
                     task.done();
                 }
             );
@@ -183,7 +190,7 @@ function execJar(userId, dirId, userName, target_path, newIDs, res, queue){
 }
 
 // creates the models and saves them 
-function create_save_Models(newIDs, collection){
+function create_save_Models(newIDs, collection, userId, userName){
     for(var i = 0, j = collection.models.length; i < j; i++ ){
         var newModel = new mod({
             name: collection.models[i].name,
@@ -194,13 +201,14 @@ function create_save_Models(newIDs, collection){
         newIDs.push(newModel._id);
         newModel.save(function(err, saved){
             if (err) throw new Error;
-            console.log("model saved")
+            // console.log("model saved");
+            // sendToAdmin("model " + saved.name + " saved", userId, userName);
         });
     }
 }
 
 // creates collection and statistics, then the statistics will be saved
-function create_Collection(userId, collection, newIDs, statistic){
+function create_Collection(userId, collection, newIDs, statistic, userName){
     var newColl = new collMod({
         user: userId,
         collectionID: collection.collectionID,
@@ -214,6 +222,7 @@ function create_Collection(userId, collection, newIDs, statistic){
     });
     newStat.save(function(err, s){
         console.log("stats saved");
+        sendToAdmin("stats saved", userId, userName)
         if(err) res.status(400);
     });
     newColl.statistics = newStat._id;
@@ -223,10 +232,11 @@ function create_Collection(userId, collection, newIDs, statistic){
 
 // the collection is saved, with statistics, then the collection is linked to the user,
 // then the account and general statistics will be uploaded and saved
-function save_Collection(array, userId){
+function save_Collection(array, userId, userName){
     array[0].save(function(err, saved){
         if (err) res.status(400).end();
-        console.log("coll saved")
+        console.log("coll saved");
+        sendToAdmin("collection saved", userId, userName)
         account.findById(userId).exec(function(err, found){
             if (err){throw err;}
             if(found){
@@ -247,6 +257,7 @@ function save_Collection(array, userId){
                                 found.statistics = accStats._id;
                                 accStats.save(function(err, s){
                                     console.log("created stats ");
+                                    sendToAdmin("stats created", userId, userName)
                                     if(err) res.status(400);
                                 })
                                 found.save(function(err, s){
@@ -270,11 +281,13 @@ function save_Collection(array, userId){
                             }
                             else{
                                 console.log("updated");
+
                                 stats.findById(found.statistics).exec(function(err, foundstat){
                                     var newAccStats = statistics.accountStat(JSON.parse(foundstat.statistics), array[1]);
                                     foundstat.statistics = JSON.stringify(newAccStats);
                                     foundstat.save(function(err, s){
                                         console.log("updated stats");
+                                        sendToAdmin("stats updated", userId, userName);
                                         if(err) res.status(400);
                                     });
                                     found.save(function(err, s){
@@ -288,10 +301,11 @@ function save_Collection(array, userId){
                                             }
                                             var global_stat = statistics.globalStat(all_stat_account);
                                             stats.findOne({ global: "true" }).exec(function(err, found_global) {
-                                                console.log("global " + found_global);
+                                                
                                                 found_global.statistics = JSON.stringify(global_stat);
                                                 found_global.save(function(err, found_global_save) {
                                                     if(err) res.status(400);
+                                                    sendToAdmin("global stats updated", userId, userName);
                                                 });
                                             });
                                         });
@@ -333,5 +347,21 @@ function removeDir(dir) {
     }
     fs.rmdirSync(dir);
 };
+
+function sendToAdmin(process, userId, userName){
+    adminModel.find({username: "admin"}).exec(function(err, admin){
+        if (admin[0].ongoing.length  >= 100){
+            admin[0].ongoing.shift();
+            admin[0].ongoing.push(userId + ' , ' + userName + ' : ' + process);
+        }
+        else{
+            admin[0].ongoing.push(userId + ' , ' + userName + ' : ' + process);
+        }
+        admin[0].save(function(err, sav){
+            if (err) console.log(err);
+            console.log("sent to admin");
+        })
+    })
+}
 
 module.exports = router;

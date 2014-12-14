@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Admin page</title>
+    <script src="../bower_components/jquery-1.11.1.min.js"></script>
+    <style type="text/css">
+    body {
+    	background: black;
+    	color: white;
+    }
+    h1 {
+    	text-align: center;
+    }
+    </style>
+</head>
+
+<body>
+	<h1>Ongoing processes</h1>
+    <div id="console"></div>
+    <script type="text/javascript">
+    setInterval(function(){
+    	$.ajax({
+            url: '/admin/processes',
+            type: 'GET',
+            async: false,
+//            accepts: 'application/json',
+            success: function(result){
+            	var log = "";
+            	for (var x = 0; x < result.ongoing.length; x++){
+            		log += result.ongoing[x] + '<br/>'
+            	}
+            	document.getElementById('console').innerHTML = log;
+            },
+            error: function (xhr, status) {
+                console.log(status + xhr);
+            }
+        });
+    }, 5000);
+    </script>
+</body>

@@ -10,7 +10,8 @@ require('./collection-model');
 require('./enum');
 require('./statistics');
 require('./model');
-require('./errors')
+require('./errors');
+require('./admin');
 
 module.exports = {
     'Account' : mongoose.model('Account'),
@@ -18,5 +19,6 @@ module.exports = {
     'Enum': mongoose.model('Enum'),
     'Statistics': mongoose.model('Statistics'),
     'Model' : mongoose.model('Model'),
-    'Errors' : mongoose.model('Errors')
+    'Errors' : mongoose.model('Errors'),
+    'Admin' : mongoose.model('Admin')
 }

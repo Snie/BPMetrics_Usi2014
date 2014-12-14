@@ -41,9 +41,19 @@ var global_statistis = {
     ]
 }
 
+var admin = {
+    name: 'Admin',
+    data: [{
+        "_id": ObjectId(),
+        "username" : "admin",
+        "ongoing" : []
+    }]
+}
+
 var seedData = [];
 seedData.push(accounts);
 seedData.push(metric_enum);
 seedData.push(global_statistis);
+seedData.push(admin);
 
 module.exports = seedData;
