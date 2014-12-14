@@ -196,7 +196,7 @@ function create_save_Models(newIDs, collection, userId, userName){
             name: collection.models[i].name,
             modelID: collection.models[i].modelID,
             path: collection.models[i].path,
-            metrics: JSON.stringify(collection.models[i].metrics) //to be parsed to be used as JSON
+            metrics: metrics_distributions(collection.models[i].metrics) //to be parsed to be used as JSON
         });
         newIDs.push(newModel._id);
         newModel.save(function(err, saved){
@@ -362,6 +362,40 @@ function sendToAdmin(process, userId, userName){
             console.log("sent to admin");
         })
     })
+}
+
+function metrics_distributions(metrics) {
+    var result = [];
+    for(var index = 0 ; index < metrics.length ; index++ ) {
+        if(metrics[index].type === "DISTRIBUTION") {
+            var res = {};
+            var metric_name = metrics[index].name;
+            res["name"] = metric_name;
+            res["category"] = metrics[index].category;
+            res["type"] = metrics[index].type;
+            res["values"] = metrics[index].values;
+            var name_statistics1 = metric_name + "Statistics";
+            var name_statistics2 = metric_name + "DistributionStatistics";
+            for (var i = 0; i < metrics.length; i++) {
+                if (metrics[i].name === name_statistics1 || metrics[i].name === name_statistics2) {
+                    for(var k = 0 ; k < metrics[i].values.length ; k++) {
+                        if(metrics[i].values[k]["name"] == "Minimum") {
+                            res["minimum"] = metrics[i].values[k]["value"];
+                        } else if(metrics[i].values[k]["name"] == "Maximum") {
+                            res["maximum"] = metrics[i].values[k]["value"];
+                        } else if(metrics[i].values[k]["name"] == "Sum") {
+                            res["sum"] = metrics[i].values[k]["value"];
+                        }
+                    }
+                    break;
+                }
+            }
+            result.push(res);
+        } else {
+            result.push(metrics[index]);
+        }
+    }
+    return JSON.stringify(result);
 }
 
 module.exports = router;

@@ -76,21 +76,17 @@
             return JSON.stringify(string);
         },
         exterminate: function(){
-            console.log(this.post.collectionID);
             var xhr = new XMLHttpRequest();
             xhr.open("DELETE", "/models/"+this.post._id, true);
             xhr.send();
             this.deleted = true;
         },
         onClick: function(event, detail,sender){
-            console.log(this.post);
             if(this.post.models.length <= 1) {
-                console.log(this.post.models[0]._id);
                 document.getElementById('list').innerHTML = "<metric-list tipo='ALL' myID='" + this.post.models[0]._id + "'></metric-list>";
             }
             else{
                 document.getElementById('list').innerHTML = "<statistic-list tipo='ALL' myID='" + this.post.statistics + "'></statistic-list>";
-                console.log('hello');
             }
         }
     });
