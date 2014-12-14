@@ -19,6 +19,7 @@ router.post("/", function(req,res){
             account.findOne({email: req.body.email}, function(err, found2) {
                 if (err){throw err;}
                 if(found2) res.send("Email already in use");
+                else if(req.body.password !== req.body.repeatPassword) res.send('password mismatch');
                 else {
                     var newAccount = new account({
                         username: req.body.username,
@@ -31,7 +32,7 @@ router.post("/", function(req,res){
                     newAccount.save(function (err, saved) {
                         if (err) res.status(400).end();
                     });
-                    res.render("./pages/login");
+                    res.render("./pages/index");
                 }
             });
 

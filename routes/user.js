@@ -14,7 +14,7 @@ router.get('/', function(req,res){
     if(req.user){
         res.send(req.user);
     }
-    else res.render('./Pages/login');
+    else res.render('./pages/dashboard');
 });
 
 router.post('/', function(req, res){
@@ -30,18 +30,18 @@ router.post('/', function(req, res){
                 found.save(function(err, saved){
                     if (err) res.status(400).end();
                     else {
-                        res.render('./Pages/dashboard')
+                        res.render('./pages/dashboard');
                     }
                 });
             }
         })
     }
     else {
-        res.render('./Pages/login')
+        res.render('./pages/login')
     }
 });
 
-router.put('/password', function(req, res){
+router.post('/password', function(req, res){
     if(req.user) {
         account.findById(req.user._id, function(err, found){
             if(err) throw err;
@@ -56,8 +56,9 @@ router.put('/password', function(req, res){
                             found.save(function(err, saved){
                                 if (err) res.status(400).end();
                                 else {
-                                    res.status(204);
-                                    res.send(saved)
+                                    res.render('./pages/dashboard');
+//                                    res.status(204);
+//                                    res.send(saved)
                                 }
                             });
                         }

@@ -1,12 +1,10 @@
-/**
- * Created by Snie on 27.11.14.
- */
+
+
 var express = require('express');
 var router = express.Router();
 var fs = require('fs');
 var mongoose = require('mongoose');
 var exec = require('child_process').exec;
-// var userId = mongoose.Types.ObjectId('547c3957314389ce9f9edb59');
 var path = require("path");
 require("../schemas/collection-model");
 var collMod = mongoose.model("CollectionModel");
@@ -20,8 +18,11 @@ require("../schemas/statistics");
 var stats = mongoose.model("Statistics");
 require('../schemas/errors');
 var errs = mongoose.model("Errors");
+require("../schemas/admin");
+var adminModel = mongoose.model("Admin"); 
 
-/* GET home page. */
+// The GET will check if there is an user in the req, which is there only if the user is logged, 
+// and then render the dashboard, else it will take you back to the login
 router.get('/', function(req, res) {
     if(req.user) {
         var userId = req.user._id;
@@ -34,10 +35,12 @@ router.get('/', function(req, res) {
         }
         res.render('./pages/dashboard', { username: userName });
     }
-    else res.redirect('/login');
+    else{
+        res.render('./pages/index');
+    }
 });
 
-
+//This function creates random ids
 function createGuid(){
     return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
         var r = Math.random()*16|0, v = c === 'x' ? r : (r&0x3|0x8);
@@ -53,23 +56,16 @@ router.post('/', function(req, res) {
     //create unique folder for collection (dir name = collection id)
     var dirId = createGuid();
     fs.mkdir("./models/" + userId + "/" + dirId);
+    //start the queue
     var queue = seqqueue.createQueue(1000);
-    console.log(queue);
     var newIDs = [];
     //multiple models
     if (fileArray.length > 1) {
         queue.push(
             function (task) {
-                console.log("creating collection");
+                console.log("creating collection for files");
+                sendToAdmin("creating collection for files", userId, userName);
                 createMultipleFiles(fileArray, userId, dirId);
-                task.done();
-            }
-        );
-        queue.push(
-            function (task) {
-                console.log("executing jar for collection");
-                var target_path = "./models/" + userId + "/" + dirId + "/";
-                execMultipleJar(userId, dirId, userName, target_path, newIDs, res, queue);
                 task.done();
             }
         );
@@ -79,109 +75,27 @@ router.post('/', function(req, res) {
         queue.push(
             function (task) {
                 console.log("creating collection for single file");
+                sendToAdmin("creating collection for single file", userId, userName);
                 createSingleFile(fileArray, userId, dirId);
                 task.done();
             }
         );
-        queue.push(
-            function (task) {
-                console.log("executing jar for single file");
-                var target_path = "./models/" + userId + "/" + dirId + "/";
-                execSingleJar(userId, dirId, userName, res, target_path, newIDs, queue);
-                task.done();
-            }
-        );
     }
+	queue.push(
+		function (task) {
+		    console.log("executing jar");
+            sendToAdmin("executing jar", userId, userName);
+		    var target_path = "./models/" + userId + "/" + dirId + "/";
+		    execJar(userId, dirId, userName, target_path, newIDs, res, queue);
+		    task.done();
+		}
+	);
     var response = {"id" : dirId};
     res.send(response);
 });
 
-
-//multiple model functions
-
-function createMultipleFiles(fileArray, userId, dirId){
-    for (var x = 0; x < fileArray.length; x++){
-        createSingleFile(fileArray[x], userId, dirId);
-    }
-}
-
-function execMultipleJar(userId, dirId, userName, target_path, newIDs, res, queue){
-    exec('java -jar bin/BPMetrics.jar ' + "models/" + userId + "/" + dirId, function(error, stdout, stderr) {
-        var collection = JSON.parse(stdout);
-        console.log(stderr);
-        if (error !== null) {
-            console.log('exec error: ' + error);
-        }
-        if (stderr !== ""){
-            console.log("corrupted or wrong file, deleting...");
-            removeDir(target_path);
-            console.log("deleted");
-            var errObj = new errs({
-                collectionID: collection.collectionID,
-                error: stderr
-            });
-            errObj.save(function(err, saved){
-                if (err) console.log(err);
-                console.log("Java error saved")
-            });
-            account.findById(userId).exec(function(err, found){
-                if (err){throw err;}
-                var acc_errs = found.errs;
-                if (acc_errs !== undefined){
-                    acc_errs.push(errObj._id);
-                }
-                else {
-                    acc_errs = [errObj._id];
-                }
-                found.errs = acc_errs;
-                found.save(function(err, saved){
-                    if (err) console.log(err);
-                    console.log("Java error added to account");
-                });
-            });
-        }
-        else {
-            var statistic;
-            queue.push(
-                function(task){
-                    console.log("creating and saving models");
-                    create_save_Models(newIDs, collection);
-                    statistic = statistics.collectionStat(collection);
-                    task.done();
-                }
-            );
-            var array;
-            queue.push(
-                function(task){
-                    console.log("creating collection");
-                    array = create_Collection(userId, collection, newIDs, statistic);
-                    task.done();
-                }
-            );
-            queue.push(
-                function(task){
-                    console.log("saving collection");
-                    save_Collection(array, userId);
-                    task.done();
-                }
-            );
-            queue.push(
-                function(task){
-                    console.log("creating charts");
-                    //account.findById(userId, function(err, found){
-                    //    //var accstats = JSON.parse(found.statistics);
-                    //    //res.render("./pages/dashboard", { username: userName });
-                    //});
-                    task.done();
-                }
-            );
-
-        }
-    });
-}
-
-//single model functions
-
+// creating the file on the server, in the folder "models/userID", create a collection folder
+// where the folder name is the collectionID and put the models there
 function createSingleFile(fileArray, userId, dirId){
     var nameArray = fileArray.name.split(".");
     var newName = nameArray[0] + "." + nameArray[1] + ".bpmn"
@@ -199,14 +113,23 @@ function createSingleFile(fileArray, userId, dirId){
     });
 }
 
-function execSingleJar(userId, dirId, userName, res, target_path, newIDs, queue){
+// call the createSingleFile for each file in the collection
+function createMultipleFiles(fileArray, userId, dirId){
+    for (var x = 0; x < fileArray.length; x++){
+        createSingleFile(fileArray[x], userId, dirId);
+    }
+}
+// execution of the java file, and saving everythin on the database (models, collection, statistics)
+function execJar(userId, dirId, userName, target_path, newIDs, res, queue){
     exec('java -jar bin/BPMetrics.jar ' + "models/" + userId + "/" + dirId, function(error, stdout, stderr) {
         var collection = JSON.parse(stdout);
         if (error !== null) {
             console.log('exec error: ' + error);
         }
+        // If the java app returns an error, the error will be created on the database, and liked to the user
         if (stderr !== ""){
-            console.log("corrupted or wrong file, deleting...");
+            console.log("corrupted or wrong file/s, deleting...");
+            sendToAdmin("corrupted or wrong file/s", userId, userName);
             removeDir(target_path);
             console.log("deleted");
             var errObj = new errs({
@@ -219,7 +142,7 @@ function execSingleJar(userId, dirId, userName, res, target_path, newIDs, queue)
             });
             account.findById(userId).exec(function(err, found){
                 if (err){throw err;}
-                var acc_errs = found.errse;
+                var acc_errs = found.errs;
                 if (acc_errs !== undefined){
                     acc_errs.push(errObj._id);
                 }
@@ -230,15 +153,17 @@ function execSingleJar(userId, dirId, userName, res, target_path, newIDs, queue)
                 found.save(function(err, saved){
                     if (err) console.log(err);
                     console.log("Java error added to account");
+                    sendToAdmin("Java error added to account", userId, userName);
                 });
             });
         }
-        else{
+        else {
             var statistic;
             queue.push(
                 function(task){
-                    console.log("creating and saving models");
-                    create_save_Models(newIDs, collection);
+                    console.log("creating and saving model/s");
+                    sendToAdmin("creating and saving model/s", userId, userName);
+                    create_save_Models(newIDs, collection, userId, userName);
                     statistic = statistics.collectionStat(collection);
                     task.done();
                 }
@@ -247,34 +172,16 @@ function execSingleJar(userId, dirId, userName, res, target_path, newIDs, queue)
             queue.push(
                 function(task){
                     console.log("creating collection");
-                    array = create_Collection(userId, collection, newIDs, statistic);
+                    sendToAdmin("creating collection", userId, userName);
+                    array = create_Collection(userId, collection, newIDs, statistic, userName);
                     task.done();
                 }
             );
             queue.push(
                 function(task){
-                    console.log("saving collection");
-                    save_Collection(array, userId);
-                    task.done();
-                }
-            );
-            var singleValues = [];
-            queue.push(
-                function(task){
-                    console.log("selecting singleValues");
-                    var metrics = collection.models[0].metrics;
-                    for(var x = 0; x <metrics.length; x++){
-                        if (metrics[x].type == "SINGLE_VALUE"){
-                            singleValues.push(metrics[x]);
-                        }
-                    }
-                    task.done();
-                }
-            );
-            queue.push(
-                function(task){
-                    console.log("creating charts");
-                    single(userName, singleValues, res);
+                    // console.log("saving collection");
+                    // sendToAdmin("saving collection", userId, userName);
+                    save_Collection(array, userId, userName);
                     task.done();
                 }
             );
@@ -282,30 +189,8 @@ function execSingleJar(userId, dirId, userName, res, target_path, newIDs, queue)
     });
 }
 
-function single(userName, singleValues, res){
-    // See SINGLE_VALUE's of the uploaded model
-    //res.render("./pages/dashboard", { username: userName });
-}
-
-function single_acc_stats(userId, userName, singleValues, res){
-    // Compare SINGLE_VALUES of the uploaded file with the account statistics
-    account.findById(userId, function(err, found){
-        var accstats = JSON.parse(found.statistics);
-        //res.render("./pages/dashboard", { username: userName });
-    });
-}
-
-function stats_acc_stats(userId, userName, stats, res){
-    // Compare collection statistics of uploaded model with account statistics
-    account.findById(userId, function(err, found){
-        var accstats = JSON.parse(found.statistics);
-        //res.render("./pages/dashboard", { username: userName });
-    });
-}
-
-//createCollection functions
-
-function create_save_Models(newIDs, collection){
+// creates the models and saves them 
+function create_save_Models(newIDs, collection, userId, userName){
     for(var i = 0, j = collection.models.length; i < j; i++ ){
         var newModel = new mod({
             name: collection.models[i].name,
@@ -316,12 +201,14 @@ function create_save_Models(newIDs, collection){
         newIDs.push(newModel._id);
         newModel.save(function(err, saved){
             if (err) throw new Error;
-            console.log("model saved")
+            // console.log("model saved");
+            // sendToAdmin("model " + saved.name + " saved", userId, userName);
         });
     }
 }
 
-function create_Collection(userId, collection, newIDs, statistic){
+// creates collection and statistics, then the statistics will be saved
+function create_Collection(userId, collection, newIDs, statistic, userName){
     var newColl = new collMod({
         user: userId,
         collectionID: collection.collectionID,
@@ -335,16 +222,21 @@ function create_Collection(userId, collection, newIDs, statistic){
     });
     newStat.save(function(err, s){
         console.log("stats saved");
+        sendToAdmin("stats saved", userId, userName)
         if(err) res.status(400);
     });
     newColl.statistics = newStat._id;
     return [newColl, statistic];
 }
 
-function save_Collection(array, userId){
+
+// the collection is saved, with statistics, then the collection is linked to the user,
+// then the account and general statistics will be uploaded and saved
+function save_Collection(array, userId, userName){
     array[0].save(function(err, saved){
         if (err) res.status(400).end();
-        console.log("coll saved")
+        console.log("coll saved");
+        sendToAdmin("collection saved", userId, userName)
         account.findById(userId).exec(function(err, found){
             if (err){throw err;}
             if(found){
@@ -365,6 +257,7 @@ function save_Collection(array, userId){
                                 found.statistics = accStats._id;
                                 accStats.save(function(err, s){
                                     console.log("created stats ");
+                                    sendToAdmin("stats created", userId, userName)
                                     if(err) res.status(400);
                                 })
                                 found.save(function(err, s){
@@ -388,11 +281,13 @@ function save_Collection(array, userId){
                             }
                             else{
                                 console.log("updated");
+
                                 stats.findById(found.statistics).exec(function(err, foundstat){
                                     var newAccStats = statistics.accountStat(JSON.parse(foundstat.statistics), array[1]);
                                     foundstat.statistics = JSON.stringify(newAccStats);
                                     foundstat.save(function(err, s){
                                         console.log("updated stats");
+                                        sendToAdmin("stats updated", userId, userName);
                                         if(err) res.status(400);
                                     });
                                     found.save(function(err, s){
@@ -406,10 +301,11 @@ function save_Collection(array, userId){
                                             }
                                             var global_stat = statistics.globalStat(all_stat_account);
                                             stats.findOne({ global: "true" }).exec(function(err, found_global) {
-                                                console.log("global " + found_global);
+                                                
                                                 found_global.statistics = JSON.stringify(global_stat);
                                                 found_global.save(function(err, found_global_save) {
                                                     if(err) res.status(400);
+                                                    sendToAdmin("global stats updated", userId, userName);
                                                 });
                                             });
                                         });
@@ -431,8 +327,10 @@ function save_Collection(array, userId){
     });
 }
 
+// it's a function to recursively remove a directory
 function removeDir(dir) {
     var list = fs.readdirSync(dir);
+    console.log("the list" + list);
     for(var i = 0; i < list.length; i++) {
         var filename = path.join(dir, list[i]);
         var stat = fs.statSync(filename);
@@ -450,6 +348,20 @@ function removeDir(dir) {
     fs.rmdirSync(dir);
 };
 
+function sendToAdmin(process, userId, userName){
+    adminModel.find({username: "admin"}).exec(function(err, admin){
+        if (admin[0].ongoing.length  >= 100){
+            admin[0].ongoing.shift();
+            admin[0].ongoing.push(userId + ' , ' + userName + ' : ' + process);
+        }
+        else{
+            admin[0].ongoing.push(userId + ' , ' + userName + ' : ' + process);
+        }
+        admin[0].save(function(err, sav){
+            if (err) console.log(err);
+            console.log("sent to admin");
+        })
+    })
+}
+
 module.exports = router;
-
-

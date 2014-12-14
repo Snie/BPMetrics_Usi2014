@@ -26,7 +26,7 @@ router.get('/', function(req, res) {
             res.json(found)
         });
     }
-    else res.redirect('login')
+    else res.render('./pages/index');
 });
 
 //get a model by id
@@ -39,7 +39,8 @@ router.get('/mod/:id', function(req, res) {
             else res.json(found);
         })
     }
-    else res.redirect('login')
+    else res.render('./pages/index');
+
 });
 
 router.delete('/mod/:id', function(req, res) {
@@ -51,7 +52,8 @@ router.delete('/mod/:id', function(req, res) {
         else res.status(204).end();
     })
     }
-    else res.redirect('login')
+    else res.render('./pages/index');
+
 });
 
 //get currently logged user's collections
@@ -64,7 +66,8 @@ router.get('/my', function(req, res) {
             res.json(found)
         });
     }
-    else res.redirect('../login')
+    else res.render('./pages/index');
+
 });
 
 
@@ -76,7 +79,8 @@ router.get('/my/statistics', function(req, res) {
             res.json(found.statistics)
         });
     }
-    else res.redirect('../login')
+    else res.render('./pages/index');
+
 });
 
 //get collection-model by id
@@ -89,7 +93,8 @@ router.get('/:id', function(req, res) {
 
         });
     }
-    else res.redirect('../login')
+    else res.render('./pages/index');
+
 });
 
 router.get('/demo/:id', function(req, res) {
@@ -101,19 +106,24 @@ router.get('/demo/:id', function(req, res) {
 
         });
     }
-    else res.redirect('../login')
+    else res.render('./pages/index');
+
 });
 
 //get statistics from collection
 
 router.get('/collection/statistics/:id', function(req, res){
-    statistics.find({collectionModel: req.params.id}, function(err, found){
-        if(err) throw err;
-        if(found.length < 1) res.send('wrong id');
-        else{
-            res.json(found[0])
-        }
-    })
+    if(req.user) {
+        statistics.find({collectionModel: req.params.id}, function (err, found) {
+            if (err) throw err;
+            if (found.length < 1) res.send('wrong id');
+            else {
+                res.json(found[0])
+            }
+        })
+    }
+    else res.render('./pages/index');
+
 });
 
 //delete collection by id
@@ -137,6 +147,7 @@ router.delete('/:id', function(req, res) {
             }
         });
     }
-    else res.redirect('../login')
+    else res.render('./pages/index');
+
 });
 module.exports = router;
