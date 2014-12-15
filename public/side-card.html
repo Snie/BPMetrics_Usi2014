@@ -68,7 +68,6 @@
                     temp += '<div onClick="console.log(this.post)"></div><h2 on-click="{{onClick}}">'+this.post.models[i].name+'</h2></div>';
                 }
                 this.$.model.innerHTML = temp;
-                console.log(temp);
             }
 
         },
@@ -112,6 +111,7 @@
                 document.getElementById('list').innerHTML = "<metric-list tipo='ALL' myID='" + this.post.models[0]._id + "'></metric-list>";
             }
             else{
+                console.log(this.post.statistics);
                 document.getElementById('list').innerHTML = "<statistic-list tipo='ALL' myID='" + this.post.statistics + "'></statistic-list>";
             }
         }

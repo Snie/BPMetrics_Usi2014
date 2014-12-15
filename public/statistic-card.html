@@ -4,7 +4,7 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 
-<polymer-element name="statistic-card" attributes="post side oGraph">
+<polymer-element name="statistic-card" attributes="post side statistic">
 <template>
     <style>
         :host {
@@ -14,16 +14,17 @@
             position: relative;
             background-color: white;
             padding: 20px;
-            width: 275px;
-            height: 275px;
-            font-size: 1.2rem;
+            font-size: 0.7rem;
             font-weight: 300;
+            width: 300px;
+            height: 300px;
+
             margin:10px;
         }
         polyfill-next-selector { content: '.card-header h2'; }
         .card-header ::content h2 {
             margin: 0;
-            font-size: 100%;
+            font-size: 1.2rem;
             font-weight: 300;
         }
         core-icon-button {
@@ -42,6 +43,18 @@
         #back{
             display: none;
         }
+        paper-dropdown-menu{
+            width: 100%;
+        }
+        paper-item{
+            width: 100%;
+        }
+        table{
+            width: 100%;
+        }
+        .cc{
+            width: 100% ;
+        }
 
     </style>
 
@@ -51,26 +64,12 @@
             <content select="h2"></content>
         </div>
 
-        <core-icon-button icon="settings" on-tap="{{settingsTapped}}"></core-icon-button>
-
-
-        <canvas class="cc" id="canvas" width="300" height="200"></canvas>
+        <canvas class="cc" id="canvas"></canvas>
 
     </div>
 
     <div id="back">
-        <core-icon-button icon="clear" on-tap="{{settingsTapped}}"></core-icon-button>
-        <paper-dropdown-menu label="Your favorite pastry">
-            <paper-dropdown class="dropdown">
-                <core-menu class="menu">
-                    <paper-item>Croissant</paper-item>
-                    <paper-item>Donut</paper-item>
-                    <paper-item>Financier</paper-item>
-                    <paper-item>Madeleine</paper-item>
-                </core-menu>
-            </paper-dropdown>
-        </paper-dropdown-menu>
-        <p>hello</p>
+
     </div>
 
 </template>
@@ -83,118 +82,232 @@
 //                    this.style.borderBottom = 'solid 4px blue';
 //                }
             this.side = true;
-//                var t = this.$.canvas;
-//
-//                var ctx = t.getContext("2d");
-//
-//                var labels = [];
-//                var datas = [];
-//                var chartOpt = {};
-//                var data = {};
-//
-//
-//                if(this.post.type == 'DISTRIBUTION'){
-//
-//                    for(var i = 0; i < this.post.values.length; i++){
-//                        labels.push(this.post.values[i].name);
-//                        datas.push(this.post.values[i].value);
-//                    }
-//
-//
-//
-//                    data = {
-//                        labels: labels,
-//                        datasets: [
-//                            {
-//                                label: "First dataset",
-//                                fillColor: "rgba(220,220,220,0.5)",
-//                                strokeColor: "rgba(220,220,220,0.8)",
-//                                highlightFill: "rgba(220,220,220,0.75)",
-//                                highlightStroke: "rgba(220,220,220,1)",
-//                                data: datas
-//                            }
-//                        ]
-//                    };
-//
-//
-//
-//                    chartOpt = {
-//                        scaleOverride : true,
-//                        scaleSteps : 10,
-//                        scaleStepWidth : 1,
-//                        animation : false  // Edit: correction typo: from 'animated' to 'animation'
-//                    };
-//
-//                    myBarChart = new Chart(ctx).Bar(data, chartOpt);
-//                }
-//                else if(this.post.type == 'SINGLE_VALUE'){
-//
-//                    for(var i = 0; i < this.post.values.length; i++){
-//                        labels.push('value');
-//                        datas.push(this.post.values[i].value);
-//                    }
-//
-//                    data = {
-//                        labels: labels,
-//                        datasets: [
-//                            {
-//                                label: "First dataset",
-//                                fillColor: "rgba(220,220,220,0.5)",
-//                                strokeColor: "rgba(220,220,220,0.8)",
-//                                highlightFill: "rgba(220,220,220,0.75)",
-//                                highlightStroke: "rgba(220,220,220,1)",
-//                                data: datas
-//                            }
-//                        ]
-//                    };
-//
-//
-//
-//                    chartOpt = {
-//                        scaleOverride : true,
-//                        scaleSteps : 10,
-//                        scaleStepWidth : 1,
-//                        animation : false  // Edit: correction typo: from 'animated' to 'animation'
-//                    };
-//
-//                    var myBarChart = new Chart(ctx).Bar(data, chartOpt);
-//                }
-//                else if(this.post.type == 'TYPE_DISTRIBUTION'){
-//
-//                    for(var i = 0; i < this.post.values.length; i++){
-//                        labels.push('value');
-//                        datas.push(this.post.values[i].value);
-//                    }
-//
-//                    data = {
-//                        labels: labels,
-//                        datasets: [
-//                            {
-//                                label: "First dataset",
-//                                fillColor: "rgba(220,220,220,0.5)",
-//                                strokeColor: "rgba(220,220,220,0.8)",
-//                                highlightFill: "rgba(220,220,220,0.75)",
-//                                highlightStroke: "rgba(220,220,220,1)",
-//                                data: datas
-//                            }
-//                        ]
-//                    };
-//
-//
-//
-//                    chartOpt = {
-//                        scaleOverride : true,
-//                        scaleSteps : 10,
-//                        scaleStepWidth : 1,
-//                        animation : false  // Edit: correction typo: from 'animated' to 'animation'
-//                    };
-//
-//                    var myBarChart = new Chart(ctx).Bar(data, chartOpt);
-//                }
-//
-//
-//
-//
+            this.side = true;
+            var t = this.$.canvas;
+
+            var ctx = t.getContext("2d");
+
+            var labels = [];
+            var datas = [];
+            var mean = [];
+            var median = [];
+            var data = {};
+
+            chartOpt = {
+                // Boolean - Whether to animate the chart
+                animation: true,
+
+                // Number - Number of animation steps
+                animationSteps: 1,
+
+                // String - Animation easing effect
+                animationEasing: "easeOutQuart",
+
+
+
+                // Interpolated JS string - can access value
+                scaleLabel: "<%= (Number(value))%>",
+
+                // Boolean - whether or not the chart should be responsive and resize when the browser does.
+                responsive: false,
+
+                // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+                maintainAspectRatio: false,
+
+                // Boolean - Determines whether to draw tooltips on the canvas or not
+                showTooltips: true,
+
+                // Array - Array of string names to attach tooltip events
+                tooltipEvents: ["mousemove", "touchstart", "touchmove"],
+
+                // String - Tooltip background colour
+                tooltipFillColor: "rgba(0,0,0,0.8)",
+
+                // String - Tooltip label font declaration for the scale label
+                tooltipFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+
+                // Number - Tooltip label font size in pixels
+                tooltipFontSize: 14,
+
+                // String - Tooltip font weight style
+                tooltipFontStyle: "normal",
+
+                // String - Tooltip label font colour
+                tooltipFontColor: "#fff",
+
+                // String - Tooltip title font declaration for the scale label
+                tooltipTitleFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+
+                // Number - Tooltip title font size in pixels
+                tooltipTitleFontSize: 14,
+
+                // String - Tooltip title font weight style
+                tooltipTitleFontStyle: "bold",
+
+                // String - Tooltip title font colour
+                tooltipTitleFontColor: "#fff",
+
+                // Number - pixel width of padding around tooltip text
+                tooltipYPadding: 6,
+
+                // Number - pixel width of padding around tooltip text
+                tooltipXPadding: 6,
+
+                // Number - Size of the caret on the tooltip
+                tooltipCaretSize: 8,
+
+                // Number - Pixel radius of the tooltip border
+                tooltipCornerRadius: 6,
+
+                // Number - Pixel offset from point x to tooltip edge
+                tooltipXOffset: 10,
+
+                // String - Template string for single tooltips
+                tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %>",
+
+                // String - Template string for single tooltips
+                multiTooltipTemplate: "<%= value %>",
+
+                //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+                scaleBeginAtZero : true,
+
+                //Boolean - Whether grid lines are shown across the chart
+                scaleShowGridLines : true,
+
+                //String - Colour of the grid lines
+                scaleGridLineColor : "rgba(0,0,0,.05)",
+
+                //Number - Width of the grid lines
+                scaleGridLineWidth : 1,
+
+                //Boolean - If there is a stroke on each bar
+                barShowStroke : true,
+
+                //Number - Pixel width of the bar stroke
+                barStrokeWidth : 2,
+
+                //Number - Spacing between each of the X value sets
+                barValueSpacing : 5,
+
+                //Number - Spacing between data sets within X values
+                barDatasetSpacing : 1,
+
+                //String - A legend template
+//                    legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
+            };
+
+            if(this.post.type == 'DISTRIBUTION') {
+
+                for (var i = 0; i < this.post.values.length; i++) {
+                    labels.push(this.post.values[i].name);
+                    datas.push(this.post.values[i].value);
+                }
+
+                if (this.post.values.length >= 1) {
+
+                    data = {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: "First dataset",
+                                fillColor: "rgba(0,200,200,0.5)",
+                                strokeColor: "rgba(0,200,200,0.8)",
+                                highlightFill: "rgba(0,200,200,0.75)",
+                                highlightStroke: "rgba(0,200,200,1)",
+                                data: datas
+                            }
+                        ]
+                    };
+
+                    var min = Math.min.apply(null, data.datasets[0].data);
+                    var max = Math.max.apply(null, data.datasets[0].data);
+
+//                    this.$.table.innerHTML = "<table><tr><td>Minimum</td><td>" + Math.round(this.post.minimum * 100000) / 100000 + "</td></tr><tr><td>Maximum</td><td>" + Math.round(this.post.maximum * 100000) / 100000 + "</td></tr><tr><td>Sum</td><td>" + Math.round(this.statistic.sum * 100000) / 100000 + "</td></tr></table>"
+                    myBarChart = new Chart(ctx).Bar(data, chartOpt);
+                }
+                else{
+                    this.hidden = true;
+                }
+            }
+            if(this.post.type == 'SINGLE_VALUE'){
+                console.log(this.post);
+
+                if(this.post.values[0].value == 0) {
+                    this.style.borderBottom = "solid 4px #da4336";
+                }
+
+                labels.push('value');
+                labels.push('mean');
+                labels.push('median');
+                datas.push(this.post.values[0].value);
+                datas.push(this.statistic.mean[0]);
+                datas.push(this.statistic.median);
+
+                data = {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: "First dataset",
+                            fillColor: ["rgba(0,200,200,0.5)","rgba(200,200,0,0.5)","rgba(200,0,0,0.5)"],
+                            strokeColor: "rgba(0,200,200,0.8)",
+                            highlightFill: "rgba(0,200,200,0.75)",
+                            highlightStroke: "rgba(0,200,200,1)",
+                            data: datas
+                        }
+                    ]
+                };
+
+
+                var myBarChart = new Chart(ctx).Bar(data, chartOpt);
+
+//                this.$.table.innerHTML = "<table><tr><td>Variance</td><td>"+Math.round(this.statistic.variance * 100000) / 100000+"</td></tr><tr><td>Standard Deviation</td><td>"+Math.round(this.statistic.standard_deviation * 100000) / 100000+"</td></tr><tr><td>Range</td><td>"+Math.round(this.statistic.range[0] * 100000) / 100000+" - "+Math.round(this.statistic.range[1] * 100000) / 100000+"</td></tr></table>"
+            }
+            else if(this.post.type == 'TYPE_DISTRIBUTION'){
+
+                for(var i = 0; i < this.post.values.length; i++){
+                    labels.push(name(this.post.values[i].name));
+                    datas.push(this.post.values[i].value);
+                    mean.push(this.statistic.names[i].mean[0]);
+                    median.push(this.statistic.names[i].median);
+                }
+
+
+                data = {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: "value",
+                            fillColor: "rgba(0,200,200,0.5)",
+                            strokeColor: "rgba(0,200,200,0.8)",
+                            highlightFill: "rgba(0,200,200,0.75)",
+                            highlightStroke: "rgba(0,200,200,1)",
+                            data: datas
+                        },
+                        {
+                            label: "mean",
+                            fillColor: "rgba(200,200,0,0.5)",
+                            strokeColor: "rgba(200,200,0,0.8)",
+                            highlightFill: "rgba(200,200,0,0.75)",
+                            highlightStroke: "rgba(200,200,0,1)",
+                            data: mean
+                        },
+                        {
+                            label: "median",
+                            fillColor: "rgba(200,0,0,0.5)",
+                            strokeColor: "rgba(200,0,0,0.8)",
+                            highlightFill: "rgba(200,0,0,0.75)",
+                            highlightStroke: "rgba(200,0,0,1)",
+                            data: median
+                        }
+                    ]
+                };
+
+                var min = Math.min.apply(null, data.datasets[0].data);
+                var max = Math.max.apply(null, data.datasets[0].data);
+
+
+                var myBarChart = new Chart(ctx).Bar(data, chartOpt);
+            }
         },
         settingsTapped: function(event, detail, sender){
             console.log(this.side);

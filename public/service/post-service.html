@@ -29,6 +29,7 @@
             handleResponse: function() {
                 // Make a copy of the loaded data
                 var temp = this.$.ajax.response.models;
+                console.log(this.$.ajax.response);
 
                 temp = JSON.parse(temp[0].metrics);
 
