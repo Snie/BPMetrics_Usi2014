@@ -11,10 +11,24 @@
             :host {
                 display: block;
             }
+            paper-dropdown-menu{
+                margin: 0 52% 0 48%;
+            }
         </style>
 
         <global-service id='posts' posts="{{posts}}">
         </global-service>
+
+        <paper-dropdown-menu label="All Statistics">
+            <paper-dropdown class="dropdown">
+                <core-menu class="menu">
+                    <paper-item on-click="{{menuChange}}" class="menu-item" id="ALL">All Statistics</paper-item>
+                    <paper-item on-click="{{menuChange}}" id="SINGLE_VALUE">Single Value Statistics</paper-item>
+                    <paper-item on-click="{{menuChange}}" id="DISTRIBUTION">Distribution Statistics</paper-item>
+                    <paper-item on-click="{{menuChange}}" id="TYPE_DISTRIBUTION">Type Distribution Statistics</paper-item>
+                </core-menu>
+            </paper-dropdown>
+        </paper-dropdown-menu>
 
         <div horizontal layout center-justified wrap class="{{tipo}}">
             <template repeat="{{post in posts}}">
@@ -31,6 +45,27 @@
     <script>
 
         Polymer('global-list', {
+            tipoChanged: function(oldVal, newVal) {
+
+                var a = this.shadowRoot.querySelectorAll('metric-card.metric-ALL');
+
+                for(var n=0; n<a.length; n++){
+                    var e = a[n];
+
+                    e.style.display = 'none';
+                }
+
+                a = this.shadowRoot.querySelectorAll('metric-card.metric-' + newVal);
+
+                for(var n=0; n<a.length; n++){
+                    var e = a[n];
+
+                    e.style.display = 'inline';
+                }
+            },
+            menuChange: function(event, detail, sender){
+                this.tipo = sender.id;
+            },
             tipoChanged: function(oldVal, newVal) {
 
                 var a = this.shadowRoot.querySelectorAll('metric-card.metric-ALL');
