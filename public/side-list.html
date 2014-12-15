@@ -36,6 +36,12 @@
     <script>
         var x = 0;
         Polymer('side-list', {
+            onHovered: function(event, detail, sender) {
+                sender.showR = true;
+            },
+            onUnhovered: function(event, detail, sender){
+                sender.showR = false;
+            },
             nameGenerator: function(post){
                 if(post.models.length <= 1){
                     return post.models[0].name;

@@ -4,7 +4,7 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 
-<polymer-element name="statistic-card" attributes="post side statistic typeTable">
+<polymer-element name="statistic-card" attributes="post side statistic typeTable number_type_distribution_metric">
 <template>
     <style>
         :host {
@@ -25,6 +25,9 @@
         .card-header ::content h2 {
             margin: 0;
             font-size: 1.2rem;
+            font-weight: 300;
+        }
+        h3{
             font-weight: 300;
         }
         core-icon-button {
@@ -66,14 +69,12 @@
 
         <canvas class="cc" id="canvas"></canvas>
 
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-
         <div id="table">
 
+        </div>
+        <div id="buttons" layout horizontal center>
+            <core-icon-button icon="arrow-back" on-click='{{carousel_back}}'></core-icon-button>
+            <core-icon-button icon="arrow-forward" on-click='{{carousel_forth}}'></core-icon-button>
         </div>
 
     </div>
@@ -86,6 +87,7 @@
 
 
 <script>
+
     function name(name){
         temp = '';
         for(var i = 0; i < name.length; i++){
@@ -95,6 +97,7 @@
         }
         return temp;
     }
+
     function isEmpty(obj) {
         for(var key in obj) {
             if(obj.hasOwnProperty(key)) {
@@ -120,6 +123,27 @@
     }
 
     Polymer('statistic-card', {
+        carousel_back: function() {
+            if(this.number_type_distribution_metric > 0) {
+                this.number_type_distribution_metric -= 1;
+                this.$.table.innerHTML = this.TypeTable[this.number_type_distribution_metric];
+            }
+            else{
+                console.log(this.TypeTable.length + ' marco');
+                this.number_type_distribution_metric = this.TypeTable.length -1;
+                this.$.table.innerHTML = this.TypeTable[this.number_type_distribution_metric];
+            }
+        },
+        carousel_forth: function() {
+            if(this.number_type_distribution_metric < this.TypeTable.length-1) {
+                this.number_type_distribution_metric += 1;
+                this.$.table.innerHTML = this.TypeTable[this.number_type_distribution_metric];
+            }
+            else{
+                this.number_type_distribution_metric = 0;
+                this.$.table.innerHTML = this.TypeTable[this.number_type_distribution_metric];
+            }
+        },
         ready: function() {
 //                if(this.post.value = []){
 //                    this.style.borderBottom = 'solid 4px blue';
@@ -135,6 +159,7 @@
             var mean = [];
             var median = [];
             var data = {};
+            var typeTable = [];
 
             chartOpt = {
                 // Boolean - Whether to animate the chart
@@ -241,6 +266,7 @@
 
             if(this.post.type == 'DISTRIBUTION') {
 
+                this.$.buttons.hidden = true;
                 if (!isEmpty(this.post.values)) {
 
 //                    for (var i = 0; i < this.post.values.length; i++) {
@@ -265,9 +291,6 @@
                         ]
                     };
 
-                    var min = Math.min.apply(null, data.datasets[0].data);
-                    var max = Math.max.apply(null, data.datasets[0].data);
-
                     this.$.table.innerHTML = "<table><tr><td>Minimum</td><td>" + Math.round(this.post.minimum * 100000) / 100000 + "</td></tr><tr><td>Maximum</td><td>" + Math.round(this.post.maximum * 100000) / 100000 + "</td></tr><tr><td>Sum</td><td>" + Math.round(this.statistic.sum * 100000) / 100000 + "</td></tr></table>"
                     myBarChart = new Chart(ctx).Bar(data, chartOpt);
                 }
@@ -277,6 +300,8 @@
             }
             if(this.post.type == 'SINGLE_VALUE'){
 
+
+                this.$.buttons.hidden = true;
                 if(this.post.values[0] == 0) {
                     this.style.borderBottom = "solid 4px #da4336";
                 }
@@ -316,6 +341,7 @@
                 }
 
                 this.TypeTable = typeTable;
+                this.number_type_distribution_metric = 0;
 
 
                 data = {

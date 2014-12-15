@@ -66,24 +66,6 @@
             menuChange: function(event, detail, sender){
                 this.tipo = sender.id;
             },
-            tipoChanged: function(oldVal, newVal) {
-
-                var a = this.shadowRoot.querySelectorAll('metric-card.metric-ALL');
-
-                for(var n=0; n<a.length; n++){
-                    var e = a[n];
-
-                    e.style.display = 'none';
-                }
-
-                a = this.shadowRoot.querySelectorAll('metric-card.metric-' + newVal);
-
-                for(var n=0; n<a.length; n++){
-                    var e = a[n];
-
-                    e.style.display = 'inline';
-                }
-            },
             fixString : function(string){
                 var temp = string.match(/[A-Z][a-z]+/g);
                 string = "";

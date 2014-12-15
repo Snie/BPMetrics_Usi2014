@@ -4,7 +4,7 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 
-<polymer-element name="global-card" attributes="post side statistic">
+<polymer-element name="global-card" attributes="post side statistic typeTable number_type_distribution_metric">
 <template>
     <style>
         :host {
@@ -27,10 +27,10 @@
             font-size: 1.2rem;
             font-weight: 300;
         }
+        h3{
+            font-weight: 300;
+        }
         core-icon-button {
-            position: absolute;
-            top: 2px;
-            right: 2px;
             padding:2px;
             color: #636363;
         }
@@ -66,16 +66,15 @@
 
         <canvas class="cc" id="canvas"></canvas>
 
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
 
         <div id="table">
 
         </div>
 
+        <div id="buttons" layout horizontal center>
+            <core-icon-button icon="arrow-back" on-click='{{carousel_back}}'></core-icon-button>
+            <core-icon-button icon="arrow-forward" on-click='{{carousel_forth}}'></core-icon-button>
+        </div>
     </div>
 
     <div id="back">
@@ -85,175 +84,229 @@
 </template>
 
 
-<script>
-function name(name){
-    temp = '';
-    for(var i = 0; i < name.length; i++){
-        if(name[i] === name[i].toUpperCase()){
-            temp += name[i] +'.'
+    <script>
+    function name(name){
+        temp = '';
+        for(var i = 0; i < name.length; i++){
+            if(name[i] === name[i].toUpperCase()){
+                temp += name[i] +'.'
+            }
+        }
+        return temp;
+    }
+    function isEmpty(obj) {
+        for(var key in obj) {
+            if(obj.hasOwnProperty(key)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function makeData(obj, type) {
+        var d = [];
+        var l = [];
+        for(var key in obj) {
+            d.push(obj[key]);
+            l.push(key);
+        }
+        if(type == 'data'){
+            return d;
+        }
+        else{
+            return l;
         }
     }
-    return temp;
-}
-function isEmpty(obj) {
-    for(var key in obj) {
-        if(obj.hasOwnProperty(key)) {
-            return false;
-        }
-    }
-    return true;
-}
 
-function makeData(obj, type) {
-    var d = [];
-    var l = [];
-    for(var key in obj) {
-        d.push(obj[key]);
-        l.push(key);
-    }
-    if(type == 'data'){
-        return d;
-    }
-    else{
-        return l;
-    }
-}
+    Polymer('global-card', {
+        carousel_back: function() {
+            if(this.number_type_distribution_metric > 0) {
+                this.number_type_distribution_metric -= 1;
+                this.$.table.innerHTML = this.TypeTable[this.number_type_distribution_metric];
+            }
+            else{
+                console.log(this.TypeTable.length + ' marco');
+                this.number_type_distribution_metric = this.TypeTable.length -1;
+                this.$.table.innerHTML = this.TypeTable[this.number_type_distribution_metric];
+            }
+        },
+        carousel_forth: function() {
+            if(this.number_type_distribution_metric < this.TypeTable.length-1) {
+                this.number_type_distribution_metric += 1;
+                this.$.table.innerHTML = this.TypeTable[this.number_type_distribution_metric];
+            }
+            else{
+                this.number_type_distribution_metric = 0;
+                this.$.table.innerHTML = this.TypeTable[this.number_type_distribution_metric];
+            }
+        },
+        ready: function() {
+            this.side = true;
+            this.side = true;
+            var t = this.$.canvas;
 
-Polymer('global-card', {
-    ready: function() {
-        this.side = true;
-        this.side = true;
-        var t = this.$.canvas;
+            var ctx = t.getContext("2d");
 
-        var ctx = t.getContext("2d");
+            var labels = [];
+            var datas = [];
+            var mean = [];
+            var median = [];
+            var data = {};
+            var typeTable = [];
 
-        var labels = [];
-        var datas = [];
-        var mean = [];
-        var median = [];
-        var data = {};
+            chartOpt = {
+                // Boolean - Whether to animate the chart
+                animation: true,
 
-        chartOpt = {
-            // Boolean - Whether to animate the chart
-            animation: true,
+                // Number - Number of animation steps
+                animationSteps: 1,
 
-            // Number - Number of animation steps
-            animationSteps: 1,
-
-            // String - Animation easing effect
-            animationEasing: "easeOutQuart",
+                // String - Animation easing effect
+                animationEasing: "easeOutQuart",
 
 
 
-            // Interpolated JS string - can access value
-            scaleLabel: "<%= (Number(value))%>",
+                // Interpolated JS string - can access value
+                scaleLabel: "<%= (Number(value))%>",
 
-            // Boolean - whether or not the chart should be responsive and resize when the browser does.
-            responsive: false,
+                // Boolean - whether or not the chart should be responsive and resize when the browser does.
+                responsive: false,
 
-            // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-            maintainAspectRatio: false,
+                // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+                maintainAspectRatio: false,
 
-            // Boolean - Determines whether to draw tooltips on the canvas or not
-            showTooltips: true,
+                // Boolean - Determines whether to draw tooltips on the canvas or not
+                showTooltips: true,
 
-            // Array - Array of string names to attach tooltip events
-            tooltipEvents: ["mousemove", "touchstart", "touchmove"],
+                // Array - Array of string names to attach tooltip events
+                tooltipEvents: ["mousemove", "touchstart", "touchmove"],
 
-            // String - Tooltip background colour
-            tooltipFillColor: "rgba(0,0,0,0.8)",
+                // String - Tooltip background colour
+                tooltipFillColor: "rgba(0,0,0,0.8)",
 
-            // String - Tooltip label font declaration for the scale label
-            tooltipFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+                // String - Tooltip label font declaration for the scale label
+                tooltipFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
 
-            // Number - Tooltip label font size in pixels
-            tooltipFontSize: 14,
+                // Number - Tooltip label font size in pixels
+                tooltipFontSize: 14,
 
-            // String - Tooltip font weight style
-            tooltipFontStyle: "normal",
+                // String - Tooltip font weight style
+                tooltipFontStyle: "normal",
 
-            // String - Tooltip label font colour
-            tooltipFontColor: "#fff",
+                // String - Tooltip label font colour
+                tooltipFontColor: "#fff",
 
-            // String - Tooltip title font declaration for the scale label
-            tooltipTitleFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+                // String - Tooltip title font declaration for the scale label
+                tooltipTitleFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
 
-            // Number - Tooltip title font size in pixels
-            tooltipTitleFontSize: 14,
+                // Number - Tooltip title font size in pixels
+                tooltipTitleFontSize: 14,
 
-            // String - Tooltip title font weight style
-            tooltipTitleFontStyle: "bold",
+                // String - Tooltip title font weight style
+                tooltipTitleFontStyle: "bold",
 
-            // String - Tooltip title font colour
-            tooltipTitleFontColor: "#fff",
+                // String - Tooltip title font colour
+                tooltipTitleFontColor: "#fff",
 
-            // Number - pixel width of padding around tooltip text
-            tooltipYPadding: 6,
+                // Number - pixel width of padding around tooltip text
+                tooltipYPadding: 6,
 
-            // Number - pixel width of padding around tooltip text
-            tooltipXPadding: 6,
+                // Number - pixel width of padding around tooltip text
+                tooltipXPadding: 6,
 
-            // Number - Size of the caret on the tooltip
-            tooltipCaretSize: 8,
+                // Number - Size of the caret on the tooltip
+                tooltipCaretSize: 8,
 
-            // Number - Pixel radius of the tooltip border
-            tooltipCornerRadius: 6,
+                // Number - Pixel radius of the tooltip border
+                tooltipCornerRadius: 6,
 
-            // Number - Pixel offset from point x to tooltip edge
-            tooltipXOffset: 10,
+                // Number - Pixel offset from point x to tooltip edge
+                tooltipXOffset: 10,
 
-            // String - Template string for single tooltips
-            tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %>",
+                // String - Template string for single tooltips
+                tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %>",
 
-            // String - Template string for single tooltips
-            multiTooltipTemplate: "<%= value %>",
+                // String - Template string for single tooltips
+                multiTooltipTemplate: "<%= value %>",
 
-            //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-            scaleBeginAtZero : true,
+                //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+                scaleBeginAtZero : true,
 
-            //Boolean - Whether grid lines are shown across the chart
-            scaleShowGridLines : true,
+                //Boolean - Whether grid lines are shown across the chart
+                scaleShowGridLines : true,
 
-            //String - Colour of the grid lines
-            scaleGridLineColor : "rgba(0,0,0,.05)",
+                //String - Colour of the grid lines
+                scaleGridLineColor : "rgba(0,0,0,.05)",
 
-            //Number - Width of the grid lines
-            scaleGridLineWidth : 1,
+                //Number - Width of the grid lines
+                scaleGridLineWidth : 1,
 
-            //Boolean - If there is a stroke on each bar
-            barShowStroke : true,
+                //Boolean - If there is a stroke on each bar
+                barShowStroke : true,
 
-            //Number - Pixel width of the bar stroke
-            barStrokeWidth : 2,
+                //Number - Pixel width of the bar stroke
+                barStrokeWidth : 2,
 
-            //Number - Spacing between each of the X value sets
-            barValueSpacing : 5,
+                //Number - Spacing between each of the X value sets
+                barValueSpacing : 5,
 
-            //Number - Spacing between data sets within X values
-            barDatasetSpacing : 1,
+                //Number - Spacing between data sets within X values
+                barDatasetSpacing : 1,
 
-            //String - A legend template
-//                    legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
-        };
+                //String - A legend template
+    //                    legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
+            };
 
-        if(this.post.type == 'DISTRIBUTION') {
+            if(this.post.type == 'DISTRIBUTION') {
+                this.$.buttons.hidden = true;
+                if (!isEmpty(this.post.values)) {
 
-            if (!isEmpty(this.post.values)) {
+    //                    for (var i = 0; i < this.post.values.length; i++) {
+    //                        labels.push(this.post.values[i].name);
+    //                        datas.push(this.post.values[i].value);
+    //                    }
 
-//                    for (var i = 0; i < this.post.values.length; i++) {
-//                        labels.push(this.post.values[i].name);
-//                        datas.push(this.post.values[i].value);
-//                    }
+                    datas = makeData(this.post.values, 'data');
+                    labels = makeData(this.post.values, 'labels')
 
-                datas = makeData(this.post.values, 'data');
-                labels = makeData(this.post.values, 'labels')
+                    data = {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: "First dataset",
+                                fillColor: "rgba(0,200,200,0.5)",
+                                strokeColor: "rgba(0,200,200,0.8)",
+                                highlightFill: "rgba(0,200,200,0.75)",
+                                highlightStroke: "rgba(0,200,200,1)",
+                                data: datas
+                            }
+                        ]
+                    };
+
+                    this.$.table.innerHTML = "<table><tr><td>Minimum</td><td>" + Math.round(this.post.minimum * 100000) / 100000 + "</td></tr><tr><td>Maximum</td><td>" + Math.round(this.post.maximum * 100000) / 100000 + "</td></tr><tr><td>Sum</td><td>" + Math.round(this.post.sum * 100000) / 100000 + "</td></tr></table>"
+                    myBarChart = new Chart(ctx).Bar(data, chartOpt);
+                }
+                else{
+                    this.hidden = true;
+                }
+            }
+            if(this.post.type == 'SINGLE_VALUE'){
+                this.$.buttons.hidden = true;
+                if(this.post.values[0] == 0) {
+                    this.style.borderBottom = "solid 4px #da4336";
+                }
+
+                labels.push('mean');
+                labels.push('median');
+                datas.push(this.post.mean[0]);
+                datas.push(this.post.median);
 
                 data = {
                     labels: labels,
                     datasets: [
                         {
                             label: "First dataset",
-                            fillColor: "rgba(0,200,200,0.5)",
+                            fillColor: ["rgba(0,200,200,0.5)","rgba(200,200,0,0.5)","rgba(200,0,0,0.5)"],
                             strokeColor: "rgba(0,200,200,0.8)",
                             highlightFill: "rgba(0,200,200,0.75)",
                             highlightStroke: "rgba(0,200,200,1)",
@@ -262,91 +315,65 @@ Polymer('global-card', {
                     ]
                 };
 
-//                this.$.table.innerHTML = "<table><tr><td>Minimum</td><td>" + Math.round(this.post.minimum * 100000) / 100000 + "</td></tr><tr><td>Maximum</td><td>" + Math.round(this.post.maximum * 100000) / 100000 + "</td></tr><tr><td>Sum</td><td>" + Math.round(this.statistic.sum * 100000) / 100000 + "</td></tr></table>"
-                myBarChart = new Chart(ctx).Bar(data, chartOpt);
+
+                var myBarChart = new Chart(ctx).Bar(data, chartOpt);
+
+                this.$.table.innerHTML = "<table><tr><td>Variance</td><td>"+Math.round(this.post.variance * 100000) / 100000+"</td></tr><tr><td>Standard Deviation</td><td>"+Math.round(this.post.standard_deviation * 100000) / 100000+"</td></tr><tr><td>Range</td><td>"+Math.round(this.post.range[0] * 100000) / 100000+" - "+Math.round(this.post.range[1] * 100000) / 100000+"</td></tr></table>"
+            }
+            else if(this.post.type == 'TYPE_DISTRIBUTION'){
+
+                console.log(this.post);
+                for(var i = 0; i < this.post.names.length; i++){
+                    labels.push(name(this.post.names[i].name));
+                    mean.push(this.post.names[i].mean[0]);
+                    median.push(this.post.names[i].median);
+                    typeTable.push("<h3>"+this.post.names[i].name+"</h3><table><tr><td>Variance</td><td>"+Math.round(this.post.names[0].variance * 100000) / 100000+"</td></tr><tr><td>Standard Deviation</td><td>"+Math.round(this.post.names[i].standard_deviation * 100000) / 100000+"</td></tr><tr><td>Range</td><td>"+Math.round(this.post.names[i].range[0] * 100000) / 100000+" - "+Math.round(this.post.names[i].range[1] * 100000) / 100000+"</td></tr></table>");
+
+                }
+
+                this.TypeTable = typeTable;
+                this.number_type_distribution_metric = 0;
+
+                this.$.table.innerHTML = typeTable[0];
+
+                data = {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: "mean",
+                            fillColor: "rgba(200,200,0,0.5)",
+                            strokeColor: "rgba(200,200,0,0.8)",
+                            highlightFill: "rgba(200,200,0,0.75)",
+                            highlightStroke: "rgba(200,200,0,1)",
+                            data: mean
+                        },
+                        {
+                            label: "median",
+                            fillColor: "rgba(200,0,0,0.5)",
+                            strokeColor: "rgba(200,0,0,0.8)",
+                            highlightFill: "rgba(200,0,0,0.75)",
+                            highlightStroke: "rgba(200,0,0,1)",
+                            data: median
+                        }
+                    ]
+                };
+
+                var myBarChart = new Chart(ctx).Bar(data, chartOpt);
+            }
+        },
+        settingsTapped: function(event, detail, sender){
+            if(!this.side){
+                this.$.front.style.display = 'block';
+                this.$.back.style.display = 'none';
+                this.side = !this.side;
             }
             else{
-                this.hidden = true;
+                this.$.front.style.display = 'none';
+                this.$.back.style.display = 'block';
+                this.side = !this.side;
             }
         }
-        if(this.post.type == 'SINGLE_VALUE'){
-
-            if(this.post.values[0] == 0) {
-                this.style.borderBottom = "solid 4px #da4336";
-            }
-
-            labels.push('mean');
-            labels.push('median');
-            datas.push(this.post.mean[0]);
-            datas.push(this.post.median);
-
-            data = {
-                labels: labels,
-                datasets: [
-                    {
-                        label: "First dataset",
-                        fillColor: ["rgba(0,200,200,0.5)","rgba(200,200,0,0.5)","rgba(200,0,0,0.5)"],
-                        strokeColor: "rgba(0,200,200,0.8)",
-                        highlightFill: "rgba(0,200,200,0.75)",
-                        highlightStroke: "rgba(0,200,200,1)",
-                        data: datas
-                    }
-                ]
-            };
-
-
-            var myBarChart = new Chart(ctx).Bar(data, chartOpt);
-
-//            this.$.table.innerHTML = "<table><tr><td>Variance</td><td>"+Math.round(this.statistic.variance * 100000) / 100000+"</td></tr><tr><td>Standard Deviation</td><td>"+Math.round(this.statistic.standard_deviation * 100000) / 100000+"</td></tr><tr><td>Range</td><td>"+Math.round(this.statistic.range[0] * 100000) / 100000+" - "+Math.round(this.statistic.range[1] * 100000) / 100000+"</td></tr></table>"
-        }
-        else if(this.post.type == 'TYPE_DISTRIBUTION'){
-
-            for(var i = 0; i < this.post.names.length; i++){
-                labels.push(name(this.post.names[i].name));
-                mean.push(this.post.names[i].mean[0]);
-                median.push(this.post.names[i].median);
-            }
-
-
-
-            data = {
-                labels: labels,
-                datasets: [
-                    {
-                        label: "mean",
-                        fillColor: "rgba(200,200,0,0.5)",
-                        strokeColor: "rgba(200,200,0,0.8)",
-                        highlightFill: "rgba(200,200,0,0.75)",
-                        highlightStroke: "rgba(200,200,0,1)",
-                        data: mean
-                    },
-                    {
-                        label: "median",
-                        fillColor: "rgba(200,0,0,0.5)",
-                        strokeColor: "rgba(200,0,0,0.8)",
-                        highlightFill: "rgba(200,0,0,0.75)",
-                        highlightStroke: "rgba(200,0,0,1)",
-                        data: median
-                    }
-                ]
-            };
-
-            var myBarChart = new Chart(ctx).Bar(data, chartOpt);
-        }
-    },
-    settingsTapped: function(event, detail, sender){
-        if(!this.side){
-            this.$.front.style.display = 'block';
-            this.$.back.style.display = 'none';
-            this.side = !this.side;
-        }
-        else{
-            this.$.front.style.display = 'none';
-            this.$.back.style.display = 'block';
-            this.side = !this.side;
-        }
-    }
-});
-</script>
+    });
+    </script>
 
 </polymer-element>

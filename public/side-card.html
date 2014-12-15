@@ -3,7 +3,7 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
 
-<polymer-element name="side-card" attributes="post show deleted">
+<polymer-element name="side-card" attributes="post show showR deleted">
 <template>
     <style>
         :host {
@@ -85,6 +85,14 @@
                 this.hidden = true;
             }
             else this.hidden = false;
+        },
+        showRChanged: function(oldVal, newVal){
+            if(newVal == true) {
+                this.$.info.style.display = 'block';
+            }
+            else{
+                this.$.info.style.display = 'none';
+            }
         },
         showChanged: function(oldVal, newVal) {
             if(newVal == true) {
