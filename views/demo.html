@@ -286,13 +286,12 @@
             //Ajax events
 //            beforeSend: beforeSendHandler,
             success: function(result){
-                console.log(result);
                 if(localStorage['stack'] == '') {
                     localStorage['stack'] = result.id;
                 } else {
                     localStorage['stack'] += "," + result.id;
                 }
-                console.log(localStorage['stack']);
+                }
             },
 //            error: errorHandler,
             // Form data
@@ -309,7 +308,6 @@
         if(!id){
             return false;
         }
-        console.log(id);
         var url= '/models/demo/'+id;
 
         $.ajax({
@@ -336,14 +334,11 @@
         var toSplit = localStorage['stack'];
         if (toSplit != '') {
             var ids = toSplit.split(',');
-//            console.log(toSplit);
-//            console.log("ids: " + ids);
             var tmp = '';
             for (var id in ids) {
 
                 var collIDReturn = getCollection(ids[id]);
 
-//                console.log("collIDReturn: " + collIDReturn);
 
                 if (collIDReturn == false) {
 
@@ -358,7 +353,6 @@
 
             localStorage['stack'] = tmp;
 
-            console.log("New Stack: " + localStorage['stack']);
         }
     }
 

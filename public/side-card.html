@@ -111,7 +111,6 @@
             this.deleted = true;
         },
         subSelect: function(id){
-            console.log('marco')
             document.getElementById('list').innerHTML = "<metric-list tipo='ALL' myID='" + id + "'></metric-list>";
         },
         onClick: function(event, detail,sender){
@@ -120,7 +119,6 @@
                 document.getElementById('list').innerHTML = "<metric-list tipo='ALL' myID='" + this.post.models[0]._id + "'></metric-list>";
             }
             else if(this.post.models.length > 1 && !this.show){
-                console.log(this.post.statistics);
                 document.getElementById('list').innerHTML = "<statistic-list tipo='ALL' myID='" + this.post.statistics + "'></statistic-list>";
             }
             this.show = !this.show;

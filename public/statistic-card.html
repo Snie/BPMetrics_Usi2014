@@ -306,7 +306,6 @@
                 this.$.table.innerHTML = "<table><tr><td>Variance</td><td>"+Math.round(this.statistic.variance * 100000) / 100000+"</td></tr><tr><td>Standard Deviation</td><td>"+Math.round(this.statistic.standard_deviation * 100000) / 100000+"</td></tr><tr><td>Range</td><td>"+Math.round(this.statistic.range[0] * 100000) / 100000+" - "+Math.round(this.statistic.range[1] * 100000) / 100000+"</td></tr></table>"
             }
             else if(this.post.type == 'TYPE_DISTRIBUTION'){
-                console.log(this.post)
 
                 for(var i = 0; i < this.post.names.length; i++){
                     labels.push(name(this.post.names[i].name));
@@ -345,7 +344,6 @@
             }
         },
         settingsTapped: function(event, detail, sender){
-            console.log(this.side);
             if(!this.side){
                 this.$.front.style.display = 'block';
                 this.$.back.style.display = 'none';
