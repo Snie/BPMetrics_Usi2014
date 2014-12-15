@@ -56,6 +56,10 @@
             table{
                 width: 100%;
             }
+            .cc{
+                width: 200px !important;
+                height: 150px !important;
+            }
 
         </style>
 
@@ -68,7 +72,7 @@
             <core-icon-button icon="settings" on-tap="{{settingsTapped}}"></core-icon-button>
 
 
-            <canvas class="cc" id="canvas" width="300" height="200"></canvas>
+            <canvas class="cc" id="canvas"></canvas>
 
             <div id="table">
             </div>
@@ -107,9 +111,6 @@
         }
         Polymer('metric-card', {
             ready: function() {
-//                if(this.post.value = []){
-//                    this.style.borderBottom = 'solid 4px blue';
-//                }
                 this.side = true;
                 var t = this.$.canvas;
 
@@ -202,6 +203,7 @@
                         animation : false  // Edit: correction typo: from 'animated' to 'animation'
                     };
 
+
                     var myBarChart = new Chart(ctx).Bar(data, chartOpt);
 
                     this.$.table.innerHTML = "<table><tr><td>Variance</td><td>"+Math.round(this.statistic.variance * 100000) / 100000+"</td></tr><tr><td>Standard Deviation</td><td>"+Math.round(this.statistic.standard_deviation * 100000) / 100000+"</td></tr><tr><td>Range</td><td>"+Math.round(this.statistic.range[0] * 100000) / 100000+" - "+Math.round(this.statistic.range[1] * 100000) / 100000+"</td></tr></table>"
@@ -214,8 +216,6 @@
                         datas.push(this.post.values[i].value);
                         mean.push(this.statistic.names[i].mean[0]);
                         median.push(this.statistic.names[i].median);
-
-
                     }
 
 
@@ -223,7 +223,7 @@
                         labels: labels,
                         datasets: [
                             {
-                                label: "First dataset",
+                                label: "value",
                                 fillColor: "rgba(0,200,200,0.5)",
                                 strokeColor: "rgba(0,200,200,0.8)",
                                 highlightFill: "rgba(0,200,200,0.75)",
