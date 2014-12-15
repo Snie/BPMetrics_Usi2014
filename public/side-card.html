@@ -93,6 +93,13 @@
         exterminate: function(){
             var xhr = new XMLHttpRequest();
             xhr.open("DELETE", "/models/"+this.post._id, true);
+            xhr.onreadystatechange = function () {
+                if(xhr.readyState == 4) {
+                    if(xhr.status == 204) {
+                        document.querySelector('#side-card_message_204').show();
+                    }
+                }
+            };
             xhr.send();
             this.deleted = true;
         },

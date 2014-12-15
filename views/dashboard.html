@@ -158,6 +158,12 @@
         </core-overlay>
 
         <!--Messages to the user-->
+        <paper-toast id="sidebar_ok" role="alert" text="All data upload is ready!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
+            <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
+        </paper-toast>
+        <paper-toast id="side-card_message_204" role="alert" text="Collection successful deleted!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
+            <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
+        </paper-toast>
         <paper-toast id="user-card_message_204" role="alert" text="Your profile is changed!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
             <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
         </paper-toast>
@@ -298,6 +304,7 @@
                 }
                 else{
                     document.getElementById('sidebar').innerHTML = "<side-list></side-list>";
+                    document.querySelector('#sidebar_ok').show();
                     return true;
                 }
             },
