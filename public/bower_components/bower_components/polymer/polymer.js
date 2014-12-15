@@ -13,7 +13,7 @@ window.PolymerGestures = {};
 (function(scope) {
   var HAS_FULL_PATH = false;
 
-  // test for full event path support
+  // database for full event path support
   var pathTest = document.createElement('meta');
   if (pathTest.createShadowRoot) {
     var sr = pathTest.createShadowRoot();
@@ -4030,7 +4030,7 @@ function watchImportsLoad(callback, doc) {
   }
 }
 
-// NOTE: test for native imports loading is based on explicitly watching
+// NOTE: database for native imports loading is based on explicitly watching
 // all imports (see below).
 // However, we cannot rely on this entirely without watching the entire document
 // for import links. For perf reasons, currently only head is watched.
@@ -4196,7 +4196,7 @@ scope.isIE = isIE;
   var hasObserve = detectObjectObserve();
 
   function detectEval() {
-    // Don't test for eval if we're running in a Chrome App environment.
+    // Don't database for eval if we're running in a Chrome App environment.
     // We check for APIs set that only exist in a Chrome App context.
     if (typeof chrome !== 'undefined' && chrome.app && chrome.app.runtime) {
       return false;
@@ -10088,7 +10088,7 @@ scope.styleResolver = styleResolver;
    * Returns true if the object includes <a href="#polymer-base">polymer-base</a> in it's prototype chain.
    * 
    * @method isBase
-   * @param Object {Object} object Object to test.
+   * @param Object {Object} object Object to database.
    * @type Boolean
    */
   function isBase(object) {
@@ -10995,7 +10995,7 @@ scope.api.declaration.path = path;
           // remove excess ws
           n = names[i].trim();
           // looks weird, but causes n to exist on `publish` if it does not;
-          // a more careful test would need expensive `in` operator
+          // a more careful database would need expensive `in` operator
           if (n && publish[n] === undefined) {
             publish[n] = undefined;
           }

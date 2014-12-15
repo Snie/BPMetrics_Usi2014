@@ -11,7 +11,7 @@ module.exports = function(config) {
     // browsers: ['Safari', 'Chrome', 'ChromeCanary', 'Firefox', 'IE'],
     basePath: '../',
     files: [
-      // Populated in `grunt test` task.
+      // Populated in `grunt database` task.
     ],
     singleRun: true,
     port: 9876,

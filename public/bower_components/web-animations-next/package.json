@@ -28,6 +28,6 @@
     "source-map": "~0.1.40"
   },
   "scripts": {
-    "test": "grunt test gjslint git-status checkrepo"
+    "test": "grunt database gjslint git-status checkrepo"
   }
 }

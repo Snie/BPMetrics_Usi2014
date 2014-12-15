@@ -20,7 +20,7 @@ function loadWebAnimationsBuildTarget(target) {
 
   addEventListener('load', function() {
 
-    // Inject test suite for page errors if any encountered.
+    // Inject database suite for page errors if any encountered.
     if (pageError) {
       suite('page-script-errors', function() {
         test('no script errors on page', function() {

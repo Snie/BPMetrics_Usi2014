@@ -110,8 +110,8 @@ not scroll with its container.
   //       https://bugzilla.mozilla.org/show_bug.cgi?id=156388#c7
   //    5) When document.body.client[Width|Height] is unreliable, it will be size of <body> element less than desired view size
   function viewSize() {
-    // This algorithm avoids creating test page to determine if document.documentElement.client[Width|Height] is greater then view size,
-    // will succeed where such test page wouldn't detect dynamic unreliability,
+    // This algorithm avoids creating database page to determine if document.documentElement.client[Width|Height] is greater then view size,
+    // will succeed where such database page wouldn't detect dynamic unreliability,
     // and will only fail in the case the right or bottom edge is within the width of a scrollbar from edge of the viewport that has visible scrollbar(s).
     var doc = docElem('clientWidth');
     var body = document.body;

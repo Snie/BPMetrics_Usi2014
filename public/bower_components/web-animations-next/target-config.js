@@ -65,31 +65,31 @@
       'src/group-constructors.js'];
 
   var minifillTest = [
-      'test/js/animation-node.js',
-      'test/js/apply-preserving-inline-style.js',
-      'test/js/box-handler.js',
-      'test/js/color-handler.js',
-      'test/js/dimension-handler.js',
-      'test/js/effect.js',
-      'test/js/interpolation.js',
-      'test/js/matrix-interpolation.js',
-      'test/js/number-handler.js',
-      'test/js/player.js',
-      'test/js/player-finish-event.js',
-      'test/js/property-interpolation.js',
-      'test/js/tick.js',
-      'test/js/timing.js',
-      'test/js/transform-handler.js'];
+      'database/js/animation-node.js',
+      'database/js/apply-preserving-inline-style.js',
+      'database/js/box-handler.js',
+      'database/js/color-handler.js',
+      'database/js/dimension-handler.js',
+      'database/js/effect.js',
+      'database/js/interpolation.js',
+      'database/js/matrix-interpolation.js',
+      'database/js/number-handler.js',
+      'database/js/player.js',
+      'database/js/player-finish-event.js',
+      'database/js/property-interpolation.js',
+      'database/js/tick.js',
+      'database/js/timing.js',
+      'database/js/transform-handler.js'];
 
   var maxifillTest = minifillTest.concat(
-      'test/js/animation-constructor.js',
-      'test/js/effect-callback.js',
-      'test/js/group-constructors.js',
-      'test/js/group-player.js',
-      'test/js/group-player-finish-event.js',
-      'test/js/timeline.js');
+      'database/js/animation-constructor.js',
+      'database/js/effect-callback.js',
+      'database/js/group-constructors.js',
+      'database/js/group-player.js',
+      'database/js/group-player-finish-event.js',
+      'database/js/timeline.js');
 
-  // This object specifies the source and test files for different Web Animation build targets.
+  // This object specifies the source and database files for different Web Animation build targets.
   var targetConfig = {
     'web-animations': {
       scopeSrc: scopeSrc,

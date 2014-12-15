@@ -9,7 +9,7 @@ module.exports = {
         files : [
             'bower_components/bind-polyfill/index.js',
             'ajax-form.js',
-            'test/unit/*-spec.js'
+            'database/unit/*-spec.js'
         ],
 
         frameworks: ['jasmine'],

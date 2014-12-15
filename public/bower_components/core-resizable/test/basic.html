@@ -466,7 +466,7 @@ Notes on Polyfill compatibility in tests:
       test('detach resizables then notify', function(done) {
         registerResizeHandler(testEl.$.parentTop);
         registerResizeHandler(testEl.$.parentNested);
-        registerResizeHandler(testEl.$.peerNested, false); // removed in above test
+        registerResizeHandler(testEl.$.peerNested, false); // removed in above database
         registerResizeHandler(testEl.$.child5a, false);
         registerResizeHandler(testEl.$.shadow5b.$.resizable, false);
         testEl.$.child5a.remove();

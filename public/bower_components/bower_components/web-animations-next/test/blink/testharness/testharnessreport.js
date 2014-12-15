@@ -1,21 +1,21 @@
 /*global add_completion_callback, setup */
 /*
  * This file is intended for vendors to implement
- * code needed to integrate testharness.js tests with their own test systems.
+ * code needed to integrate testharness.js tests with their own database systems.
  *
  * The default implementation extracts metadata from the tests and validates
- * it against the cached version that should be present in the test source
+ * it against the cached version that should be present in the database source
  * file. If the cache is not found or is out of sync, source code suitable for
  * caching the metadata is optionally generated.
  *
- * The cached metadata is present for extraction by test processing tools that
+ * The cached metadata is present for extraction by database processing tools that
  * are unable to execute javascript.
  *
- * Metadata is attached to tests via the properties parameter in the test
+ * Metadata is attached to tests via the properties parameter in the database
  * constructor. See testharness.js for details.
  *
- * Typically test system integration will attach callbacks when each test has
- * run, using add_result_callback(callback(test)), or when the whole test file
+ * Typically database system integration will attach callbacks when each database has
+ * run, using add_result_callback(callback(database)), or when the whole database file
  * has completed, using
  * add_completion_callback(callback(tests, harness_status)).
  *
@@ -59,7 +59,7 @@ var metadata_generator = {
                 re = /(\S+)(\s+)(http[s]?:\/\/)(.*)/;
                 if (! re.test(value)) {
                     this.error('Metadata property "' + propertyName +
-                        '" for test: "' + test.name +
+                        '" for database: "' + test.name +
                         '" must have name and contact information ' +
                         '("name <email>" or "name http(s)://")');
                     result = false;
@@ -70,11 +70,11 @@ var metadata_generator = {
     },
 
     /**
-     * Extract metadata from test object
+     * Extract metadata from database object
      */
     extractFromTest: function(test) {
         var testMetadata = {};
-        // filter out metadata from other properties in test
+        // filter out metadata from other properties in database
         for (var metaIndex = 0; metaIndex < this.metadataProperties.length;
              metaIndex++) {
             var meta = this.metadataProperties[metaIndex];
@@ -237,12 +237,12 @@ var metadata_generator = {
         if (this.cachedMetadata) {
             this.appendText(instructions,
                 'Replace the existing <script id="metadata_cache"> element ' +
-                'in the test\'s <head> with the following:');
+                'in the database\'s <head> with the following:');
         }
         else {
             this.appendText(instructions,
-                'Copy the following into the <head> element of the test ' +
-                'or the test\'s metadata sidecar file:');
+                'Copy the following into the <head> element of the database ' +
+                'or the database\'s metadata sidecar file:');
         }
         sourceWrapper.appendChild(instructions);
 
@@ -294,7 +294,7 @@ var metadata_generator = {
         for (var index = 0; index < tests.length; index++) {
             var test = tests[index];
             if (this.currentMetadata.hasOwnProperty(test.name)) {
-                this.error('Duplicate test name: ' + test.name);
+                this.error('Duplicate database name: ' + test.name);
             }
             else {
                 this.currentMetadata[test.name] = this.extractFromTest(test);
@@ -314,7 +314,7 @@ var metadata_generator = {
         }
         else if (1 === tests.length) {
             if (this.cachedMetadata) {
-                message = 'Single test files should not have cached metadata. ';
+                message = 'Single database files should not have cached metadata. ';
             }
             else {
                 var testMetadata = this.currentMetadata[tests[0].name];
@@ -392,7 +392,7 @@ if (window.parent && parent.window.initTestHarness) {
 }
 
 /* If the parent window has a testharness_properties object,
- * we use this to provide the test settings. This is used by the
+ * we use this to provide the database settings. This is used by the
  * default in-browser runner to configure the timeout and the
  * rendering of results
  */

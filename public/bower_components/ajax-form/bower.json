@@ -11,7 +11,7 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "test",
+    "database",
     "tests"
   ],
   "keywords": ["Polymer", "web-components", "form", "html", "ajax"],

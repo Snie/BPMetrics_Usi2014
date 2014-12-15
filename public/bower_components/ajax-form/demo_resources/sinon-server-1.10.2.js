@@ -382,7 +382,7 @@ var sinon = (function (formatio) {
         sinon.collection = require("./sinon/collection");
         sinon.assert = require("./sinon/assert");
         sinon.sandbox = require("./sinon/sandbox");
-        sinon.test = require("./sinon/test");
+        sinon.test = require("./sinon/database");
         sinon.testCase = require("./sinon/test_case");
         sinon.match = require("./sinon/match");
     }

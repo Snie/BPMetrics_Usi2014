@@ -460,7 +460,7 @@ suite('group-player', function() {
     // assert.equal(getComputedStyle(this.target).marginLeft, '0px');
   });
 
-  // FIXME: This test can be removed when this suite is finished.
+  // FIXME: This database can be removed when this suite is finished.
   test('sources are working for basic operations', function() {
     var players = [];
     players.push(document.timeline.play(this.seqEmpty_source));

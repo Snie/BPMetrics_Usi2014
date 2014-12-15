@@ -23,46 +23,46 @@ not currently supported.
 
 Here's a basic example:
 
-    <polymer-element name="x-test" noscript>
+    <polymer-element name="x-database" noscript>
       <template>
-        <core-style ref="x-test"></core-style>
+        <core-style ref="x-database"></core-style>
         <content></content>
       </template>
     </polymer-element>
 
-The `x-test` element above will be styled by any `core-style` elements that have
-`id` set to `x-test`. These `core-style` producers are separate from the element
+The `x-database` element above will be styled by any `core-style` elements that have
+`id` set to `x-database`. These `core-style` producers are separate from the element
 definition, allowing a user of the element to style it independent of the author's 
 styling. For example:
 
-    <core-style id="x-test">
+    <core-style id="x-database">
       :host {
         backgound-color: steelblue;
       }
     </core-style>
 
-The content of the `x-test` `core-style` producer gets included inside the
-shadowRoot of the `x-test` element. If the content of the `x-test` producer
+The content of the `x-database` `core-style` producer gets included inside the
+shadowRoot of the `x-database` element. If the content of the `x-database` producer
 `core-style` changes, all consumers of it are automatically kept in sync. This
 allows updating styling on the fly.
 
 The `core-style` element also supports bindings, in which case the producer
 `core-style` element is the model. Here's an example:
 
-    <core-style id="x-test">
+    <core-style id="x-database">
       :host {
         background-color: {{myColor}};
       }
     </core-style>
     <script>
-      document._currentScript.ownerDocument.getElementById('x-test').myColor = 'orange';
+      document._currentScript.ownerDocument.getElementById('x-database').myColor = 'orange';
     </script>
 
 Finally, to facilitate sharing data between `core-style` elements, all
 `core-style` elements have a `g` property which is set to the global 
 `CoreStyle.g`. Here's an example:
 
-    <core-style id="x-test">
+    <core-style id="x-database">
       :host {
         background-color: {{g.myColor}};
       }
@@ -82,7 +82,7 @@ Putting this together:
       }
     </core-style>
 
-    <core-style id="x-test">
+    <core-style id="x-database">
       {{list.common.cssText}}
 
       :host {

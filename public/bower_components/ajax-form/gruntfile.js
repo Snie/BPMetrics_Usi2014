@@ -19,7 +19,7 @@ module.exports = function(grunt) {
             }
         },
         watch: {
-            files: ['ajax-form.js', 'grunt_tasks/*.js', 'test/unit/*'],
+            files: ['ajax-form.js', 'grunt_tasks/*.js', 'database/unit/*'],
             tasks: ['jshint', 'karma:dev']
         }
     });
@@ -30,6 +30,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
 
 
-    grunt.registerTask('default', ['jshint', 'wct-test:desktop']);
-    grunt.registerTask('travis', ['jshint', 'wct-test:remote']);
+    grunt.registerTask('default', ['jshint', 'wct-database:desktop']);
+    grunt.registerTask('travis', ['jshint', 'wct-database:remote']);
 };

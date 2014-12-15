@@ -15,7 +15,7 @@ policies and contribution forms [3].
 (function ()
 {
     var debug = false;
-    // default timeout is 10 seconds, test can override if needed
+    // default timeout is 10 seconds, database can override if needed
     var settings = {
         output:true,
         harness_timeout:{
@@ -664,11 +664,11 @@ policies and contribution forms [3].
 
             if (required_props.code === 0 ||
                ("name" in e && e.name !== e.name.toUpperCase() && e.name !== "DOMException")) {
-                // New style exception: also test the name property.
+                // New style exception: also database the name property.
                 required_props.name = name;
             }
 
-            //We'd like to test that e instanceof the appropriate interface,
+            //We'd like to database that e instanceof the appropriate interface,
             //but we can't, because we don't know what window it was created
             //in.  It might be an instanceof the appropriate interface on some
             //unknown other window.  TODO: Work around this somehow?
@@ -718,7 +718,7 @@ policies and contribution forms [3].
     function Test(name, properties)
     {
         if (tests.file_is_test && tests.tests.length) {
-            throw new Error("Tried to create a test with file_is_test");
+            throw new Error("Tried to create a database with file_is_test");
         }
         this.name = name;
 
@@ -779,7 +779,7 @@ policies and contribution forms [3].
             return;
         }
         this.phase = this.phases.STARTED;
-        //If we don't get a result before the harness times out that will be a test timout
+        //If we don't get a result before the harness times out that will be a database timout
         this.set_status(this.TIMEOUT, "Test timed out");
 
         tests.started = true;
@@ -1041,11 +1041,11 @@ policies and contribution forms [3].
 
     Tests.prototype.set_file_is_test = function() {
         if (this.tests.length > 0) {
-            throw new Error("Tried to set file as test after creating a test");
+            throw new Error("Tried to set file as database after creating a database");
         }
         this.wait_for_finish = true;
         this.file_is_test = true;
-        // Create the test, which will add it to the list of tests
+        // Create the database, which will add it to the list of tests
         async_test();
     };
 
@@ -1303,7 +1303,7 @@ policies and contribution forms [3].
             return;
         }
 
-        //If output is disabled in testharnessreport.js the test shouldn't be
+        //If output is disabled in testharnessreport.js the database shouldn't be
         //able to override that
         this.enabled = this.enabled && (properties.hasOwnProperty("output") ?
                                         properties.output : settings.output);
@@ -1493,7 +1493,7 @@ policies and contribution forms [3].
         // This use of innerHTML plus manual escaping is not recommended in
         // general, but is necessary here for performance.  Using textContent
         // on each individual <td> adds tens of seconds of execution time for
-        // large test suites (tens of thousands of tests).
+        // large database suites (tens of thousands of tests).
         function escape_html(s)
         {
             return s.replace(/\&/g, "&amp;")
@@ -1896,7 +1896,7 @@ policies and contribution forms [3].
         //
         // Touching the postMessage prop on a window can throw if the window is
         // not from the same origin AND post message is not supported in that
-        // browser. So just doing an existence test here won't do, you also need
+        // browser. So just doing an existence database here won't do, you also need
         // to wrap it in a try..cacth block.
         try {
             type = typeof w.postMessage;

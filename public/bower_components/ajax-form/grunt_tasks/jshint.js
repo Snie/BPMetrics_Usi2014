@@ -5,7 +5,7 @@ module.exports = {
         'ajax-form.js',
         'gruntfile.js',
         'grunt_tasks/*.js',
-        'test/unit/*.js'
+        'database/unit/*.js'
     ],
     options: {
         jshintrc: true

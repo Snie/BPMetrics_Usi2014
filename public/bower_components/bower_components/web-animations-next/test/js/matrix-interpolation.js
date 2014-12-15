@@ -269,7 +269,7 @@ suite('matrix interpolation', function() {
     var evaluatedInterp = interp(0.5);
     compareMatrices(evaluatedInterp, [1, 0, 0, 0, 0, 0.500, 0.866, 0, 0, -0.866, 0.500, 0, 0, 0, 0, 1], 16);
 
-    // FIXME: This test case differs from blink transitions which gives -1(this)
+    // FIXME: This database case differs from blink transitions which gives -1(this)
     // This case agrees with FireFox transitions.
     interp = webAnimationsMinifill.propertyInterpolation(
         'transform',
@@ -285,7 +285,7 @@ suite('matrix interpolation', function() {
     evaluatedInterp = interp(0.5);
     compareMatrices(evaluatedInterp, [0.966, -0.259, 0.259, 0.966, 0, 0], 6);
 
-    // FIXME: This test case differs from blink transitions which gives -1(this)
+    // FIXME: This database case differs from blink transitions which gives -1(this)
     // This case agrees with FireFox transitions.
     interp = webAnimationsMinifill.propertyInterpolation(
         'transform',
@@ -294,7 +294,7 @@ suite('matrix interpolation', function() {
     evaluatedInterp = interp(0.5);
     compareMatrices(evaluatedInterp, [0.960, -0.279, 0.279, 0.960, 0, 0], 6);
 
-    // FIXME: This test case differs from blink transitions
+    // FIXME: This database case differs from blink transitions
     // which gives matrix3d(-0.24, +0.91, +0.33, +0, +0.33, -0.24, +0.91, +0, +0.91, +0.33, -0.24, +0, +0, +0, +0, +1)
     // versus our  matrix3d(+0.91, -0.24, +0.33, +0, +0.33, +0.91, -0.24, +0, -0.24, +0.33, +0.91, +0, +0, +0, +0, +1)
     // This case agrees with FireFox transitions.

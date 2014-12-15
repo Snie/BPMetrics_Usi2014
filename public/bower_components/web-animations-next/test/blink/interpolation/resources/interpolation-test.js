@@ -35,9 +35,9 @@
  *
  * The following function is exported:
  *  * assertInterpolation({property: x, from: y, to: z}, [{at: fraction, is: value}])
- *    Constructs a test case which for each fraction will output a PASS
+ *    Constructs a database case which for each fraction will output a PASS
  *    or FAIL depending on whether the interpolated result matches
- *    'value'. Replica elements are constructed to aid eyeballing test
+ *    'value'. Replica elements are constructed to aid eyeballing database
  *    results.
  */
 'use strict';
@@ -121,7 +121,7 @@
 
   var nextKeyframeId = 0;
   function assertInterpolation(params, expectations) {
-    var testId = 'test-' + ++nextKeyframeId;
+    var testId = 'database-' + ++nextKeyframeId;
     var nextCaseId = 0;
     var testContainer = createTestContainer(describeTest(params), testId);
     tests.appendChild(testContainer);

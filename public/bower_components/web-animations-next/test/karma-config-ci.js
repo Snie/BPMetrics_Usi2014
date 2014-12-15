@@ -38,7 +38,7 @@ module.exports = function(config) {
     browsers: Object.keys(customLaunchers),
     basePath: '..',
     files: [
-      // Populated in `grunt test` task.
+      // Populated in `grunt database` task.
     ],
     singleRun: true,
     port: 9876,
