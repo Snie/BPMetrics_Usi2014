@@ -132,8 +132,9 @@
 </head>
 
 <body unresolved>
-
-<global-service id="Statistics" posts="{{posts}}"></global-service>
+<div id="stats">
+    <global-service id="Statistics" posts="{{posts}}"></global-service>
+</div>
 
 <core-drawer-panel responsiveWidth="10000000px" drawerWidth="300px">
 
@@ -359,6 +360,11 @@
         };
         xhr.send();
     }
+
+    setInterval(function(){
+        console.log('hello');
+        document.getElementById('stats').innerHTML ='<global-service id="Statistics" posts="{{posts}}"></global-service>'
+    },12000)
 
     onCreate();
 

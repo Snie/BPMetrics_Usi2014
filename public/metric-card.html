@@ -11,7 +11,7 @@
 <script src="../bower_components/jquery-1.11.1.min.js"></script>
 
 
-<polymer-element name="metric-card" attributes="post side statistic">
+<polymer-element name="metric-card" attributes="post side statistic typeTable">
     <template>
         <style>
             :host {
@@ -32,6 +32,9 @@
             .card-header ::content h2 {
                 margin: 0;
                 font-size: 1.2rem;
+                font-weight: 300;
+            }
+            h3{
                 font-weight: 300;
             }
             core-icon-button {
@@ -75,11 +78,6 @@
 
             <canvas class="cc" id="canvas"></canvas>
 
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
             <div id="table">
 
             </div>
@@ -127,6 +125,7 @@
                 var mean = [];
                 var median = [];
                 var data = {};
+                var typeTable = [];
 
                chartOpt = {
                     // Boolean - Whether to animate the chart
@@ -303,7 +302,13 @@
                         datas.push(this.post.values[i].value);
                         mean.push(this.statistic.names[i].mean[0]);
                         median.push(this.statistic.names[i].median);
+                        typeTable.push("<h3>"+this.post.values[i].name+"</h3><table><tr><td>Variance</td><td>"+Math.round(this.statistic.names[0].variance * 100000) / 100000+"</td></tr><tr><td>Standard Deviation</td><td>"+Math.round(this.statistic.names[i].standard_deviation * 100000) / 100000+"</td></tr><tr><td>Range</td><td>"+Math.round(this.statistic.names[i].range[0] * 100000) / 100000+" - "+Math.round(this.statistic.names[i].range[1] * 100000) / 100000+"</td></tr></table>");
+
                     }
+
+                    this.TypeTable = typeTable;
+
+                    console.log(typeTable);
 
                     data = {
                         labels: labels,
@@ -335,9 +340,8 @@
                         ]
                     };
 
-                    var min = Math.min.apply(null, data.datasets[0].data);
-                    var max = Math.max.apply(null, data.datasets[0].data);
 
+                    this.$.table.innerHTML = typeTable[0];
 
                     var myBarChart = new Chart(ctx).Bar(data, chartOpt);
                 }
@@ -365,8 +369,6 @@
                             }
                         ]
                     };
-
-
 
                     chartOpt = {
                         scaleOverride : true,

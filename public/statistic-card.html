@@ -4,7 +4,7 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 
-<polymer-element name="statistic-card" attributes="post side statistic">
+<polymer-element name="statistic-card" attributes="post side statistic typeTable">
 <template>
     <style>
         :host {
@@ -311,7 +311,11 @@
                     labels.push(name(this.post.names[i].name));
                     mean.push(this.statistic.names[i].mean[0]);
                     median.push(this.statistic.names[i].median);
+                    typeTable.push("<h3>"+this.post.values[i].name+"</h3><table><tr><td>Variance</td><td>"+Math.round(this.statistic.names[0].variance * 100000) / 100000+"</td></tr><tr><td>Standard Deviation</td><td>"+Math.round(this.statistic.names[i].standard_deviation * 100000) / 100000+"</td></tr><tr><td>Range</td><td>"+Math.round(this.statistic.names[i].range[0] * 100000) / 100000+" - "+Math.round(this.statistic.names[i].range[1] * 100000) / 100000+"</td></tr></table>");
+
                 }
+
+                this.TypeTable = typeTable;
 
 
                 data = {
@@ -338,6 +342,8 @@
 
                 var min = Math.min.apply(null, data.datasets[0].data);
                 var max = Math.max.apply(null, data.datasets[0].data);
+
+                this.$.table.innerHTML = typeTable[0];
 
 
                 var myBarChart = new Chart(ctx).Bar(data, chartOpt);
