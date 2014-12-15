@@ -26,7 +26,7 @@ router.get('/', function(req, res) {
             res.json(found)
         });
     }
-    else res.render('./pages/index');
+    else res.render('./index');
 });
 
 //get a model by id
@@ -39,7 +39,7 @@ router.get('/mod/:id', function(req, res) {
             else res.json(found);
         })
     }
-    else res.render('./pages/index');
+    else res.render('./index');
 
 });
 
@@ -52,7 +52,7 @@ router.delete('/mod/:id', function(req, res) {
         else res.status(204).end();
     })
     }
-    else res.render('./pages/index');
+    else res.render('./index');
 
 });
 
@@ -66,7 +66,7 @@ router.get('/my', function(req, res) {
             res.json(found)
         });
     }
-    else res.render('./pages/index');
+    else res.render('./index');
 
 });
 
@@ -79,7 +79,7 @@ router.get('/my/statistics', function(req, res) {
             res.json(found.statistics)
         });
     }
-    else res.render('./pages/index');
+    else res.render('./index');
 
 });
 
@@ -93,7 +93,7 @@ router.get('/:id', function(req, res) {
 
         });
     }
-    else res.render('./pages/index');
+    else res.render('./index');
 
 });
 
@@ -106,7 +106,7 @@ router.get('/demo/:id', function(req, res) {
 
         });
     }
-    else res.render('./pages/index');
+    else res.render('./index');
 
 });
 
@@ -122,7 +122,7 @@ router.get('/collection/statistics/:id', function(req, res){
             }
         })
     }
-    else res.render('./pages/index');
+    else res.render('./index');
 
 });
 
@@ -147,7 +147,7 @@ router.delete('/:id', function(req, res) {
             }
         });
     }
-    else res.render('./pages/index');
+    else res.render('./index');
 
 });
 module.exports = router;

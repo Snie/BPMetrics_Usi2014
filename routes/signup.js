@@ -4,13 +4,13 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
-require("../passportConfig");
+require("../utils/passportConfig");
 
 require("../schemas/account");
 var account = mongoose.model("Account");
 
 router.get('/', function(req, res){
-    res.render('./pages/signUp')
+    res.render('./signUp')
 });
 router.post("/", function(req,res){
     account.findOne({username: req.body.username}, function(err, found){

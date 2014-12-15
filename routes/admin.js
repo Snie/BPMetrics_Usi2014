@@ -3,7 +3,7 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var passport = require("passport");
-require("../passportConfig");
+require("../utils/passportConfig");
 require("../schemas/admin");
 var adminModel = mongoose.model("Admin"); 
 var admin;

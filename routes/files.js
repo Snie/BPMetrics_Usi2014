@@ -33,10 +33,10 @@ router.get('/', function(req, res) {
         else {
             fs.mkdir(user_path);
         }
-        res.render('./pages/dashboard', { username: userName });
+        res.render('./dashboard', { username: userName });
     }
     else{
-        res.render('./pages/index');
+        res.render('./index');
     }
 });
 

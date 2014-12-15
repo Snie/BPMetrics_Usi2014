@@ -14,7 +14,7 @@ router.get('/', function(req,res){
     if(req.user){
         res.send(req.user);
     }
-    else res.render('./pages/dashboard');
+    else res.render('./dashboard');
 });
 
 router.post('/', function(req, res){
@@ -40,7 +40,7 @@ router.post('/', function(req, res){
             }
         })
     } else {
-        res.render('./pages/login')
+        res.render('./login')
     }
 });
 
@@ -69,7 +69,7 @@ router.post('/password', function(req, res){
             }
         });
     } else {
-        res.render('./pages/login')
+        res.render('./login')
     }
 });
 

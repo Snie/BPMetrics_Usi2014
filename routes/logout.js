@@ -5,7 +5,7 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var passport = require("passport");
-require("../passportConfig");
+require("../utils/passportConfig");
 
 router.get('/', function(req, res) {
     req.logout();

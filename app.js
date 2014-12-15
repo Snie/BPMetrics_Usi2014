@@ -13,11 +13,10 @@ var session = require('express-session');
 var compression = require('compression')
 require("./schemas/");
 var account = mongoose.model("Account");
-require("./passportConfig");
+require("./utils/passportConfig");
 var app = express();
 
-function createGuid()
-{
+function createGuid() {
     return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
         var r = Math.random()*16|0, v = c === 'x' ? r : (r&0x3|0x8);
         return v.toString(16);
@@ -35,11 +34,12 @@ app.use(compression({
 }));
 
 
-// view engine setup
+// view engine setup to use html
 app.set('views', path.join(__dirname, 'views'));
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
+//multer helps with the upload of the file to the server, it also does a rename of the file before the upload
 app.use(multer({
     dest: './models/',
     rename: function (fieldname, filename) {
@@ -58,7 +58,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(session({ secret: 'keyboard cat' , cookie: { maxAge: 60000 }}));
+//setup of passport
+app.use(session({ secret: 'keyboard cat' , cookie: { maxAge: 600000 }}));
 app.use(passport.initialize());
 app.use(passport.session());
 

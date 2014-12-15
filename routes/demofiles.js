@@ -33,7 +33,7 @@ router.get('/', function(req, res) {
     else {
         fs.mkdir(user_path);
     }
-    res.render('./pages/demo');
+    res.render('./demo');
 });
 
 // function to create a random id
