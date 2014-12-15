@@ -51,7 +51,7 @@
             <content select="h2" ></content >
         </div>
     </div>
-    <div id="model">
+    <div id="model" style="display: none">
 
     </div>
 
@@ -60,12 +60,20 @@
 
 
 <script>
+    function subSelect(id){
+        console.log(id);
+        console.log('helo');
+        document.getElementById('list').innerHTML = "<metric-list tipo='ALL' myID='" + id + "'></metric-list>";
+    }
     Polymer('side-card', {
         ready: function(){
             temp = '';
+            this.show = false;
+
             if(this.post.models.length > 1) {
                 for (var i = 0; i < this.post.models.length; i++) {
-                    temp += '<div onClick="console.log(this.post)"></div><h2 on-click="{{onClick}}">'+this.post.models[i].name+'</h2></div>';
+                    tempo = this.post.models[i]._id + '';
+                    temp += '<div onclick="subSelect(this.id)" id="'+this.post.models[i]._id+'"><h2>&nbsp;&nbsp;&nbsp;'+this.post.models[i].name+'</h2></div>';
                 }
                 this.$.model.innerHTML = temp;
             }
@@ -80,10 +88,10 @@
         },
         showChanged: function(oldVal, newVal) {
             if(newVal == true) {
-                this.$.info.style.display = 'block';
+                this.$.model.style.display = 'block';
             }
             else{
-                this.$.info.style.display = 'none';
+                this.$.model.style.display = 'none';
             }
         },
         toStringer: function(string){
@@ -103,17 +111,19 @@
             this.deleted = true;
         },
         subSelect: function(id){
-            console.log(hello);
+            console.log('marco')
             document.getElementById('list').innerHTML = "<metric-list tipo='ALL' myID='" + id + "'></metric-list>";
         },
         onClick: function(event, detail,sender){
-            if(this.post.models.length <= 1) {
+
+            if(this.post.models.length = 1) {
                 document.getElementById('list').innerHTML = "<metric-list tipo='ALL' myID='" + this.post.models[0]._id + "'></metric-list>";
             }
-            else{
+            else if(this.post.models.length > 1 && !this.show){
                 console.log(this.post.statistics);
                 document.getElementById('list').innerHTML = "<statistic-list tipo='ALL' myID='" + this.post.statistics + "'></statistic-list>";
             }
+            this.show = !this.show;
         }
     });
 </script>

@@ -87,10 +87,9 @@ router.get('/my/statistics', function(req, res) {
 router.get('/:id', function(req, res) {
     if(req.user) {
         var id = req.params.id;
-        collMod.findOne(id).populate('models').exec(function (err, found) {
+        collMod.findOne(id).populate('models').populate('statistics').exec(function (err, found) {
             if (err) throw (err);
             res.send(found);
-
         });
     }
     else res.render('./index');

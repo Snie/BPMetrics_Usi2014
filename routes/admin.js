@@ -14,7 +14,12 @@ adminModel.findOne({username: 'admin'},
 });
 
 router.get('/', function(req, res) {
-    res.render('./admin');
+	if(req.user === undefined || req.user.username !== "admin"){
+    	res.redirect('./');
+	}
+	else if(req.user.username === "admin"){
+		res.render('./admin');
+	}
 });
 
 
@@ -24,6 +29,7 @@ router.get('/processes', function(req, res){
 		processes.ongoing = found.ongoing;
 		res.json(processes);
 	});
+
 })
 
 module.exports = router;

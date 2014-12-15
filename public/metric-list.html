@@ -16,24 +16,27 @@
                 display: block;
             }
             paper-dropdown-menu{
-                margin: 0 52% 0 48%;
+                text-align: center;
+                margin: 0 48% 0 48%;
             }
         </style>
 
+        <div>
         <post-model-service id='posts' posts="{{posts}}" modelId="{{myID}}">
         </post-model-service>
 
-
-        <paper-dropdown-menu label="All">
-            <paper-dropdown class="dropdown">
-                <core-menu class="menu">
-                    <paper-item on-click="{{menuChange}}" class="menu-item" id="ALL">All</paper-item>
-                    <paper-item on-click="{{menuChange}}" id="SINGLE_VALUE">Single Value</paper-item>
-                    <paper-item on-click="{{menuChange}}" id="DISTRIBUTION">Distribution</paper-item>
-                    <paper-item on-click="{{menuChange}}" id="TYPE_DISTRIBUTION">Type Distribution</paper-item>
-                </core-menu>
-            </paper-dropdown>
-        </paper-dropdown-menu>
+        <div>
+            <paper-dropdown-menu label="All">
+                <paper-dropdown class="dropdown">
+                    <core-menu class="menu">
+                        <paper-item on-click="{{menuChange}}" class="menu-item" id="ALL">All</paper-item>
+                        <paper-item on-click="{{menuChange}}" id="SINGLE_VALUE">Single Value</paper-item>
+                        <paper-item on-click="{{menuChange}}" id="DISTRIBUTION">Distribution</paper-item>
+                        <paper-item on-click="{{menuChange}}" id="TYPE_DISTRIBUTION">Type Distribution</paper-item>
+                    </core-menu>
+                </paper-dropdown>
+            </paper-dropdown-menu>
+        </div>
 
         <div id="list" horizontal layout center-justified wrap class="{{tipo}}">
             <template repeat="{{post in posts}}">
@@ -45,6 +48,7 @@
                     </metric-card>
             </template>
         </div>
+    </div>
 
     </template>
 

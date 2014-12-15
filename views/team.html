@@ -1,0 +1,305 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Team</title>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="../bower_components/webcomponentsjs/webcomponents.js"></script>
+
+    <link rel="import"
+          href="./bower_components/font-roboto/roboto.html">
+    <link rel="import"
+          href="./bower_components/core-header-panel/core-header-panel.html">
+    <link rel="import"
+          href="./bower_components/core-toolbar/core-toolbar.html">
+    <link rel="import"
+          href="./bower_components/paper-tabs/paper-tabs.html">
+    <link rel="import"
+          href="./bower_components/core-icon-button/core-icon-button.html">
+    <link rel="import"
+          href="./bower_components/core-overlay/core-overlay.html">
+    <link rel="import"
+          href="metric-list.html">
+    <link rel="import"
+          href="side-list.html">
+    <link rel="import"
+          href="./bower_components/core-dropdown-menu/core-dropdown-menu.html">
+    <link rel="import"
+          href="./bower_components/core-input/core-input.html">
+    <link rel="import"
+          href="./bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+    <link rel="import"
+          href="./bower_components/paper-dropdown/paper-dropdown.html">
+    <link rel="import"
+          href="./bower_components/paper-item/paper-item.html">
+    <link rel="import"
+          href="./bower_components/core-ajax/core-ajax.html">
+    <link rel="import"
+          href="./bower_components/core-drawer-panel/core-drawer-panel.html">
+    <link rel="import"
+          href="signup-card.html">
+    <link rel="import"
+          href="../bower_components/paper-toast/paper-toast.html">
+    <link rel="import"
+          href="login-card.html">
+    <link rel="import" href="/bower_components/core-icons/social-icons.html">
+
+
+    <style>
+        html,body {
+            height: 100%;
+            margin: 0;
+            background-color: white;
+            font-family: 'RobotoDraft', sans-serif;
+        }
+
+        core-header-panel {
+            height: 70px;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        core-toolbar{
+            background: #da4336;
+            color: white;
+        }
+        #tabs {
+            width: 100%;
+            margin: 0;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            text-transform: uppercase;
+        }
+        core-icon-button{
+            border: solid 1px #d0d0d0;
+            margin-top:49px;
+            border-radius: 50%;
+        }
+        core-icon-button:hover{
+            border: none;
+            margin-top:50px;
+            border-radius: 50%;
+        }
+        h1, h3, p, li {
+            font-weight: 300;
+        }
+        p, h3 {
+            font-size: 20px;
+        }
+        h1 {
+            font-size: 70px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        h3, p, li {
+            color: gray;
+        } 
+        #init {
+            text-align: center;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #why {
+            text-align: center;
+            padding: auto;
+            background: #F5F5F5;
+            padding-bottom: 80px;
+        }
+        #whylist{
+            text-align: left;
+        }
+        ul {
+            list-style-type: none;
+            font-size: 25px;
+        }
+        #firstimage{
+            width: 80%;
+        }
+        #graphs{
+            width: 100%;
+        }
+        #graphtable{
+            /*padding-left: 5%;*/
+            margin-left:5%;
+            width: 95%;
+        }
+        th{
+            width: 50%;
+        }
+        .names{
+            text-align: left;
+            padding-bottom: 6%;
+
+        }
+        #uno{
+            padding-top: 35px;
+        }
+        #start, #demo{
+            text-align: center;
+            padding-bottom: 100px; 
+        }
+        #demo {
+            background: #F5F5F5;
+        }
+        #demo_signup{
+            margin-left:5%;
+            width: 95%;
+            padding-bottom: 100px;
+        }
+        #footer {
+            width: 100%;
+            text-align: center;
+            padding-top: 100px;
+            padding-bottom: 100px;
+            background: #F5F5F5;
+        }
+        paper-toast {
+            bottom: 40px;
+            left: 10px;
+        }
+        #logo {
+            width: 55px;
+        }
+        .photos {
+            height: 250px;
+            margin-top: 50px;
+            border-radius: 50%;
+            box-shadow: 1px 1px 10px #000000;
+            opacity: 0.7;
+        }
+        .photos:hover{
+            opacity: 1;
+            border-radius: 10%;
+            height: 300px;
+            transition: 0.3s;
+        }
+        #thanks {
+            margin-top: 100px;
+            text-align: center;
+            margin-bottom: 100px;
+        }
+        .quotes {
+            font-style: italic;
+        }
+    </style>
+
+
+</head>
+
+<body unresolved>
+
+
+<core-header-panel>
+    <core-toolbar>
+        <img id="logo" src="../resources/logo6.png"/>
+        <paper-tabs id="tabs" selected="team" noink="true" self-end>
+            <paper-tab name="team">Team</paper-tab>
+            <paper-tab name="home">Home</paper-tab>
+        </paper-tabs>
+    </core-toolbar>
+</core-header-panel>
+
+
+<div id="init">
+
+<h1>The Developers</h1>
+<h3></h3>
+<p>
+Hard work, determination and research of quality were the ingredients which brought this app to you.<br/>
+This people made all the things you see and use happen. </p>
+<img id="firstimage" src="../resources/team.png"/>
+</div>
+<paper-shadow class="card" z="1">
+<div id="why">
+    <h1 style="padding-top: 100px; width: 100%">The awesome team</h1>
+    <table id="graphtable">
+        <tr>
+        <th> 
+                <img class="photos" src="../resources/abdil.png"/>
+        </th>
+        <th> 
+            <ul class="quote">
+                <li class='names'>Abdil Cakal:</li>
+                <li class="quotes">"I sweared so much to get this web app working, it has to be worth at least a 10"</li>
+            </ul>
+        </th>
+        </tr>
+        <tr>
+        <th> 
+                <img class="photos" src="../resources/andreia.png"/>
+        </th>
+        <th> 
+            <ul class="quote">
+                <li class='names'>Andreia Faria Carvalho:</li>
+                <li class="quotes"></li>
+            </ul>
+        </th>
+        </tr>
+        <tr>
+        <th> 
+                <img class="photos" src="../resources/nicolo.png"/>
+        </th>
+        <th> 
+            <ul class="quote">
+                <li class='names'>Nicolò Linder:</li>
+                <li class="quotes"></li>
+            </ul>
+        </th>
+        </tr>
+        <tr>
+        <th> 
+                <img class="photos" src="../resources/sonny.png"/>
+        </th>
+        <th> 
+            <ul class="quote">
+                <li class='names'>Sonny Monti:</li>
+                <li class="quotes">"Working on BPMetrics was intresting, it improved my web developing skills"</li>
+            </ul>
+        </th>
+        </tr>
+        <tr>
+        <th> 
+                <img class="photos" src="../resources/vince.png"/>
+        </th>
+        <th> 
+            <ul class="quote">
+                <li class='names'>Vincenzo Ferme:</li>
+                <li class="quotes">The crazy guy behing BPMetrics computation and team supervisor</li>
+            </ul>
+        </th>
+        </tr>
+    </table>
+</div>
+</paper-shadow>
+
+
+<div id="thanks">
+    <h1>Thanks for using this web app!</h1>
+    <p>Thank you for choosing BPMetrics to compute your metrics! We hope to see you around in this web app soon!</p>
+</div>
+
+<div id="footer">
+    <paper-button raised id="git"><core-icon icon="social:post-github"></core-icon> GitHub</paper-button>  
+    <p style='font-size: 15px;'>BPMetrics is licensed under the Apache License, Version 2.0. See <a href="https://github.com/docker/docker/blob/master/LICENSE" target="_blank">LICENSE</a> for the full license text.</p>    
+</div>
+
+<script>
+    var tabs = document.querySelector('paper-tabs');
+
+    tabs.addEventListener('core-select', function() {
+        if(tabs.selected == 'home') {
+            window.location.replace('/');
+        }
+
+    });
+
+    var git_button = document.getElementById("git");
+    git_button.addEventListener('click', function(){
+        window.open('https://github.com/Snie/BPMetrics_Usi2014');
+    });
+
+</script>
+</body>

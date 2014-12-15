@@ -159,6 +159,9 @@
             bottom: 40px;
             left: 10px;
         }
+        #logo {
+            width: 55px;
+        }
     </style>
 
 
@@ -169,6 +172,7 @@
 
 <core-header-panel>
     <core-toolbar>
+        <img id="logo" src="../resources/logo6.png"/>
         <paper-tabs id="tabs" selected="model" noink="true" self-end>
             <paper-tab name="demo">Demo</paper-tab>
             <paper-tab name="model">Home</paper-tab>
@@ -276,7 +280,7 @@ More than 100 intuitive metrics for each model.</p>
 
 <div id="footer">
     <paper-button raised id="git"><core-icon icon="social:post-github"></core-icon> GitHub</paper-button> 
-    <paper-button raised><core-icon icon="social:people"></core-icon> Team</paper-button> 
+    <paper-button raised id="team"><core-icon icon="social:people"></core-icon> Team</paper-button> 
     <p style='font-size: 15px;'>BPMetrics is licensed under the Apache License, Version 2.0. See <a href="https://github.com/docker/docker/blob/master/LICENSE" target="_blank">LICENSE</a> for the full license text.</p>    
 </div>
 
@@ -305,11 +309,13 @@ More than 100 intuitive metrics for each model.</p>
     });
 
     var git_button = document.getElementById("git");
-    git.addEventListener('click', function(){
+    git_button.addEventListener('click', function(){
         window.open('https://github.com/Snie/BPMetrics_Usi2014');
     });
 
-
-
+    team_button = document.getElementById("team");
+    team_button.addEventListener('click', function(){
+        window.location.replace('/team');
+    });
 </script>
 </body>

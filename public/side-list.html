@@ -36,19 +36,13 @@
     <script>
         var x = 0;
         Polymer('side-list', {
-            onHovered: function(event, detail, sender) {
-                sender.show = true;
-            },
-            onUnhovered: function(event, detail, sender){
-                sender.show = false;
-            },
             nameGenerator: function(post){
                 if(post.models.length <= 1){
-                    return 'M - ' + post.models[0].name;
+                    return post.models[0].name;
                 }
                 else {
                     x += 1;
-                    return 'C - ' + 'collection ' + x;
+                    return 'collection ' + x;
                 }
             }
         });

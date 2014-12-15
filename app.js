@@ -59,7 +59,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //setup of passport
-app.use(session({ secret: 'keyboard cat' , cookie: { maxAge: null }}));
+app.use(session({ secret: 'keyboard cat' , cookie: { maxAge: 600000 }}));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -96,6 +96,8 @@ app.use("/demofiles", demofiles);
 var admin = require("./routes/admin");
 app.use("/admin", admin);
 
+var team = require("./routes/team");
+app.use("/team", team);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

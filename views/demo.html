@@ -44,6 +44,10 @@
     <link rel="import"
           href="login-card.html">
 
+    <link rel="import" href="/bower_components/core-icon/core-icon.html">
+    <link rel="import" href="/bower_components/core-icons/communication-icons.html">
+    <link rel="import" href="/bower_components/core-icons/maps-icons.html">
+
 
     <script type="text/javascript" src="./js/checkfiles.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -115,6 +119,16 @@
             bottom: 40px;
             left: 10px;
         }
+        #demotry {
+            text-align: center;
+            width: 100%;
+        }
+        h1, p {
+            font-weight: 300;
+        }
+        #logo {
+            width: 55px;
+        }
     </style>
 
 
@@ -124,8 +138,10 @@
 
         <core-header-panel>
             <core-toolbar>
+                <img id="logo" src="../resources/logo6.png"/>
                 <paper-tabs id="tabs" selected="model" noink="true" self-end>
                     <paper-tab name="model">Demo</paper-tab>
+                    <paper-tab name="home">Home</paper-tab>
                     <paper-tab name="start">Get Started</paper-tab>
                 </paper-tabs>
             </core-toolbar>
@@ -142,6 +158,7 @@
         </core-overlay>
 
         <div id="container" layout vertical center>
+
             <paper-dropdown-menu label="All">
                 <paper-dropdown class="dropdown">
                     <core-menu class="menu">
@@ -165,13 +182,18 @@
 
             <div id="list">
                 <!--<metric-list tipo='ALL' myID='b18f4aa4199545afb2c48e9f8b714972'></metric-list>-->
+                <div id='demotry'>
+                    <h1><core-icon icon="file-upload"></core-icon> Try it now!</h1>
+                    <p>You can add model and see some statistics!</p>
+                    
+                </div>
             </div>
+
+
         </div>
 
+
         <!--Messages to the user-->
-        <paper-toast id="data_ok" role="alert" text="All data upload is ready!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
-            <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
-        </paper-toast>
         <paper-toast id="signup-card_message_204" role="alert" text="New account created!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
             <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
         </paper-toast>
@@ -225,6 +247,9 @@
         }
         else if(tabs.selected == 'start'){
             document.getElementById('signUp').opened = true;
+        }
+        else if(tabs.selected == 'home'){
+            window.location.href = '/'
         }
     });
 
@@ -297,8 +322,7 @@
                     return false;
                 }
                 else{
-                    document.getElementById('list').innerHTML = "<metric-list tipo='ALL' myID='"+result[0].collectionID+"'></metric-list>";
-                    document.querySelector('#data_ok').show();
+                    document.getElementById('list').innerHTML = "<metric-list tipo='ALL' myID='"+result[0].models[0]._id+"'></metric-list>";
                     return true;
                 }
             },
@@ -316,8 +340,11 @@
 //            console.log("ids: " + ids);
             var tmp = '';
             for (var id in ids) {
+
                 var collIDReturn = getCollection(ids[id]);
+
 //                console.log("collIDReturn: " + collIDReturn);
+
                 if (collIDReturn == false) {
 
                     if (tmp == '') {
@@ -325,9 +352,12 @@
                     } else {
                         tmp += "," + ids[id];
                     }
+
                 }
             }
+
             localStorage['stack'] = tmp;
+
             console.log("New Stack: " + localStorage['stack']);
         }
     }

@@ -39,7 +39,7 @@
                         class="metric-ALL metric-{{post.type}}"
                         post="{{post}}"
                         statistic="{{post | getStat}}">
-                    <h2>{{post.name | fixString }}</h2>
+                    <h2>{{post.metric_name | fixString }}</h2>
                 </statistic-card>
 
 
@@ -75,9 +75,9 @@
                 }
             },
             getStat: function(post) {
-                statistic = document.getElementById('Statistics').posts
-                for(var i=0; i < statistic.length; i++){;
-                    if(statistic[i].metric_name == post.name){
+                statistic = document.getElementById('Statistics').posts;
+                for(var i=0; i < statistic.length; i++){
+                    if(statistic[i].metric_name == post.metric_name){
                         return statistic[i];
                     }
                 }
