@@ -1,0 +1,62 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="./service/global-service.html">
+
+<link rel="import" href="statistic-card.html">
+<script src="bower_components/chartjs/Chart.js"></script>
+
+
+<polymer-element name="global-list" attributes="tipo myID">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+
+        <global-service id='posts' posts="{{posts}}">
+        </global-service>
+
+        <div horizontal layout center-justified wrap class="{{tipo}}">
+            <template repeat="{{post in posts}}">
+                    <statistic-card
+                            class="metric-ALL metric-{{post.type}}"
+                            post="{{post}}">
+                        <h2>{{post.metric_name | fixString }}</h2>
+                    </statistic-card>
+            </template>
+        </div>
+
+    </template>
+
+    <script>
+
+        Polymer('global-list', {
+            tipoChanged: function(oldVal, newVal) {
+
+                var a = this.shadowRoot.querySelectorAll('metric-card.metric-ALL');
+
+                for(var n=0; n<a.length; n++){
+                    var e = a[n];
+
+                    e.style.display = 'none';
+                }
+
+                a = this.shadowRoot.querySelectorAll('metric-card.metric-' + newVal);
+
+                for(var n=0; n<a.length; n++){
+                    var e = a[n];
+
+                    e.style.display = 'inline';
+                }
+            },
+            fixString : function(string){
+                var temp = string.match(/[A-Z][a-z]+/g);
+                string = "";
+                for(var i in temp){
+                    string += temp[i] + " ";
+                }
+                return string;
+            }
+        });
+    </script>
+</polymer-element>

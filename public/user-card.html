@@ -1,0 +1,124 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<polymer-element name="user-card" attributes="post user firstname lastname email">
+    <template>
+        <style>
+            :host {
+                margin: 100px auto;
+                border-radius: 3px;
+                display: block;
+                position: relative;
+                background-color: white;
+                padding: 20px;
+                width: 300px;
+                height: 400px;
+                font-size: 1.2rem;
+                font-weight: 300;
+            }
+
+            core-icon-button {
+                position: absolute;
+                top: 2px;
+                right: 2px;
+                padding:2px;
+                color: #636363;
+            }
+            paper-button{
+                background: white;
+            }
+            img{
+                border-radius: 50%;
+                border: solid 1px #3f3f3f;
+            }
+            p{
+                font-size: 15px;
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                text-align: center;
+            }
+            p:hover{
+                cursor: pointer;
+            }
+            paper-toast {
+                bottom: 0;
+                left: 0;
+                width: 100%;
+            }
+
+        </style>
+        <core-icon-button id="closeButton" icon="clear" on-click="{{closeDown}}"></core-icon-button>
+
+        <div layout vertical center>
+            <img  src="../resources/logo.jpg" width="75px" on-click="{{changeImage}}"/>
+
+            <form id="form" method="post" action="/user">
+                <paper-input-decorator id="firstname" label="{{firstname}}">
+                    <input name="firstname"/>
+                </paper-input-decorator>
+                <paper-input-decorator id="lastname" label="{{lastname}}">
+                    <input name="lastname"/>
+                </paper-input-decorator>
+                <paper-input-decorator id="email" label="{{email}}">
+                    <input type="email" name="email"/>
+                </paper-input-decorator>
+            </form>
+            <p on-click="{{turnAround}}">If you want to change the password click here!</p>
+            <div layout horizontal center>
+                <paper-button raised on-click="{{submitForm}}">Submit</paper-button>
+                <paper-button raised on-click="{{logOut}}">LogOut</paper-button>
+            </div>
+        </div>
+    </template>
+
+    <script>
+
+        Polymer('user-card', {
+            closeDown: function(){
+                document.getElementById('signUp').opened = false;
+                document.getElementById('tabs').selected = 'home';
+            },
+            submitForm: function(){
+                var firstname = this.$.firstname.firstElementChild.value;
+                var lastname = this.$.lastname.firstElementChild.value;
+                var email = this.$.email.firstElementChild.value;
+                var pattern = new RegExp(/^(("[\w-+\s]+")|([\w-+]+(?:\.[\w-+]+)*)|("[\w-+\s]+")([\w-+]+(?:\.[\w-+]+)*))(@((?:[\w-+]+\.)*\w[\w-+]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][\d]\.|1[\d]{2}\.|[\d]{1,2}\.))((25[0-5]|2[0-4][\d]|1[\d]{2}|[\d]{1,2})\.){2}(25[0-5]|2[0-4][\d]|1[\d]{2}|[\d]{1,2})\]?$)/i);
+                if(!pattern.test(email) && email !== "") {
+                    document.querySelector('user-card_1').show();
+                } else if(firstname || lastname || email) {
+                    $.ajax({
+                        url: '/user',
+                        type: 'POST',
+                        data: { firstname: firstname, lastname: lastname, email: email },
+                        statusCode: {
+                            204: function() {
+                                document.querySelector('#user-card_message_204').show();
+                            },
+                            400: function() {
+                                document.querySelector('#user-card_message_400').show();
+                            }
+                        }
+                    });
+                }
+            },
+            changeImage: function(){
+//                console.log('bop');
+            },
+            logOut: function(){
+                window.location.replace('/logout');
+            },
+            turnAround: function(){
+                document.getElementById('frontForm').style.display = 'none';
+                document.getElementById('backForm').style.display = 'block';
+            }
+        });
+    </script>
+
+</polymer-element>
