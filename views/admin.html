@@ -40,13 +40,11 @@
     <link rel="import"
           href="signup-card.html">
     <link rel="import"
-          href="./bower_components/paper-toast/paper-toast.html">
+          href="../bower_components/paper-toast/paper-toast.html">
     <link rel="import"
           href="login-card.html">
     <link rel="import" href="/bower_components/core-icons/social-icons.html">
-    <link rel="stylesheet" href="./bower_components/owl-carousel/owl.carousel.css">
-    <link rel="stylesheet" href="./bower_components/owl-carousel/owl.theme.css">
-    <script src="./bower_components/owl-carousel/owl.carousel.js"></script>
+
 
     <style>
         html,body {
@@ -65,7 +63,6 @@
         }
         #console {
           margin-left: 20px;
-          width: 50%;
         }
         #header{
           width: 100%;
@@ -84,12 +81,6 @@
         .card{
           background: #EEEEEE;
         }
-        #owl-demo{
-          width: 100%;
-        }
-        .image{
-          width: 600px;
-        }
     </style>
 
 
@@ -103,41 +94,26 @@
     <h1 id="title">Ongoing processes</h1>
     </paper-shadow>
     </div>
-    <div id="console">
-      <div id="owl-demo" class="owl-carousel owl-theme">
-        <div class="item"><img class="image" src="../resources/pixelchristmas.png" alt="The Last of us"></div>
-        <div class="item"><img class="image" src="../resources/pixelchristmasred.png" alt="GTA V"></div>
-        <div class="item"><img class="image" src="../resources/tiledBanana.png" alt="Mirror Edge"></div>
-      </div>
-    </div>
-
+    <div id="console"></div>
     <script type="text/javascript">
-$(document).ready(function() {
- 
-  $("#owl-demo").owlCarousel({ 
-      singleItem: true,
-      navigation: false
-  });
- 
-});
-//     setInterval(function(){
-//         $.ajax({
-//             url: '/admin/processes',
-//             type: 'GET',
-//             async: false,
-//             accepts: 'application/json',
-//             success: function(result){
-//                 var log = "";
-//                 for (var x = 0; x < result.ongoing.length; x++){
-//                     var arr = result.ongoing[x].split(',');
-//                     log += arr[1] + '<br/>';
-//                 }
-//                 document.getElementById('console').innerHTML = log;
-//             },
-//             error: function (xhr, status) {
-//                 console.log(status + xhr);
-//             }
-//         });
-//     }, 5000);
+    setInterval(function(){
+        $.ajax({
+            url: '/admin/processes',
+            type: 'GET',
+            async: false,
+//            accepts: 'application/json',
+            success: function(result){
+                var log = "";
+                for (var x = 0; x < result.ongoing.length; x++){
+                    var arr = result.ongoing[x].split(',');
+                    log += arr[1] + '<br/>';
+                }
+                document.getElementById('console').innerHTML = log;
+            },
+            error: function (xhr, status) {
+                console.log(status + xhr);
+            }
+        });
+    }, 5000);
     </script>
 </body>

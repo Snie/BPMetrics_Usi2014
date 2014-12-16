@@ -15,6 +15,16 @@ var accounts = {
             "email": "email@usi.ch",
             "collection": [],
             "statistics": null
+        },
+        {
+            "_id": ObjectId(),
+            "username": "admin",
+            "firstname": "admin",
+            "lastname": "admin",
+            "password": "admin1",
+            "email": "admin@usi.ch",
+            "collection": [],
+            "statistics": null
         }
     ]
 }

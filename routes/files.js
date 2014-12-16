@@ -33,7 +33,12 @@ router.get('/', function(req, res) {
         else {
             fs.mkdir(user_path);
         }
-        res.render('./dashboard', { username: userName });
+        if (req.user.username == "admin"){
+            res.redirect('./admin');
+        }
+        else {
+            res.render('./dashboard', { username: userName });
+        }
     }
     else{
         res.render('./index');
