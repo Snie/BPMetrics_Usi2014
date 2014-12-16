@@ -1,6 +1,5 @@
 <link rel="import" href="./bower_components/polymer/polymer.html">
-<link rel="import" href="./service/post-model-service.html">
-<link rel="import" href="./service/post-service.html">
+<link rel="import" href="./service/demo-model-service.html">
 <link rel="import" href="metric-card.html">
 <script src="bower_components/chartjs/Chart.js"></script>
 <link rel="import" href="./bower_components/core-menu/core-menu.html">
@@ -9,7 +8,7 @@
 <link rel="import" href="./bower_components/paper-item/paper-item.html">
 
 
-<polymer-element name="metric-list" attributes="tipo myID">
+<polymer-element name="demo-list" attributes="tipo myID">
     <template>
         <style>
             :host {
@@ -22,8 +21,8 @@
         </style>
 
         <div>
-        <post-model-service id='posts' posts="{{posts}}" modelId="{{myID}}">
-        </post-model-service>
+        <demo-model-service id='posts' posts="{{posts}}" modelId="{{myID}}">
+        </demo-model-service>
 
         <div>
             <paper-dropdown-menu label="All Metrics">
@@ -53,7 +52,7 @@
     </template>
 
     <script>
-        Polymer('metric-list', {
+        Polymer('demo-list', {
             ready: function(){
                 this.tipo = 'ALL'
             },

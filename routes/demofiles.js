@@ -22,7 +22,7 @@ var adminModel = mongoose.model("Admin");
 // get the id of the anon user
 var userId = "";
 account.find({username: "anon"}).exec(function(err, found){userId = found[0]._id});
-var userName = "Demo"
+var userName = "Demo";
 
 
 // Renders the demo page
@@ -36,6 +36,16 @@ router.get('/', function(req, res) {
     res.render('./demo');
 });
 
+router.get('/mod/:id', function(req, res) {
+        var id = req.params.id;
+        console.log('kill all humans');
+        mod.findById(id, function(err, found){
+            if(err )throw(err);
+            if(!found) res.status(404);
+            else res.json(found);
+        })
+});
+
 // function to create a random id
 function createGuid(){
     return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -43,6 +53,13 @@ function createGuid(){
         return v.toString(16);
     });
 }
+router.get('/statistics', function(req, res) {
+    console.log(userId)
+    account.findById(userId).populate("statistics").exec(function (err, found) {
+        if (err) throw (err);
+        res.json(found.statistics)
+    });
+});
 
 
 router.post('/', function(req, res) {
@@ -100,6 +117,15 @@ function createSingleFile(fileArray, userId, dirId){
         });
     });
 }
+
+router.get('/:id', function(req, res) {
+    id = req.params.id
+    collMod.findOne(id).populate('models').populate('statistics').exec(function (err, found) {
+        if (err) throw (err);
+        res.send(found);
+    });
+});
+
 
 function execSingleJar(userId, dirId, userName, res, target_path, newIDs, queue){
     exec('java -jar bin/BPMetrics.jar ' + "models/" + userId + "/" + dirId, function(error, stdout, stderr) {

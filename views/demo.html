@@ -20,7 +20,7 @@
     <link rel="import"
           href="./bower_components/core-overlay/core-overlay.html">
     <link rel="import"
-          href="metric-list.html">
+          href="demo-list.html">
     <link rel="import"
           href="side-list.html">
     <link rel="import"
@@ -43,6 +43,8 @@
           href="signup-card.html">
     <link rel="import"
           href="login-card.html">
+    <link rel="import"
+          href="./service/demo-service.html">
 
     <link rel="import" href="/bower_components/core-icon/core-icon.html">
     <link rel="import" href="/bower_components/core-icons/communication-icons.html">
@@ -135,6 +137,10 @@
 </head>
 
 <body unresolved>
+
+        <div id="stats">
+            <demo-service id="Statistics" posts="{{posts}}"></demo-service>
+        </div>
 
         <core-header-panel>
             <core-toolbar>
@@ -308,19 +314,23 @@
         if(!id){
             return false;
         }
-        var url= '/models/demo/'+id;
+        var url= '/demofiles/'+id;
+        console.log(id);
 
         $.ajax({
             url: url,
             type: 'GET',
             async: false,
-//            accepts: 'application/json',
+            accepts: 'application/json',
             success: function(result){
-                if(result.collectionID){
+                if(!result.collectionID){
+                    console.log(result);
                     return false;
                 }
                 else{
-                    document.getElementById('list').innerHTML = "<metric-list tipo='ALL' myID='"+result[0].models[0]._id+"'></metric-list>";
+                    console.log(result);
+                    console.log('hello');
+                    document.getElementById('list').innerHTML = "<demo-list tipo='ALL' myID='" + result.models[0]._id + "'></demo-list>";
                     return true;
                 }
             },
@@ -336,7 +346,7 @@
             var ids = toSplit.split(',');
             var tmp = '';
             for (var id in ids) {
-
+                console.log(id);
                 var collIDReturn = getCollection(ids[id]);
 
 
@@ -356,7 +366,7 @@
         }
     }
 
-    var refreshIntervalId = setInterval(function(){polling()}, 5000);
+    var refreshIntervalId = setInterval(function(){polling()}, 500);
 
 
 

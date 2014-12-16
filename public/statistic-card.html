@@ -87,7 +87,14 @@
 
 
 <script>
-
+    function fixString(string){
+        var temp = string.match(/[A-Z][a-z]+/g);
+        string = "";
+        for(var i in temp){
+            string += temp[i] + " ";
+        }
+        return string;
+    }
     function name(name){
         temp = '';
         for(var i = 0; i < name.length; i++){
@@ -332,11 +339,13 @@
             }
             else if(this.post.type == 'TYPE_DISTRIBUTION'){
 
+                typeTable.push('<table><tr><td>N.</td><td>None</td><td style="background: rgba(200,200,0,0.5); text-align: center; border: solid 1px rgba(200,200,0,0.8);">mean</td></tr><tr><td>M.E.D</td><td>Message Event Definition</td></tr><tr><td>T.E.D</td><td>Time Event Definition</td><td style="background: rgba(200,0,0,0.5); text-align: center; border: solid 1px rgba(200,0,0,0.8);">median</td></tr><tr><td>S.E.D</td><td>Signal Event Definition</td></tr><tr><td>C.E.D</td><td>Conditional Event Definition</td></tr>')
+
                 for(var i = 0; i < this.post.names.length; i++){
                     labels.push(name(this.post.names[i].name));
                     mean.push(this.statistic.names[i].mean[0]);
                     median.push(this.statistic.names[i].median);
-                    typeTable.push("<h3>"+this.post.values[i].name+"</h3><table><tr><td>Variance</td><td>"+Math.round(this.statistic.names[i].variance * 100000) / 100000+"</td></tr><tr><td>Standard Deviation</td><td>"+Math.round(this.statistic.names[i].standard_deviation * 100000) / 100000+"</td></tr><tr><td>Range</td><td>"+Math.round(this.statistic.names[i].range[0] * 100000) / 100000+" - "+Math.round(this.statistic.names[i].range[1] * 100000) / 100000+"</td></tr></table>");
+                    typeTable.push("<h3>"+fixString(this.post.names[i].name)+"</h3><table><tr><td>Variance</td><td>"+Math.round(this.statistic.names[i].variance * 100000) / 100000+"</td></tr><tr><td>Standard Deviation</td><td>"+Math.round(this.statistic.names[i].standard_deviation * 100000) / 100000+"</td></tr><tr><td>Range</td><td>"+Math.round(this.statistic.names[i].range[0] * 100000) / 100000+" - "+Math.round(this.statistic.names[i].range[1] * 100000) / 100000+"</td></tr></table>");
 
                 }
 

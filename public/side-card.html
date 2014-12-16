@@ -122,11 +122,15 @@
         },
         onClick: function(event, detail,sender){
 
-            if(this.post.models.length = 1) {
-                document.getElementById('list').innerHTML = "<metric-list tipo='ALL' myID='" + this.post.models[0]._id + "'></metric-list>";
-            }
-            else if(this.post.models.length > 1 && !this.show){
+            console.log(this.post);
+            if(this.post.models.length > 1) {
+                console.log('hello');
                 document.getElementById('list').innerHTML = "<statistic-list tipo='ALL' myID='" + this.post.statistics + "'></statistic-list>";
+
+            }
+            else{
+
+                document.getElementById('list').innerHTML = "<metric-list tipo='ALL' myID='" + this.post.models[0]._id + "'></metric-list>";
             }
             this.show = !this.show;
         }

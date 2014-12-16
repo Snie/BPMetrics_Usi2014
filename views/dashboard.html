@@ -296,18 +296,19 @@
         if(!id){
             return false;
         }
-        var url= '/models/demo/'+id;
+        var url= '/models/'+id;
 
         $.ajax({
             url: url,
             type: 'GET',
             async: false,
-//            accepts: 'application/json',
+            accepts: 'application/json',
             success: function(result){
-                if(result.collectionID){
+                if(!result.collectionID){
                     return false;
                 }
                 else{
+                    console.log(result);
                     document.getElementById('sidebar').innerHTML = "<side-list></side-list>";
                     document.querySelector('#sidebar_ok').show();
                     return true;
@@ -363,7 +364,6 @@
     }
 
     setInterval(function(){
-        console.log('hello');
         document.getElementById('stats').innerHTML ='<global-service id="Statistics" posts="{{posts}}"></global-service>'
         document.getElementById('stats').innerHTML ='<global-service id="Statistics" posts="{{posts}}"></global-service>'
     },12000)

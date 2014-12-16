@@ -93,13 +93,12 @@ router.get('/:id', function(req, res) {
         });
     }
     else res.render('./index');
-
 });
 
 router.get('/demo/:id', function(req, res) {
     if(req.user) {
         var id = req.params.id;
-        collMod.find({collectionID: id}).exec(function (err, found) {
+        collMod.findOne(id).populate('models').populate('statistics').exec(function (err, found){
             if (err) throw (err);
             res.send(found);
 
