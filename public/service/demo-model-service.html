@@ -31,8 +31,6 @@
 
                 var temp = JSON.parse(this.$.ajax.response.metrics);
 
-                console.log(temp);
-
 
                 for(var i = 0; i < temp.length; i++){
                     if(temp[i].type != 'DISTRIBUTION_STATISTIC'){

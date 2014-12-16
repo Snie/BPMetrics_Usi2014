@@ -29,8 +29,34 @@
 
                 temp = JSON.parse(temp);
 
-                for(var i = 0; i < temp.length; i++){
-                    this.posts.push(temp[i]);
+                var lasts = [];
+
+                for (var i = 0; i < temp.length; i++) {
+                    if (temp[i].type == 'DISTRIBUTION') {
+                        if (!isEmpty(temp[i])) {
+                            this.posts.push(temp[i]);
+                        }
+                        else {
+                            lasts.push(temp[i]);
+                        }
+                    }
+                    if (temp[i].type == 'TYPE_DISTRIBUTION') {
+                        this.posts.push(temp[i]);
+                    }
+                    if (temp[i].type == 'SINGLE_VALUE') {
+                        console.log(temp[i]);
+                        if (temp[i].mean[0] == 0) {
+                            lasts.push(temp[i]);
+                        }
+                        else {
+                            this.posts.push(temp[i]);
+
+                        }
+                    }
+                }
+
+                for (var i = 0; i < lasts.length; i++){
+                    this.posts.push(lasts[i]);
                 }
             }
         });

@@ -35,7 +35,7 @@
                     <global-card
                             class="metric-ALL metric-{{post.type}}"
                             post="{{post}}">
-                        <h2>{{post.metric_name | fixString }}</h2>
+                        <h2>{{post.metric_name | fixString }} - {{post.category | normalCase}} Statistic</h2>
                     </global-card>
             </template>
         </div>
@@ -44,10 +44,11 @@
 
     <script>
 
+
         Polymer('global-list', {
             tipoChanged: function(oldVal, newVal) {
 
-                var a = this.shadowRoot.querySelectorAll('metric-card.metric-ALL');
+                var a = this.shadowRoot.querySelectorAll('global-card.metric-ALL');
 
                 for(var n=0; n<a.length; n++){
                     var e = a[n];
@@ -55,7 +56,7 @@
                     e.style.display = 'none';
                 }
 
-                a = this.shadowRoot.querySelectorAll('metric-card.metric-' + newVal);
+                a = this.shadowRoot.querySelectorAll('global-card.metric-' + newVal);
 
                 for(var n=0; n<a.length; n++){
                     var e = a[n];
@@ -73,6 +74,9 @@
                     string += temp[i] + " ";
                 }
                 return string;
+            },
+            normalCase: function(str){
+                return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
             }
         });
     </script>

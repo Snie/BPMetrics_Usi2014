@@ -39,7 +39,7 @@
                         class="metric-ALL metric-{{post.type}}"
                         post="{{post}}"
                         statistic="{{post | getStat}}">
-                    <h2>{{post.metric_name | fixString }}</h2>
+                    <h2>{{post.metric_name | fixString }} - {{post.category | normalCase}} Statistic</h2>
                 </statistic-card>
 
 
@@ -58,7 +58,7 @@
             },
             tipoChanged: function(oldVal, newVal) {
 
-                var a = this.shadowRoot.querySelectorAll('metric-card.metric-ALL');
+                var a = this.shadowRoot.querySelectorAll('statistic-card.metric-ALL');
 
                 for(var n=0; n<a.length; n++){
                     var e = a[n];
@@ -66,7 +66,7 @@
                     e.style.display = 'none';
                 }
 
-                a = this.shadowRoot.querySelectorAll('metric-card.metric-' + newVal);
+                a = this.shadowRoot.querySelectorAll('statistic-card.metric-' + newVal);
 
                 for(var n=0; n<a.length; n++){
                     var e = a[n];
@@ -90,6 +90,9 @@
                     string += temp[i] + " ";
                 }
                 return string;
+            },
+            normalCase: function(str){
+                return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
             }
         });
     </script>

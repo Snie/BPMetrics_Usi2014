@@ -165,18 +165,7 @@
 
         <div id="container" layout vertical center>
 
-            <paper-dropdown-menu label="All">
-                <paper-dropdown class="dropdown">
-                    <core-menu class="menu">
-                        <paper-item class="menu-item" id="ALL">All</paper-item>
-                        <paper-item class="menu-item" id="SINGLE_VALUE">Single Value</paper-item>
-                        <paper-item class="menu-item" id="DISTRIBUTION">Distribution</paper-item>
-                        <paper-item class="menu-item" id="TYPE_DISTRIBUTION">Type Distribution</paper-item>
-                    </core-menu>
-                </paper-dropdown>
-            </paper-dropdown-menu>
-
-            <div layout horizontal center>
+            <div id="button" layout horizontal center>
                 <!--<core-icon-button icon="menu" core-drawer-toggle></core-icon-button>-->
                 <core-icon-button id="add" icon="add"></core-icon-button>
             </div>
@@ -292,6 +281,7 @@
             //Ajax events
 //            beforeSend: beforeSendHandler,
             success: function(result){
+//                document.querySelector('#button').innerHTML = "";
                 if(localStorage['stack'] == '') {
                     localStorage['stack'] = result.id;
                 } else {
@@ -315,7 +305,6 @@
             return false;
         }
         var url= '/demofiles/'+id;
-        console.log(id);
 
         $.ajax({
             url: url,
@@ -324,12 +313,9 @@
             accepts: 'application/json',
             success: function(result){
                 if(!result.collectionID){
-                    console.log(result);
                     return false;
                 }
                 else{
-                    console.log(result);
-                    console.log('hello');
                     document.getElementById('list').innerHTML = "<demo-list tipo='ALL' myID='" + result.models[0]._id + "'></demo-list>";
                     return true;
                 }
@@ -346,7 +332,6 @@
             var ids = toSplit.split(',');
             var tmp = '';
             for (var id in ids) {
-                console.log(id);
                 var collIDReturn = getCollection(ids[id]);
 
 

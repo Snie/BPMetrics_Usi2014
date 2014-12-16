@@ -1,5 +1,5 @@
 /**
-/**
+ /**
  * Created by Snie on 29.11.14.
  */
 var express = require('express');
@@ -15,6 +15,8 @@ var statistics = require("./statistics");
 var mod = mongoose.model("Model");
 require("../schemas/account");
 var account = mongoose.model("Account");
+require('../schemas/errors');
+var error = mongoose.model("Errors");
 
 
 
@@ -32,7 +34,7 @@ router.get('/', function(req, res) {
 //get a model by id
 router.get('/mod/:id', function(req, res) {
     if(req.user) {
-    var id = req.params.id;
+        var id = req.params.id;
         mod.findById(id, function(err, found){
             if(err )throw(err);
             if(!found) res.status(404);
@@ -45,12 +47,12 @@ router.get('/mod/:id', function(req, res) {
 
 router.delete('/mod/:id', function(req, res) {
     if(req.user) {
-    var id = req.params.id;
-    mod.remove(id, function(err, found){
-        if(err )throw(err);
-        if(!found) res.status(404).end();
-        else res.status(204).end();
-    })
+        var id = req.params.id;
+        mod.remove(id, function(err, found){
+            if(err )throw(err);
+            if(!found) res.status(404).end();
+            else res.status(204).end();
+        })
     }
     else res.render('./index');
 
@@ -148,4 +150,15 @@ router.delete('/:id', function(req, res) {
     else res.render('./index');
 
 });
+
+router.get('/my/errors/:id', function(req, res){
+    if(req.user){
+        var id = req.params.id;
+        error.findOne({collectionID : id}).exec(function(err, found){
+           res.send(found.error);
+        });
+    }
+    else res.redirect('/');
+});
+
 module.exports = router;

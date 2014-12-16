@@ -262,7 +262,7 @@
                     this.$.buttons.hidden = true;
                     for (var i = 0; i < this.post.values.length; i++) {
                         labels.push(this.post.values[i].name);
-                        datas.push(this.post.values[i].value);
+                        datas.push(Math.round(this.post.values[i].value * 100000) / 100000);
                     }
 
                     if (this.post.values.length >= 1) {
@@ -281,10 +281,29 @@
                             ]
                         };
 
-                        var min = Math.min.apply(null, data.datasets[0].data);
-                        var max = Math.max.apply(null, data.datasets[0].data);
 
-                        this.$.table.innerHTML = "<table><tr><td>Minimum</td><td>" + Math.round(this.post.minimum * 100000) / 100000 + "</td></tr><tr><td>Maximum</td><td>" + Math.round(this.post.maximum * 100000) / 100000 + "</td></tr><tr><td>Sum</td><td>" + Math.round(this.statistic.sum * 100000) / 100000 + "</td></tr></table>"
+                        var minimum = '';
+                        var maximum = '';
+                        var sum = '';
+                        var empty = '<tr><td>No Statistics Available</td><td></td>';
+
+                        if(this.post.minimum){
+                            minimum = '<tr><td>Minimum</td><td>' + Math.round(this.post.minimum * 100000) / 100000 + '</td></tr>';
+
+                        }
+                        if(this.post.maximum){
+                            maximum = '</tr><tr><td>Maximum</td><td>' + Math.round(this.post.maximum * 100000) / 100000 + '</td>';
+                        }
+                        if(this.post.sum){
+                            sum = '<tr><td>Sum</td><td>' + Math.round(this.post.sum * 100000) / 100000 + '</td></tr>';
+                        }
+
+                        if(sum != '' || maximum !='' || minimum != ''){
+                            empty = '';
+                        }
+
+                        this.$.table.innerHTML = "<table>"+minimum+maximum+sum+empty+"</table>";
+
                         myBarChart = new Chart(ctx).Bar(data, chartOpt);
                     }
                     else{
@@ -300,9 +319,9 @@
                     labels.push('value');
                     labels.push('Account - mean');
                     labels.push('Account - median');
-                    datas.push(this.post.values[0].value);
-                    datas.push(this.statistic.mean[0]);
-                    datas.push(this.statistic.median);
+                    datas.push(Math.round(this.post.values[0].value * 100000) / 100000);
+                    datas.push(Math.round(this.statistic.mean[0] * 100000) / 100000);
+                    datas.push(Math.round(this.statistic.median * 100000) / 100000);
 
                     data = {
                         labels: labels,
@@ -328,9 +347,9 @@
 
                     for(var i = 0; i < this.post.values.length; i++){
                         labels.push(name(this.post.values[i].name));
-                        datas.push(this.post.values[i].value);
-                        mean.push(this.statistic.names[i].mean[0]);
-                        median.push(this.statistic.names[i].median);
+                        datas.push(Math.round(this.post.values[i].value * 100000) / 100000);
+                        mean.push(Math.round(this.statistic.names[i].mean[0] * 100000) / 100000);
+                        median.push(Math.round(this.statistic.names[i].median * 100000) / 100000);
                         typeTable.push("<h3>"+fixString(this.post.values[i].name)+"</h3><table><tr><td>Variance</td><td>"+Math.round(this.statistic.names[i].variance * 100000) / 100000+"</td></tr><tr><td>Standard Deviation</td><td>"+Math.round(this.statistic.names[i].standard_deviation * 100000) / 100000+"</td></tr><tr><td>Range</td><td>"+Math.round(this.statistic.names[i].range[0] * 100000) / 100000+" - "+Math.round(this.statistic.names[i].range[1] * 100000) / 100000+"</td></tr></table>");
                     }
 

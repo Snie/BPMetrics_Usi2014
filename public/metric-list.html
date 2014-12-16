@@ -44,7 +44,7 @@
                             class="metric-ALL metric-{{post.type}}"
                             post="{{post}}"
                             statistic="{{post | getStat}}">
-                        <h2>{{post.name | fixString }}</h2>
+                        <h2>{{post.name | fixString }} - {{post.category | normalCase}} Metric</h2>
                     </metric-card>
             </template>
         </div>
@@ -94,6 +94,9 @@
                     string += temp[i] + " ";
                 }
                 return string;
+            },
+            normalCase: function(str){
+                return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
             }
         });
     </script>

@@ -115,7 +115,7 @@
         var d = [];
         var l = [];
         for(var key in obj) {
-            d.push(obj[key]);
+            d.push(Math.round(obj[key] * 100000) / 100000);
             l.push(key);
         }
         if(type == 'data'){
@@ -291,7 +291,28 @@
                         ]
                     };
 
-                    this.$.table.innerHTML = "<table><tr><td>Minimum</td><td>" + Math.round(this.post.minimum * 100000) / 100000 + "</td></tr><tr><td>Maximum</td><td>" + Math.round(this.post.maximum * 100000) / 100000 + "</td></tr><tr><td>Sum</td><td>" + Math.round(this.post.sum * 100000) / 100000 + "</td></tr></table>"
+                    var minimum = '';
+                    var maximum = '';
+                    var sum = '';
+                    var empty = '<tr><td>No Statistics Available</td><td></td>';
+
+                    if(this.post.minimum){
+                        minimum = '<tr><td>Minimum</td><td>' + Math.round(this.post.minimum * 100000) / 100000 + '</td></tr>';
+
+                    }
+                    if(this.post.maximum){
+                        maximum = '</tr><tr><td>Maximum</td><td>' + Math.round(this.post.maximum * 100000) / 100000 + '</td>';
+                    }
+                    if(this.post.sum){
+                        sum = '<tr><td>Sum</td><td>' + Math.round(this.post.sum * 100000) / 100000 + '</td></tr>';
+                    }
+
+                    if(sum != '' || maximum !='' || minimum != ''){
+                        empty = '';
+                    }
+
+                    this.$.table.innerHTML = "<table>"+minimum+maximum+sum+empty+"</table>";
+
                     myBarChart = new Chart(ctx).Bar(data, chartOpt);
                 }
                 else{
@@ -306,8 +327,8 @@
 
                 labels.push('mean');
                 labels.push('median');
-                datas.push(this.post.mean[0]);
-                datas.push(this.post.median);
+                datas.push(Math.round(this.post.mean[0] * 100000) / 100000);
+                datas.push(Math.round(this.post.median * 100000) / 100000);
 
                 data = {
                     labels: labels,
@@ -334,8 +355,8 @@
                 console.log(this.post);
                 for(var i = 0; i < this.post.names.length; i++){
                     labels.push(name(this.post.names[i].name));
-                    mean.push(this.post.names[i].mean[0]);
-                    median.push(this.post.names[i].median);
+                    mean.push(Math.round(this.post.names[i].mean[0] * 100000) / 100000);
+                    median.push(Math.round(this.post.names[i].median * 100000) / 100000);
                     typeTable.push("<h3>"+fixString(this.post.names[i].name)+"</h3><table><tr><td>Variance</td><td>"+Math.round(this.post.names[i].variance * 100000) / 100000+"</td></tr><tr><td>Standard Deviation</td><td>"+Math.round(this.post.names[i].standard_deviation * 100000) / 100000+"</td></tr><tr><td>Range</td><td>"+Math.round(this.post.names[i].range[0] * 100000) / 100000+" - "+Math.round(this.post.names[i].range[1] * 100000) / 100000+"</td></tr></table>");
 
                 }

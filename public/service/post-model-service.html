@@ -31,11 +31,33 @@
 
                 var temp = JSON.parse(this.$.ajax.response.metrics);
 
+                var lasts = [];
 
                 for(var i = 0; i < temp.length; i++){
-                    if(temp[i].type != 'DISTRIBUTION_STATISTIC'){
+                    if (temp[i].type == 'DISTRIBUTION') {
+                        if (temp[i].values.length >= 1) {
+                            this.posts.push(temp[i]);
+                        }
+                        else {
+                            lasts.push(temp[i]);
+                        }
+                    }
+                    if (temp[i].type == 'TYPE_DISTRIBUTION') {
                         this.posts.push(temp[i]);
                     }
+                    if (temp[i].type == 'SINGLE_VALUE') {
+                        console.log(temp[i]);
+                        if (temp[i].values[0].value == 0) {
+                            lasts.push(temp[i]);
+                        }
+                        else {
+                            this.posts.push(temp[i]);
+
+                        }
+                    }
+                }
+                for (var i = 0; i < lasts.length; i++){
+                    this.posts.push(lasts[i]);
                 }
             }
         });

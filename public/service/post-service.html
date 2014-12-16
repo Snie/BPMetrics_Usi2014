@@ -18,6 +18,14 @@
     </template>
 
     <script>
+        function isEmpty(obj) {
+            for(var key in obj) {
+                if(obj.hasOwnProperty(key)) {
+                    return false;
+                }
+            }
+            return true;
+        }
         var temp;
         Polymer('post-service', {
             created: function() {
@@ -27,16 +35,41 @@
                 return "/models/"+this.colid;
             },
             handleResponse: function() {
+
                 // Make a copy of the loaded data
                 var temp = this.$.ajax.response.statistics;
 
+                console.log(temp);
                 temp = JSON.parse(temp.statistics);
 
+                var lasts = [];
 
-                for(var i = 0; i < temp.length; i++){
-                    if(temp[i].type != 'DISTRIBUTION_STATISTIC'){
+                for (var i = 0; i < temp.length; i++) {
+                    if (temp[i].type == 'DISTRIBUTION') {
+                        if (!isEmpty(temp[i])) {
+                            this.posts.push(temp[i]);
+                        }
+                        else {
+                            lasts.push(temp[i]);
+                        }
+                    }
+                    if (temp[i].type == 'TYPE_DISTRIBUTION') {
                         this.posts.push(temp[i]);
                     }
+                    if (temp[i].type == 'SINGLE_VALUE') {
+                        console.log(temp[i]);
+                        if (temp[i].mean[0] == 0) {
+                            lasts.push(temp[i]);
+                        }
+                        else {
+                            this.posts.push(temp[i]);
+
+                        }
+                    }
+                }
+
+                for (var i = 0; i < lasts.length; i++){
+                    this.posts.push(lasts[i]);
                 }
 
 

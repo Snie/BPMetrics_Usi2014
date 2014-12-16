@@ -69,6 +69,10 @@
             overflow-y: scroll;
             overflow-x: hidden;
         }
+        #sidebar{
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
 
         metric-list{
             margin: auto;
@@ -143,7 +147,10 @@
             <core-toolbar>
             </core-toolbar>
         </core-header-panel>
-        <side-list id="listSide"></side-list>
+        <div id="sidebarlist">
+            <side-list id="listSide"></side-list>
+        </div>
+
     </div>
 
     <div id="main" main>
@@ -305,14 +312,34 @@
             accepts: 'application/json',
             success: function(result){
                 if(!result.collectionID){
-                    return false;
+                   return false;
                 }
                 else{
                     console.log(result);
-                    document.getElementById('sidebar').innerHTML = "<side-list></side-list>";
+                    document.getElementById('sidebarlist').innerHTML = "<side-list></side-list>";
                     document.querySelector('#sidebar_ok').show();
+
                     return true;
                 }
+            },
+            error: function (xhr, status) {
+                getError(id);
+            }
+        });
+    }
+    function getError(id){
+        if(!id){
+            return false;
+        }
+        var url= 'models/my/errors/'+id;
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            async: false,
+            accepts: 'application/json',
+            success: function(result){
+                alert("I am sorry Dave i can't let you do that");
             },
             error: function (xhr, status) {
                 return false;
@@ -321,6 +348,7 @@
     }
 
     function polling() {
+
         var toSplit = localStorage['stack'];
         if (toSplit != '') {
             var ids = toSplit.split(',');
@@ -330,8 +358,8 @@
                 var collIDReturn = getCollection(ids[id]);
 
 
-                if (collIDReturn == false) {
 
+                if (collIDReturn == false) {
                     if (tmp == '') {
                         tmp = ids[id];
                     } else {
@@ -346,7 +374,7 @@
         }
     }
 
-    var refreshIntervalId = setInterval(function(){polling()}, 5000);
+    var refreshIntervalId = setInterval(function(){polling()}, 500);
 
     function onCreate() {
         var xhr = new XMLHttpRequest();
@@ -365,8 +393,8 @@
 
     setInterval(function(){
         document.getElementById('stats').innerHTML ='<global-service id="Statistics" posts="{{posts}}"></global-service>'
-        document.getElementById('stats').innerHTML ='<global-service id="Statistics" posts="{{posts}}"></global-service>'
-    },12000)
+//        document.getElementById('sidebarlist').innerHTML =' <side-list id="listSide"></side-list>'
+    },6000)
 
     onCreate();
 
