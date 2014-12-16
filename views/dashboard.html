@@ -143,8 +143,7 @@
             <core-toolbar>
             </core-toolbar>
         </core-header-panel>
-
-        <side-list></side-list>
+        <side-list id="listSide"></side-list>
     </div>
 
     <div id="main" main>
@@ -230,11 +229,6 @@
 
 <script>
 
-    $('.menu-item').on('click', function(){
-        var list = document.querySelector('metric-list');
-        list.tipo = this.id;
-    });
-
     tabs.addEventListener('core-select', function() {
         if(tabs.selected == 'back'){
             window.location.href = '/starter/index.html';
@@ -245,7 +239,9 @@
     });
 
     home.addEventListener('click', function(){
-        document.getElementById('list').innerHTML ="<global-list tipo='ALL'></global-list>"
+        if(document.querySelector('#listSide').posts.length > 0) {
+            document.getElementById('list').innerHTML = "<global-list tipo='ALL'></global-list>"
+        }
     });
 
 
@@ -368,6 +364,7 @@
 
     setInterval(function(){
         console.log('hello');
+        document.getElementById('stats').innerHTML ='<global-service id="Statistics" posts="{{posts}}"></global-service>'
         document.getElementById('stats').innerHTML ='<global-service id="Statistics" posts="{{posts}}"></global-service>'
     },12000)
 

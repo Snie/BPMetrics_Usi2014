@@ -36,6 +36,13 @@
     <script>
         var x = 0;
         Polymer('side-list', {
+            postsChanged: function(newVal, oldVal){
+                if(this.posts) {
+                    if (this.posts.length < 1) {
+                        document.getElementById('list').innerHTML = "";
+                    }
+                }
+            },
             onHovered: function(event, detail, sender) {
                 sender.showR = true;
             },
