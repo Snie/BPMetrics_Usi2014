@@ -8,42 +8,36 @@
     <script src="../bower_components/webcomponentsjs/webcomponents.js"></script>
 
     <link rel="import"
-          href="./bower_components/font-roboto/roboto.html">
+          href="../bower_components/font-roboto/roboto.html">
     <link rel="import"
-          href="./bower_components/core-header-panel/core-header-panel.html">
+          href="../bower_components/core-header-panel/core-header-panel.html">
     <link rel="import"
-          href="./bower_components/core-toolbar/core-toolbar.html">
+          href="../bower_components/core-toolbar/core-toolbar.html">
     <link rel="import"
-          href="./bower_components/paper-tabs/paper-tabs.html">
+          href="../bower_components/paper-tabs/paper-tabs.html">
     <link rel="import"
-          href="./bower_components/core-icon-button/core-icon-button.html">
+          href="../bower_components/core-icon-button/core-icon-button.html">
     <link rel="import"
-          href="./bower_components/core-overlay/core-overlay.html">
+          href="../bower_components/core-overlay/core-overlay.html">
     <link rel="import"
-          href="metric-list.html">
+          href="../bower_components/core-dropdown-menu/core-dropdown-menu.html">
     <link rel="import"
-          href="side-list.html">
+          href="../bower_components/core-input/core-input.html">
     <link rel="import"
-          href="./bower_components/core-dropdown-menu/core-dropdown-menu.html">
+          href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
     <link rel="import"
-          href="./bower_components/core-input/core-input.html">
+          href="../bower_components/paper-dropdown/paper-dropdown.html">
     <link rel="import"
-          href="./bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+          href="../bower_components/paper-item/paper-item.html">
     <link rel="import"
-          href="./bower_components/paper-dropdown/paper-dropdown.html">
+          href="../bower_components/core-ajax/core-ajax.html">
     <link rel="import"
-          href="./bower_components/paper-item/paper-item.html">
-    <link rel="import"
-          href="./bower_components/core-ajax/core-ajax.html">
-    <link rel="import"
-          href="./bower_components/core-drawer-panel/core-drawer-panel.html">
-    <link rel="import"
-          href="signup-card.html">
+          href="../bower_components/core-drawer-panel/core-drawer-panel.html">
     <link rel="import"
           href="../bower_components/paper-toast/paper-toast.html">
     <link rel="import"
-          href="login-card.html">
-    <link rel="import" href="/bower_components/core-icons/social-icons.html">
+          href="../bower_components/paper-button/paper-button.html">
+    <link rel="import" href="../bower_components/core-icons/social-icons.html">
 
 
     <style>
@@ -93,6 +87,10 @@
             margin-top: 20px;
             margin-bottom: 20px;
         }
+        h1 sup {
+            font-size: 30px;
+            color: #da4336;
+        }
         h3, p, li {
             color: gray;
         } 
@@ -128,7 +126,7 @@
         }
         th{
             width: 50%;
-            height: 500px;
+            height: 300px;
         }
         .asd{
             padding-bottom: 6%;
@@ -144,15 +142,15 @@
             background: #F5F5F5;
         }
         #demo_signup{
-            margin-left:5%;
-            width: 95%;
-            padding-bottom: 100px;
+            /*margin-left:5%;*/
+            width: 100%;
+            padding-bottom: 50px;
         }
         #footer {
             width: 100%;
             text-align: center;
             padding-top: 100px;
-            padding-bottom: 100px;
+            padding-bottom: 50px;
             background: #F5F5F5;
         }
         paper-toast {
@@ -174,72 +172,24 @@
     <core-toolbar>
         <img id="logo" src="../resources/logo6.png"/>
         <paper-tabs id="tabs" selected="model" noink="true" self-end>
-            <paper-tab name="demo">Demo</paper-tab>
             <paper-tab name="model">Home</paper-tab>
-            <paper-tab name="start">Log in / Sign up</paper-tab>
+            <paper-tab name="demo">Demo</paper-tab>
         </paper-tabs>
     </core-toolbar>
 </core-header-panel>
 
-<core-overlay id="signUp" backdrop="true" autoCloseDisabled="true">
-    <div id="frontForm"  style="display: none">
-        <signup-card></signup-card>
-    </div>
-    <div id="backForm">
-        <login-card></login-card>
-    </div>
-</core-overlay>
-
-<!--Messages to the user-->
-<paper-toast id="signup-card_message_204" role="alert" text="New account created!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
-    <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
-</paper-toast>
-<paper-toast id="signup-card_message_400" role="alert" text="User name or email already used!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
-    <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
-</paper-toast>
-<paper-toast id="signup-card_1" role="alert" text="Please, insert your first name!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
-    <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
-</paper-toast>
-<paper-toast id="signup-card_2" role="alert" text="Please, insert your last name!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
-    <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
-</paper-toast>
-<paper-toast id="signup-card_3" role="alert" text="Please, insert your user name!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
-    <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
-</paper-toast>
-<paper-toast id="signup-card_4" role="alert" text="Please, insert your email!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
-    <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
-</paper-toast>
-<paper-toast id="signup-card_5" role="alert" text="The email is not valid!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
-    <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
-</paper-toast>
-<paper-toast id="signup-card_6" role="alert" text="Please, insert your password!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
-    <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
-</paper-toast>
-<paper-toast id="signup-card_7" role="alert" text="Please, repeat your password!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
-    <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
-</paper-toast>
-<paper-toast id="signup-card_8" role="alert" text="The repeat password is not the same as password!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
-    <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
-</paper-toast>
-<paper-toast id="signup-card_length" role="alert" text="The password should have at least 6 characters!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
-    <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
-</paper-toast>
-<paper-toast id="login-card_message_401" role="alert" text="User name or password wrong!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
-    <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
-</paper-toast>
-<!--Messages to the user-->
-
 
 <div id="init">
 
-<h1>BPMetrics</h1>
+<h1>BPMetrics<sup>alpha</sup></h1>
 <h3>Because processes are complicated enough!</h3>
 <p>BPMetrics is a brand new way to organise and analyse your business process models. <br/>
-You give us BPModels, we give you back BPMetrics!<br/>
-More than 100 intuitive metrics for each model.</p>
+You give us BPMN 2.0 models, we give you back BPMetrics!<br/>
+More than 100 intuitive metrics for each model.<br/><br/>
+For more information contact us at: <a href="mailto:vincenzo.ferme@usi.ch">vincenzo.ferme@usi.ch</a> </p>
 <img id="firstimage" src="../resources/first.png"/>
 </div>
-<paper-shadow class="card" z="1">
+<!-- <paper-shadow class="card" z="1">
 <div id="why">
     <h1 style="padding-top: 100px; width: 100%">Why BPMetrics?</h1>
     <table id="graphtable">
@@ -261,22 +211,26 @@ More than 100 intuitive metrics for each model.</p>
         </tr>
     </table>
 </div>
-</paper-shadow>
+</paper-shadow> -->
 
+<paper-shadow class="card" z="1">
 <table id="demo_signup">
     <tr>
+    <!--
     <th> 
         <h1 style="padding-top: 100px; width: 100%">Get started!</h1>
         <h3 style="font-size: 30px;">BPMetrics is "free", sign up now and simplify your life!</h3>
         <paper-button raised style="background:#E5E5E5;" id="signup_button">Sign Up</paper-button>
     </th>
+    -->
     <th> 
-        <h1 style="padding-top: 100px; width: 100%">Try the demo!</h1>
-        <h3 style="font-size: 30px;">If you're still not convinced, you can try the free DEMO!</h3>
+        <h1>Try out the demo!</h1>
+        <!-- <h3 style="font-size: 30px;">If you're still not convinced, you can try the free DEMO!</h3> -->
         <paper-button raised style="background:#E5E5E5;" id="demo_button">Try out!</paper-button>
     </th>
     </tr>
 </table>
+</paper-shadow>
 
 <div id="footer">
     <paper-button raised id="git"><core-icon icon="social:post-github"></core-icon> GitHub</paper-button> 
@@ -289,23 +243,13 @@ More than 100 intuitive metrics for each model.</p>
 
     tabs.addEventListener('core-select', function() {
         if(tabs.selected == 'demo'){
-            window.location.replace('/demo');
+            window.location.replace('/bpmetrics/demo');
         }
-        else if(tabs.selected == 'start') {
-            document.getElementById('signUp').opened = true;
-        }
-
-    });
-    var signup_button = document.getElementById("signup_button");
-    signup_button.addEventListener('click', function() {
-        document.getElementById('frontForm').style.display = "block";
-        document.getElementById('backForm').style.display = "none";
-        document.getElementById('signUp').opened = true;
     });
 
     var demo_button = document.getElementById("demo_button");
     demo_button.addEventListener('click', function(){
-        window.location.replace('/demo');
+        window.location.replace('/bpmetrics/demo');
     });
 
     var git_button = document.getElementById("git");
@@ -315,7 +259,7 @@ More than 100 intuitive metrics for each model.</p>
 
     team_button = document.getElementById("team");
     team_button.addEventListener('click', function(){
-        window.location.replace('/team');
+        window.location.replace('/bpmetrics/team');
     });
 </script>
 </body>

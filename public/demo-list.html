@@ -1,7 +1,7 @@
 <link rel="import" href="./bower_components/polymer/polymer.html">
 <link rel="import" href="./service/demo-model-service.html">
 <link rel="import" href="metric-card.html">
-<script src="bower_components/chartjs/Chart.js"></script>
+<script src="./bower_components/chartjs/Chart.js"></script>
 <link rel="import" href="./bower_components/core-menu/core-menu.html">
 <link rel="import" href="./bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="./bower_components/paper-dropdown/paper-dropdown.html">
@@ -24,7 +24,7 @@
         <demo-model-service id='posts' posts="{{posts}}" modelId="{{myID}}">
         </demo-model-service>
 
-        <div>
+       <!--  <div>
             <paper-dropdown-menu label="All Metrics">
                 <paper-dropdown class="dropdown">
                     <core-menu class="menu">
@@ -35,14 +35,14 @@
                     </core-menu>
                 </paper-dropdown>
             </paper-dropdown-menu>
-        </div>
+        </div> -->
 
         <div id="list" horizontal layout center-justified wrap class="{{tipo}}">
             <template repeat="{{post in posts}}">
                     <metric-card
                             class="metric-ALL metric-{{post.type}}"
                             post="{{post}}"
-                            statistic="{{post | getStat}}">
+                            statistic="{{post}}">
                         <h2>{{post.name | fixString }}</h2>
                     </metric-card>
             </template>

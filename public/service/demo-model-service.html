@@ -24,19 +24,58 @@
                 this.posts = [];
             },
             getModel : function(id){
-                return "/demofiles/mod/"+this.modelId;
+                return "/bpmetrics/demofiles/mod/"+this.modelId;
                 console.log('destroy')
             },
             handleResponse: function() {
 
                 var temp = JSON.parse(this.$.ajax.response.metrics);
 
+                var notZero = [];
+                var zero = [];
+
 
                 for(var i = 0; i < temp.length; i++){
+                   
                     if(temp[i].type != 'DISTRIBUTION_STATISTIC'){
-                        this.posts.push(temp[i]);
+
+                        if(temp[i].type == 'DISTRIBUTION' && temp[i].values.length > 0){
+                             // console.log(temp[i]);
+                           notZero.push(temp[i]);
+                        }
+                        else if(temp[i].type == 'DISTRIBUTION' && temp[i].values.length == 0){
+                             // console.log(temp[i]);
+                           zero.push(temp[i]);
+                        }
+
+                        else if(temp[i].type == 'SINGLE_VALUE' && temp[i].values[0].value > 0)
+                           notZero.push(temp[i]);
+                        else if(temp[i].type == 'SINGLE_VALUE' && temp[i].values[0].value == 0)
+                           zero.push(temp[i]);
+                        else if(temp[i].type == 'TYPE_DISTRIBUTION'){
+
+                            var atLeastOne = false;
+
+                            for(var k = 0; k < temp[i].values.length && !atLeastOne; k++){
+                                if(temp[i].values[k].value > 0)
+                                    atLeastOne = true;
+                            }
+
+                            if(atLeastOne){
+                                notZero.push(temp[i]);
+                            } else {
+                                zero.push(temp[i]);
+                            }
+                        }
                     }
                 }
+
+                for(var i = 0; i < notZero.length; i++)
+                    this.posts.push(notZero[i]);
+
+                for(var i = 0; i < zero.length; i++)
+                    this.posts.push(zero[i]);
+
             }
         });
     </script>

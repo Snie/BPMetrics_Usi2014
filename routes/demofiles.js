@@ -129,7 +129,6 @@ router.get('/:id', function(req, res) {
 
 function execSingleJar(userId, dirId, userName, res, target_path, newIDs, queue){
     exec('java -jar bin/BPMetrics.jar ' + "models/" + userId + "/" + dirId, function(error, stdout, stderr) {
-        var collection = JSON.parse(stdout);
         if (error !== null) {
             console.log('exec error: ' + error);
         }
@@ -138,32 +137,33 @@ function execSingleJar(userId, dirId, userName, res, target_path, newIDs, queue)
             sendToAdmin("corrupted or wrong file", userId, userName);
             removeDir(target_path);
             console.log("deleted");
-            var errObj = new errs({
-                collectionID: collection.collectionID,
-                error: stderr
-            });
-            errObj.save(function(err, saved){
-                if (err) console.log(err);
-                console.log("Java error saved");
-            });
-            account.findById(userId).exec(function(err, found){
-                if (err){throw err;}
-                var acc_errs = found.errse;
-                if (acc_errs !== undefined){
-                    acc_errs.push(errObj._id);
-                }
-                else {
-                    acc_errs = [errObj._id];
-                }
-                found.errs = acc_errs;
-                found.save(function(err, saved){
-                    if (err) console.log(err);
-                    console.log("Java error added to account");
-                    sendToAdmin("Java error added to demo", userId, userName);
-                });
-            });
+            // var errObj = new errs({
+            //     collectionID: collection.collectionID,
+            //     error: stderr
+            // });
+            // errObj.save(function(err, saved){
+            //     if (err) console.log(err);
+            //     console.log("Java error saved");
+            // });
+            // account.findById(userId).exec(function(err, found){
+            //     if (err){throw err;}
+            //     var acc_errs = found.errse;
+            //     if (acc_errs !== undefined){
+            //         acc_errs.push(errObj._id);
+            //     }
+            //     else {
+            //         acc_errs = [errObj._id];
+            //     }
+            //     found.errs = acc_errs;
+            //     found.save(function(err, saved){
+            //         if (err) console.log(err);
+            //         console.log("Java error added to account");
+            //         sendToAdmin("Java error added to demo", userId, userName);
+            //     });
+            // });
         }
         else{
+            var collection = JSON.parse(stdout);
             var statistic;
             queue.push(
                 function(task){

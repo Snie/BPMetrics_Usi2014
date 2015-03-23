@@ -67,43 +67,48 @@ app.use(passport.session());
 //routes
 
 var models = require("./routes/models");
-app.use('/models', models);
+app.use('/bpmetrics/models', models);
 
 var user = require("./routes/user");
-app.use('/user', user);
+app.use('/bpmetrics/user', user);
 
 var index = require("./routes/index");
-app.use('/', index);
+app.use('/bpmetrics', index);
 
 var demo = require("./routes/demo");
-app.use('/demo', demo);
+app.use('/bpmetrics/demo', demo);
 
 var login = require("./routes/login");
-app.use('/login', login);
+app.use('/bpmetrics/login', login);
 
 var signup = require("./routes/signup");
-app.use("/signup", signup);
+app.use("/bpmetrics/signup", signup);
 
 var files = require("./routes/files");
-app.use("/files", files);
+app.use("/bpmetrics/files", files);
 
 var logout = require("./routes/logout");
-app.use("/logout", logout);
+app.use("/bpmetrics/logout", logout);
 
 var demofiles = require("./routes/demofiles");
-app.use("/demofiles", demofiles);
+app.use("/bpmetrics/demofiles", demofiles);
 
 var admin = require("./routes/admin");
-app.use("/admin", admin);
+app.use("/bpmetrics/admin", admin);
 
 var team = require("./routes/team");
-app.use("/team", team);
+app.use("/bpmetrics/team", team);
+
+app.get('/', function (req, res) {
+    res.redirect("http://design.inf.usi.ch/research/projects/benchflow");
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
+    //res.redirect("http://design.inf.usi.ch/research/projects/benchflow");
 });
 
 // error handlers
@@ -123,5 +128,6 @@ app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.send(err);
 });
+
 
 module.exports = app;

@@ -8,50 +8,46 @@
     <script src="../bower_components/webcomponentsjs/webcomponents.js"></script>
 
     <link rel="import"
-          href="./bower_components/font-roboto/roboto.html">
+          href="../bower_components/font-roboto/roboto.html">
     <link rel="import"
-          href="./bower_components/core-header-panel/core-header-panel.html">
+          href="../bower_components/core-header-panel/core-header-panel.html">
     <link rel="import"
-          href="./bower_components/core-toolbar/core-toolbar.html">
+          href="../bower_components/core-toolbar/core-toolbar.html">
     <link rel="import"
-          href="./bower_components/paper-tabs/paper-tabs.html">
+          href="../bower_components/paper-tabs/paper-tabs.html">
     <link rel="import"
-          href="./bower_components/core-icon-button/core-icon-button.html">
+          href="../bower_components/core-icon-button/core-icon-button.html">
     <link rel="import"
-          href="./bower_components/core-overlay/core-overlay.html">
+          href="../bower_components/core-overlay/core-overlay.html">
     <link rel="import"
-          href="demo-list.html">
+          href="../demo-list.html">
     <link rel="import"
-          href="side-list.html">
+          href="../bower_components/core-dropdown-menu/core-dropdown-menu.html">
     <link rel="import"
-          href="./bower_components/core-dropdown-menu/core-dropdown-menu.html">
+          href="../bower_components/core-input/core-input.html">
     <link rel="import"
-          href="./bower_components/core-input/core-input.html">
+          href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
     <link rel="import"
-          href="./bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+          href="../bower_components/paper-dropdown/paper-dropdown.html">
     <link rel="import"
-          href="./bower_components/paper-dropdown/paper-dropdown.html">
+          href="../bower_components/paper-item/paper-item.html">
     <link rel="import"
-          href="./bower_components/paper-item/paper-item.html">
+          href="../bower_components/core-ajax/core-ajax.html">
     <link rel="import"
-          href="./bower_components/core-ajax/core-ajax.html">
-    <link rel="import"
-          href="./bower_components/core-drawer-panel/core-drawer-panel.html">
+          href="../bower_components/core-drawer-panel/core-drawer-panel.html">
     <link rel="import"
           href="../bower_components/paper-toast/paper-toast.html">
     <link rel="import"
-          href="signup-card.html">
+          href="../bower_components/paper-button/paper-button.html">
     <link rel="import"
-          href="login-card.html">
-    <link rel="import"
-          href="./service/demo-service.html">
+          href="../service/demo-service.html">
 
-    <link rel="import" href="/bower_components/core-icon/core-icon.html">
-    <link rel="import" href="/bower_components/core-icons/communication-icons.html">
-    <link rel="import" href="/bower_components/core-icons/maps-icons.html">
+    <link rel="import" href="../bower_components/core-icon/core-icon.html">
+    <link rel="import" href="../bower_components/core-icons/communication-icons.html">
+    <link rel="import" href="../bower_components/core-icons/maps-icons.html">
 
 
-    <script type="text/javascript" src="./js/checkfiles.js"></script>
+    <script type="text/javascript" src="../js/checkfiles.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script src="../bower_components/jquery-1.11.1.min.js"></script>
 
@@ -64,7 +60,6 @@
             background-size: 100%;
             font-family: 'RobotoDraft', sans-serif;
         }
-
 
         metric-list{
             margin: auto;
@@ -137,46 +132,29 @@
 </head>
 
 <body unresolved>
-
-        <div id="stats">
-            <demo-service id="Statistics" posts="{{posts}}"></demo-service>
-        </div>
-
         <core-header-panel>
             <core-toolbar>
                 <img id="logo" src="../resources/logo6.png"/>
                 <paper-tabs id="tabs" selected="model" noink="true" self-end>
                     <paper-tab name="model">Demo</paper-tab>
                     <paper-tab name="home">Home</paper-tab>
-                    <paper-tab name="start">Get Started</paper-tab>
+                    <!-- <paper-tab name="start">Get Started</paper-tab> -->
                 </paper-tabs>
             </core-toolbar>
         </core-header-panel>
 
-        <core-overlay id="signUp" backdrop="true" autoCloseDisabled="true">
-            <div id="frontForm">
-                <signup-card></signup-card>
-            </div>
-            <div id="backForm" style="display: none">
-                <login-card></login-card>
-            </div>
-
-        </core-overlay>
-
         <div id="container" layout vertical center>
 
             <div id="button" layout horizontal center>
-                <!--<core-icon-button icon="menu" core-drawer-toggle></core-icon-button>-->
                 <core-icon-button id="add" icon="add"></core-icon-button>
             </div>
 
-            <form id="form" style="display: none;" method="post" enctype="multipart/form-data" action="/demofiles">
+            <form id="form" style="display: none;" method="post" enctype="multipart/form-data" action="/bpmetrics/demofiles">
                 <input id="uploaded" type="file" name="uploaded" title="upload">
                 <input id="submit" type="submit">
             </form>
 
             <div id="list">
-                <!--<metric-list tipo='ALL' myID='b18f4aa4199545afb2c48e9f8b714972'></metric-list>-->
                 <div id='demotry'>
                     <h1><core-icon icon="file-upload"></core-icon> Try it now!</h1>
                     <p>You can add model and see some statistics!</p>
@@ -184,48 +162,7 @@
                 </div>
             </div>
 
-
         </div>
-
-
-        <!--Messages to the user-->
-        <paper-toast id="signup-card_message_204" role="alert" text="New account created!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
-            <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
-        </paper-toast>
-        <paper-toast id="signup-card_message_400" role="alert" text="User name or email already used!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
-            <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
-        </paper-toast>
-        <paper-toast id="signup-card_1" role="alert" text="Please, insert your first name!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
-            <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
-        </paper-toast>
-        <paper-toast id="signup-card_2" role="alert" text="Please, insert your last name!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
-            <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
-        </paper-toast>
-        <paper-toast id="signup-card_3" role="alert" text="Please, insert your user name!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
-            <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
-        </paper-toast>
-        <paper-toast id="signup-card_4" role="alert" text="Please, insert your email!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
-            <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
-        </paper-toast>
-        <paper-toast id="signup-card_5" role="alert" text="The email is not valid!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
-            <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
-        </paper-toast>
-        <paper-toast id="signup-card_6" role="alert" text="Please, insert your password!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
-            <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
-        </paper-toast>
-        <paper-toast id="signup-card_7" role="alert" text="Please, repeat your password!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
-            <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
-        </paper-toast>
-        <paper-toast id="signup-card_8" role="alert" text="The repeat password is not the same as password!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
-            <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
-        </paper-toast>
-        <paper-toast id="signup-card_length" role="alert" text="The password should have at least 6 characters!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
-            <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
-        </paper-toast>
-        <paper-toast id="login-card_message_401" role="alert" text="User name or password wrong!" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
-            <div style="color: #eeff41;" onclick="console.log('CLOSE')">CLOSE</div>
-        </paper-toast>
-        <!--Messages to the user-->
 
 <script>
     localStorage['stack'] = "";
@@ -237,14 +174,8 @@
     });
 
     tabs.addEventListener('core-select', function() {
-        if(tabs.selected == 'back'){
-            window.location.href = '/starter/index.html';
-        }
-        else if(tabs.selected == 'start'){
-            document.getElementById('signUp').opened = true;
-        }
-        else if(tabs.selected == 'home'){
-            window.location.href = '/'
+        if(tabs.selected == 'home'){
+            window.location.href = '/bpmetrics'
         }
     });
 
@@ -269,7 +200,7 @@
         var formData = new FormData($('form')[0]);
 
         $.ajax({
-            url: '/demofiles',  //Server script to process data
+            url: '/bpmetrics/demofiles',  //Server script to process data
             type: 'POST',
             xhr: function() {  // Custom XMLHttpRequest
                 var myXhr = $.ajaxSettings.xhr();
@@ -281,13 +212,7 @@
             //Ajax events
 //            beforeSend: beforeSendHandler,
             success: function(result){
-//                document.querySelector('#button').innerHTML = "";
-                if(localStorage['stack'] == '') {
-                    localStorage['stack'] = result.id;
-                } else {
-                    localStorage['stack'] += "," + result.id;
-                }
-
+                getCollection(result.id);
             },
 //            error: errorHandler,
             // Form data
@@ -304,57 +229,34 @@
         if(!id){
             return false;
         }
-        var url= '/demofiles/'+id;
+        console.log("id: " + id);
+        var collUrl= '/bpmetrics/demofiles/'+id;
+
+        //console.log("url: " + collUrl);
 
         $.ajax({
-            url: url,
+            url: collUrl,
             type: 'GET',
-            async: false,
             accepts: 'application/json',
             success: function(result){
+                console.log("Collection success: " + result);
                 if(!result.collectionID){
+                    setTimeout(function(){getCollection(    id)}, 500);
                     return false;
                 }
                 else{
+                    console.log("model id: " + result.models[0]._id);
                     document.getElementById('list').innerHTML = "<demo-list tipo='ALL' myID='" + result.models[0]._id + "'></demo-list>";
                     return true;
                 }
             },
             error: function (xhr, status) {
+                //console.log(xhr);
+                //console.log(status);
                 return false;
             }
         });
     }
-
-    function polling() {
-        var toSplit = localStorage['stack'];
-        if (toSplit != '') {
-            var ids = toSplit.split(',');
-            var tmp = '';
-            for (var id in ids) {
-                var collIDReturn = getCollection(ids[id]);
-
-
-                if (collIDReturn == false) {
-
-                    if (tmp == '') {
-                        tmp = ids[id];
-                    } else {
-                        tmp += "," + ids[id];
-                    }
-
-                }
-            }
-
-            localStorage['stack'] = tmp;
-
-        }
-    }
-
-    var refreshIntervalId = setInterval(function(){polling()}, 500);
-
-
-
 
 
 </script>
