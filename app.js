@@ -108,7 +108,6 @@ app.use(function(req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
-    //res.redirect("http://design.inf.usi.ch/research/projects/benchflow");
 });
 
 // error handlers

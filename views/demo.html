@@ -77,11 +77,15 @@
         #tabs {
             width: 100%;
             margin: 0;
+            cursor: pointer;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
             text-transform: uppercase;
+        }
+        #tabs > paper-tab{
+            cursor: pointer;
         }
         core-icon-button{
             background: #E5E5E5;
@@ -136,8 +140,8 @@
             <core-toolbar>
                 <img id="logo" src="../resources/logo6.png"/>
                 <paper-tabs id="tabs" selected="model" noink="true" self-end>
-                    <paper-tab name="model">Demo</paper-tab>
                     <paper-tab name="home">Home</paper-tab>
+                    <paper-tab name="model">Demo</paper-tab>
                     <!-- <paper-tab name="start">Get Started</paper-tab> -->
                 </paper-tabs>
             </core-toolbar>
@@ -157,7 +161,7 @@
             <div id="list">
                 <div id='demotry'>
                     <h1><core-icon icon="file-upload"></core-icon> Try it now!</h1>
-                    <p>You can add model and see some statistics!</p>
+                    <p>You can add a BPMN 2.0 model (.xml) and see some statistics!</p>
                     
                 </div>
             </div>
@@ -175,7 +179,7 @@
 
     tabs.addEventListener('core-select', function() {
         if(tabs.selected == 'home'){
-            window.location.href = '/bpmetrics'
+            window.location.replace('/bpmetrics');
         }
     });
 
@@ -225,11 +229,11 @@
 
     });
 
-    function getCollection(id){
+    function getCollection(id, repetition){
         if(!id){
             return false;
         }
-        console.log("id: " + id);
+        // console.log("id: " + id);
         var collUrl= '/bpmetrics/demofiles/'+id;
 
         //console.log("url: " + collUrl);
@@ -239,13 +243,19 @@
             type: 'GET',
             accepts: 'application/json',
             success: function(result){
-                console.log("Collection success: " + result);
+                // console.log("Collection success: " + result);
                 if(!result.collectionID){
-                    setTimeout(function(){getCollection(    id)}, 500);
+                    if (typeof repetition == 'undefined'){
+                        repetition = 0;
+                        setTimeout(function(){getCollection(id,++repetition)}, 1000);
+                    } else if (typeof repetition != 'undefined' && repetition<=10){
+                        setTimeout(function(){getCollection(id,++repetition)}, 1000);
+                    }
+
                     return false;
                 }
                 else{
-                    console.log("model id: " + result.models[0]._id);
+                    // console.log("model id: " + result.models[0]._id);
                     document.getElementById('list').innerHTML = "<demo-list tipo='ALL' myID='" + result.models[0]._id + "'></demo-list>";
                     return true;
                 }

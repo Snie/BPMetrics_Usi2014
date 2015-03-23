@@ -110,17 +110,17 @@ function createSingleFile(fileArray, userId, dirId){
     var target_path = "./models/" + userId + "/" + dirId + "/" + fileArray.name;
     console.log("target: " + target_path);
     fs.rename(tmp_path, target_path, function(err) {
-        if (err) throw err;
+        //if (err) throw err;
         fs.unlink(tmp_path, function() {
-            if (err) throw err;
+            //if (err) throw err;
 
         });
     });
 }
 
 router.get('/:id', function(req, res) {
-    id = req.params.id
-    collMod.findOne(id).populate('models').populate('statistics').exec(function (err, found) {
+    var id = req.params.id
+    collMod.findOne({collectionID: id}).populate('models').populate('statistics').exec(function (err, found) {
         if (err) throw (err);
         res.send(found);
     });
