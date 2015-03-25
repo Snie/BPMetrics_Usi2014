@@ -159,40 +159,47 @@ function execSingleJar(userId, dirId, userName, res, target_path, newIDs, queue)
             //         if (err) console.log(err);
             //         console.log("Java error added to account");
             //         sendToAdmin("Java error added to demo", userId, userName);
-            //     });
-            // });
-        }
-        else{
-            var collection = JSON.parse(stdout);
-            var statistic;
-            queue.push(
-                function(task){
-                    console.log("creating and saving demo model");
-                    sendToAdmin("creating and saving demo model", userId, userName);
-                    create_save_Models(newIDs, collection);
-                    statistic = statistics.collectionStat(collection);
-                    task.done();
+                //     });
+                // });
+            }
+            else{
+                console.log("metrics output");
+                console.log(stdout);
+                try {
+                    var collection = JSON.parse(stdout);
+                    var statistic;
+                    queue.push(
+                        function(task){
+                            console.log("creating and saving demo model");
+                            sendToAdmin("creating and saving demo model", userId, userName);
+                            create_save_Models(newIDs, collection);
+                            statistic = statistics.collectionStat(collection);
+                            task.done();
+                        }
+                    );
+                    var array;
+                    queue.push(
+                        function(task){
+                            console.log("creating demo collection");
+                            sendToAdmin("creating demo collection", userId, userName)
+                            array = create_Collection(userId, collection, newIDs, statistic, userName);
+                            task.done();
+                        }
+                    );
+                    queue.push(
+                        function(task){
+                            console.log("saving demo collection");
+                            sendToAdmin("saving demo collection", userId, userName)
+                            save_Collection(array, userId, userName)
+                            task.done();
+                        }
+                    );
+                } catch(err) {
+                    console.log("Error: "):
+                    console.log(err);
                 }
-            );
-            var array;
-            queue.push(
-                function(task){
-                    console.log("creating demo collection");
-                    sendToAdmin("creating demo collection", userId, userName)
-                    array = create_Collection(userId, collection, newIDs, statistic, userName);
-                    task.done();
-                }
-            );
-            queue.push(
-                function(task){
-                    console.log("saving demo collection");
-                    sendToAdmin("saving demo collection", userId, userName)
-                    save_Collection(array, userId, userName)
-                    task.done();
-                }
-            );
-        }
-    });
+            }
+        });
 }
 
 
