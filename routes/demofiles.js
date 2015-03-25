@@ -195,7 +195,7 @@ function execSingleJar(userId, dirId, userName, res, target_path, newIDs, queue)
                         }
                     );
                 } catch(err) {
-                    console.log("Error: "):
+                    console.log("Error: ");
                     console.log(err);
                 }
             }
