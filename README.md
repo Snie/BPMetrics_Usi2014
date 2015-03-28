@@ -1,25 +1,3 @@
-BPMetrics - USI 2014
-==================================
+**Warning: this project has been moved.**
 
-**(Description: TODO)**
-
-Getting started
-===============
-
-**(TODO)**
-
-Usage examples
-==============
-
-**(TODO)**
-
-Contributing to BPMetrics
-======================
-
-Our team: 
-- Sonny Monti
-- Abdil Cakal 
-- Andreia Faria Carvalho
-- Nicolò Linder
-
-Customer: Vincenzo Ferme
+**Please contact: vincenzo.ferme@usi.ch**
